@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +39,22 @@
 
 .read-the-docs {
   color: #888;
+} */
+
+
+
+:where(.css-dev-only-do-not-override-mzwlov).ant-list-grid .ant-col>.ant-list-item {
+  flex: 1;
+}
+
+
+
+.ant-row.css-dev-only-do-not-override-mzwlov>div {
+  display: flex;
+  flex-direction: column;
+}
+.ant-col.css-dev-only-do-not-override-mzwlov {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

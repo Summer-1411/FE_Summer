@@ -1,0 +1,89 @@
+$themes: (
+    light: (textColor: #000,
+        bg: white,
+        logo: darkblue,
+        bgSoft: #f6f3f3,
+        textColorSoft: #555,
+        border: lightgray,
+        textHover: rgb(50, 203, 213),
+        bgHover: rgb(110, 110, 105),
+        textBold: #000,
+        colorPink: #d83131,
+        pageColor: orange,
+        
+    ),
+    dark: (textColor: whitesmoke,
+        bg: #222,
+        logo: white,
+        bgSoft: #333,
+        textColorSoft: lightgray,
+        border: #444,
+        textHover: white,
+        textBold: #fff,
+        bgHover: rgb(18, 29, 116),
+        colorPink: #d83131,
+        pageColor: orange,
+    )
+);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+$theme-map: null;
+
+@mixin themify($themes) {
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), "#{$key}");
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
+
+@mixin mobile {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media  (min-width: 481px) and ( max-width: 960px) {
+        @content;
+    }
+}
+
+.wrapper-container {
+    @include themify($themes) {
+        background-color: themed("bgSoft");
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.admin-wrapper {
+    .container-admin {
+        display: flex;
+        .side-bar {
+            flex: 2;
+        }
+        .main {
+            flex: 8;
+        }
+    }
+}
