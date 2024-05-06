@@ -13,7 +13,14 @@
         background-color: #fff;
         -webkit-box-shadow: 0px 5px 40px #00000008;
         box-shadow: 0px 5px 40px #00000008;
+        @media screen and (max-width: 768px) {
+            width: 70%; // change width for smaller screens
+        }
 
+        @media screen and (max-width: 576px) {
+            width: 90%; // change width for even smaller screens
+            padding: 20px; // adjust padding for smaller screens
+        }
         .header {
             .heading {
                 font-size: 22px;
