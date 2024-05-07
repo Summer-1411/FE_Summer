@@ -1,21 +1,24 @@
 import './register.scss'
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../../requestMethod';
+import {  request } from '../../requestMethod';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
 import { Button, Form, Input } from 'antd';
+import { useEffect } from 'react';
+import { spinningLoaderRef } from '../Loading/hook';
 export default function Register() {
     const navigate = useNavigate()
-    
+    useEffect(() => {
+        spinningLoaderRef.current?.stop()
+    },[])
     const onFinish = async (values) => {
         if(!values.email || !values.username || !values.password){
             toast.error('Vui lòng nhập đủ thông tin !', toastOption);
             return
         }
         try {
-            await axios.post(`${BASE_URL}/auth/register`, values)
+            await request.post(`/auth/register`, values)
             toast.success('Đăng ký thành công !', toastOption);
             navigate("/login")
         } catch (error) {

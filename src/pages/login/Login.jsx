@@ -1,35 +1,38 @@
 import './login.scss'
 import { Link } from 'react-router-dom';
-import { Button, Card, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import { BASE_URL } from '../../requestMethod';
 import { SUMMER_SHOP } from '../../constants';
 import { loginFailure, loginSuccess } from '../../redux/userRedux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
+import { useEffect } from 'react';
+import { spinningLoaderRef } from '../Loading/hook';
+import { request } from '../../requestMethod';
 
 export default function Login() {
     const dispatch = useDispatch()
-    
+    useEffect(() => {
+        spinningLoaderRef.current?.stop()
+    },[])
     
     const onFinish = async (values) => {
-        console.log('check values', values);
     
         if (!values.email || !values.password) {
             toast.error('Vui lòng nhập đủ thông tin !', toastOption);
             return
         }
         try {
-            const res = await axios.post(`${BASE_URL}/auth/login`, values)
-            console.log(res);
+            const res = await request.post(`/auth/login`, values)
             localStorage.setItem(SUMMER_SHOP, res.data.accessToken)
 
+            console.log('resres', res);
             toast.success(res.data.message, toastOption);
             dispatch(loginSuccess(res.data.user))
         } catch (error) {
-            toast.error(error.response.data.message, toastOption);
+            console.log('err', error);
+            toast.error(error.message, toastOption);
             dispatch(loginFailure())
         }
     }

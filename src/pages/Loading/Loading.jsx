@@ -1,15 +1,37 @@
-import { Flex, Spin } from 'antd'
-import React from 'react'
-import { LoadingOutlined } from '@ant-design/icons';
-const Loading = () => {
+import {Spin } from 'antd'
+import React, { forwardRef, useEffect, useState } from 'react'
+import MySpin from './MySpin'
+
+const Loading = forwardRef((props, ref) => {
+    const [spinning, setSpinning] = useState(false)
+    const startSpinning = () => {
+        setSpinning(true)
+      }
+  
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const stopSpinning = () => {
+        setSpinning(false)
+      }
+
+      console.log('spinning', spinning);
+  
+      useEffect(() => {
+        console.log('ref', ref, spinning);
+        // Expose the functions through the ref
+        if (ref && typeof ref === 'object') {
+          (ref).current = {
+            start: startSpinning,
+            stop: stopSpinning,
+          }
+        }
+      }, [startSpinning, stopSpinning, ref, spinning])
     return (
-        <div style={{ position: 'fixed', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'white', zIndex: 100 }}>
-            <div className="content" style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
-                <Spin size='large' indicator={<LoadingOutlined style={{ fontSize: 42 }} spin />} />
-            </div>
-            
-        </div>
+        <>
+            {spinning && <MySpin />}
+            {props.children}
+        </>
+
     )
-}
+})
 
 export default Loading
