@@ -6,26 +6,23 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import 'react-toastify/dist/ReactToastify.css';
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL, IMAGE_DEFAULT, IMAGE_LINK } from "../../requestMethod";
-import axios from "axios";
+import {  IMAGE_DEFAULT, IMAGE_LINK, request } from "../../requestMethod";
 import { toast } from "react-toastify";
 import { toastOption } from "../../constants";
 import HeadlessTippy from '@tippyjs/react/headless';
 import useDebounce from '../../hooks/useDebounce'
 import RotateRightOutlinedIcon from '@mui/icons-material/RotateRightOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
-import { Button, ConfigProvider, Flex, Popover, Segmented } from 'antd';
+import { Button,  Flex, Popover } from 'antd';
 import { handleLogout } from "../../utils/utils";
 import { AppContext } from "../../context/AppContext";
 
 export default function NavBar() {
-    const { productFilter, setProductFilter } = useContext(AppContext)
+    const { productFilter, setProductFilter,productCart } = useContext(AppContext)
     const currentUser = useSelector((state) => state.user.currentUser);
-    const cart = useSelector((state) => state.cart)
-    //console.log({cart});
     const [openOption, setOpenOption] = useState(false)
     const [category, setCategory] = useState("All category");
     const handleClickOption = (category) => {
@@ -48,7 +45,7 @@ export default function NavBar() {
 
         const fetchApi = async () => {
             setLoading(true);
-            const result = await axios.get(`${BASE_URL}/product/search?name=` + name)
+            const result = await request.get(`/product/search?name=` + name)
             console.log(result.data);
             setResultSearch(result.data.products)
             setLoading(false);
@@ -65,7 +62,7 @@ export default function NavBar() {
     useEffect(() => {
         const getCategory = async () => {
             try {
-                const res = await axios.get(`${BASE_URL}/category`)
+                const res = await request.get(`/category`)
                 setListCategory(res.data.category)
             } catch (error) {
                 console.log(error);
@@ -153,9 +150,9 @@ export default function NavBar() {
                     
                     <Link to={"/cart"} className="icon-cart">
                         <ShoppingCartOutlinedIcon />
-                        {cart.count > 0 && (
+                        {productCart.length > 0 && (
                             <div className="quantity-cart">
-                                {cart.count}
+                                {productCart.length}
                             </div>
                         )}
 
@@ -166,7 +163,7 @@ export default function NavBar() {
                     {currentUser ? (
                         <Popover placement="rightTop" content={(
                             <div style={{ zIndex: 100000, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                                <Button type="primary" block>
+                                <Button type="primary">
                                     <Link to={"/user/profile"} >
                                         iProfile
                                     </Link>
@@ -179,7 +176,7 @@ export default function NavBar() {
                                         </Link>
                                     </Button>)
                                 }
-                                <Button block onClick={logout}>
+                                <Button onClick={logout}>
                                     Đăng xuất
                                 </Button>
                                 
