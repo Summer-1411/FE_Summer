@@ -52,23 +52,23 @@ export default function Slider() {
 
 
             if(value === 1){
-                sliderFirst.classList.replace('index0', 'index7')
-                sliderSecond.classList.replace('index1', 'index0')
-                sliderThirst.classList.replace('index2', 'index1')
-                sliderFouth.classList.replace('index3', 'index2')
-                sliderFive.classList.replace('index4', 'index3')
-                sliderSix.classList.replace('index5', 'index4')
-                sliderSeven.classList.replace('index6', 'index5')
-                sliderEight.classList.replace('index7', 'index6')
+                sliderFirst && sliderFirst.classList.replace('index0', 'index7')
+                sliderSecond && sliderSecond.classList.replace('index1', 'index0')
+                sliderThirst && sliderThirst.classList.replace('index2', 'index1')
+                sliderFouth && sliderFouth.classList.replace('index3', 'index2')
+                sliderFive && sliderFive.classList.replace('index4', 'index3')
+                sliderSix && sliderSix.classList.replace('index5', 'index4')
+                sliderSeven && sliderSeven.classList.replace('index6', 'index5')
+                sliderEight && sliderEight.classList.replace('index7', 'index6')
             }else if(value === -1){
-                sliderFirst.classList.replace('index0', 'index1')
-                sliderSecond.classList.replace('index1', 'index2')
-                sliderThirst.classList.replace('index2', 'index3')
-                sliderFouth.classList.replace('index3', 'index4')
-                sliderFive.classList.replace('index4', 'index5')
-                sliderSix.classList.replace('index5', 'index6')
-                sliderSeven.classList.replace('index6', 'index7')
-                sliderEight.classList.replace('index7', 'index0')
+                sliderFirst && sliderFirst.classList.replace('index0', 'index1')
+                sliderSecond && sliderSecond.classList.replace('index1', 'index2')
+                sliderThirst && sliderThirst.classList.replace('index2', 'index3')
+                sliderFouth && sliderFouth.classList.replace('index3', 'index4')
+                sliderFive && sliderFive.classList.replace('index4', 'index5')
+                sliderSix && sliderSix.classList.replace('index5', 'index6')
+                sliderSeven && sliderSeven.classList.replace('index6', 'index7')
+                sliderEight && sliderEight.classList.replace('index7', 'index0')
             }
 
             

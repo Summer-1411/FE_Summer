@@ -1,19 +1,18 @@
 import './productDetail.scss'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import StarIcon from '@mui/icons-material/Star';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { BASE_URL, IMAGE_LINK, request } from '../../requestMethod';
+import {  IMAGE_LINK, request } from '../../requestMethod';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../redux/cartRedux';
-import { SUMMER_SHOP } from '../../constants';
 import { numberWithCommas } from '../../utils/formatMoney';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
 import { Button, Modal } from 'antd';
+import {  useInsertUpdateCart } from '../../services/products';
 
 export default function ProductDetail() {
     const navigate = useNavigate()
@@ -36,6 +35,7 @@ export default function ProductDetail() {
     const [quantity, setQuantity] = useState(1)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const serviceInsertUpdateCart = useInsertUpdateCart()
     const showModal = () => {
       setIsModalOpen(true);
     };
@@ -172,30 +172,12 @@ export default function ProductDetail() {
                 price: detailProduct.price
             }
             ))
-            toast.success('Đã thêm sản phẩm vào giỏ hàng', toastOption);
-            let checkExistIndex = cart.products.findIndex(
-                (product) => product.id_filter === detailProduct.id
-            );
-            if (checkExistIndex >= 0) {
-                await request.put(`${BASE_URL}/cart`, {
-                    id_filter: detailProduct.id,
-                    quantity: cart.products[checkExistIndex].quantity + quantity
-                },
-                    {
-                        headers: { Authorization: `Bearer ${localStorage[SUMMER_SHOP]}` }
-                    }
-                )
-            } else {
-
-                await request.post(`${BASE_URL}/cart`, {
-                    filter: detailProduct.id,
-                    quantity: quantity
-                },
-                    {
-                        headers: { Authorization: `Bearer ${localStorage[SUMMER_SHOP]}` }
-                    }
-                )
-            }
+            // toast.success('Đã thêm sản phẩm vào giỏ hàng', toastOption);
+            serviceInsertUpdateCart.mutateAsync({
+                filter: detailProduct.id,
+                quantity: quantity
+            })
+            
         }
     }
     const handleBuyNow = () => {
