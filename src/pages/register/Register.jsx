@@ -51,7 +51,16 @@ export default function Register() {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={[{ required: true, message: 'Bạn chưa nhập email !' }]}
+                        rules={[
+                            {
+                                type: 'email',
+                                message: 'Định dạng email không hợp lệ !',
+                            },
+                            {
+                                required: true,
+                                message: 'Bạn chưa nhập email!',
+                            },
+                        ]}
                     >
                         <Input />
                     </Form.Item>

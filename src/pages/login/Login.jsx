@@ -15,10 +15,10 @@ export default function Login() {
     const dispatch = useDispatch()
     useEffect(() => {
         spinningLoaderRef.current?.stop()
-    },[])
-    
+    }, [])
+
     const onFinish = async (values) => {
-    
+
         if (!values.email || !values.password) {
             toast.error('Vui lòng nhập đủ thông tin !', toastOption);
             return
@@ -57,7 +57,16 @@ export default function Login() {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={[{ required: true, message: 'Bạn chưa nhập email!' }]}
+                        rules={[
+                            {
+                                type: 'email',
+                                message: 'Định dạng email không hợp lệ !',
+                            },
+                            {
+                                required: true,
+                                message: 'Bạn chưa nhập email!',
+                            },
+                        ]}
                     >
                         <Input />
                     </Form.Item>
@@ -70,7 +79,7 @@ export default function Login() {
                         <Input.Password />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" style={{width: '100%'}}>
+                        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
                             Đăng nhập
                         </Button>
                         <div className="outer-link">
