@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
 import { request } from '../../requestMethod';
 import { useNavigate } from 'react-router-dom';
-import { clearCart } from '../../redux/cartRedux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
@@ -15,7 +14,6 @@ import { numberWithCommas } from '../../utils/formatMoney';
 export default function Order() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const cart = useSelector((state) => state.cart)
     const [inforAddressShip, setInforAddressShip] = useState({
         listProvince: [],
         listDistrict: [],
@@ -194,7 +192,6 @@ export default function Order() {
                         products: [...cart.products]
                     })
                 toast.success(res.data.message, toastOption);
-                dispatch(clearCart());
                 const clearCartCurrentUser = await request.delete(`/cart/clear`)
                 console.log({ res, clearCartCurrentUser });
 
@@ -337,9 +334,9 @@ export default function Order() {
                 </div>
             </div>
             <div className="order-product">
-                {cart.products.map(pro => (
+                {/* {cart.products.map(pro => (
                     <ProductCheckout product={pro} key={uuidv4()} />
-                ))}
+                ))} */}
             </div>
             <div className="checkout-product">
                 <div className="checkout-product-right">
@@ -348,7 +345,7 @@ export default function Order() {
                             Thành tiền :
                         </div>
                         <div className="price-order">
-                            {numberWithCommas(cart.total)}
+                            {/* {numberWithCommas(cart.total)} */}
                         </div>
                     </div>
                 </div>

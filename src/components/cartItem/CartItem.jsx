@@ -2,9 +2,7 @@ import { useDispatch } from 'react-redux';
 import './cartItem.scss'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { removeProduct } from '../../redux/cartRedux';
-import axios from 'axios';
-import { BASE_URL, IMAGE_LINK } from '../../requestMethod';
-import { SUMMER_SHOP } from '../../constants';
+import {  IMAGE_LINK } from '../../requestMethod';
 import { numberWithCommas } from '../../utils/formatMoney';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,10 +13,7 @@ export default function CartItem({product}) {
     const handleDeletetItem = async (product) => {
         try {
             dispatch(removeProduct({id_filter: product.id_filter, price: product.price, quantity: product.quantity}))
-            const res = await axios.delete(`${BASE_URL}/cart/delete/${product.id_filter}`,{
-                    headers: { Authorization: `Bearer ${localStorage[SUMMER_SHOP]}` }
-                }
-            )
+            const res = await request.delete(`/cart/delete/${product.id_filter}`)
             toast.success(res.data.message, toastOption);
         } catch (error) {
             toast.error(error.response.data.message, toastOption);

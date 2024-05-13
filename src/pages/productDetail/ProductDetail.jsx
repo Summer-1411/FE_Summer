@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {  IMAGE_LINK, request } from '../../requestMethod';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from '../../redux/cartRedux';
 import { numberWithCommas } from '../../utils/formatMoney';
 
 import { toast } from 'react-toastify';
@@ -16,7 +15,6 @@ import {  useInsertUpdateCart } from '../../services/products';
 
 export default function ProductDetail() {
     const navigate = useNavigate()
-    const cart = useSelector((state) => state.cart)
     const location = useLocation()
     const dispatch = useDispatch()
     const [countSold, setCountSold] = useState(0);
@@ -162,17 +160,6 @@ export default function ProductDetail() {
             return;
         }
         if (size && color && quantity > 0) {
-            dispatch(addProduct({
-                id_filter: detailProduct.id,
-                name: information.product.name,
-                img: detailProduct.img,
-                size,
-                color,
-                quantity,
-                price: detailProduct.price
-            }
-            ))
-            // toast.success('Đã thêm sản phẩm vào giỏ hàng', toastOption);
             serviceInsertUpdateCart.mutateAsync({
                 filter: detailProduct.id,
                 quantity: quantity
