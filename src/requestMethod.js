@@ -16,21 +16,6 @@ export {
     IMAGE_LINK,
     IMAGE_DEFAULT
 }
-// console.log({TOKEN});
-// console.log(localStorage.getItem(SUMMER_SHOP));
-// console.log("123");
-// const clientRequest = axios.create({
-//     baseURL: BASE_URL,
-// })
-
-// // const userRequest = axios.create({
-// //     baseURL: BASE_URL,
-// //     headers: {token:`Bearer ${TOKEN}`}
-// // })
-
-// export {
-//     clientRequest
-// }
 
 
 export const request = axios.create({
@@ -66,8 +51,3 @@ request.interceptors.response.use(
         return Promise.reject(error?.response?.data)
       }
 )
-// export const userRequest = axios.create({
-//     baseURL: BASE_URL,
-//     headers: {token: `Bearer ${TOKEN}`}
-// })
-

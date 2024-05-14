@@ -4,10 +4,11 @@ import { request } from '../../requestMethod';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal,Statistic } from 'antd';
 import { useEffect, useState } from 'react';
-import { spinningLoaderRef } from '../Loading/hook';
 import { useForm } from 'antd/es/form/Form';
+
+
 export default function Register() {
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,34 +22,44 @@ export default function Register() {
     
 
     const handleOk = async (values) => {
-        console.log('form', form.getFieldValue());
-        console.log('check',await form.validateFields())
-        // setIsModalOpen(false);
+        const valueRegister = formRegister.getFieldValue()
+        const value = {...values, ...valueRegister}
+        try {
+            await request.post(`/auth/register_otp`, value)
+            handleCancel()
+            toast.success('Bạn đã đăng ký thành công !', toastOption);
+            navigate("/login")
+        } catch (error) {
+            toast.error(error.message, toastOption);
+            console.log("ERROR REGISTER: ", error);
+        }
     }; 
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    useEffect(() => {
-        spinningLoaderRef.current?.stop()
-    }, [])
+
 
     const onFinish = async (values) => {
-        console.log('values register', values);
         showModal()
-        // if (!values.email || !values.username || !values.password) {
-        //     toast.error('Vui lòng nhập đủ thông tin !', toastOption);
-        //     return
-        // }
-        // try {
-        //     await request.post(`/auth/register`, values)
-        //     toast.success('Đăng ký thành công !', toastOption);
-        //     navigate("/login")
-        // } catch (error) {
-        //     toast.error(error.response.data.message, toastOption);
-        //     console.log("ERROR REGISTER: ", error);
-        // }
+        handleSendOTP()
+        
     }
+    const handleSendOTP = async () => {
+        const values = formRegister.getFieldValue()
+        if (!values.email || !values.username || !values.password) {
+            toast.error('Vui lòng nhập đủ thông tin !', toastOption);
+            return
+        }
+        try {
+            await request.post(`/auth/send_otp`, values)
+        } catch (error) {
+            toast.error(error.message, toastOption);
+            console.log("ERROR OTP: ", error);
+        }
+    }
+
+
     return (
         <div className="register">
             <div className="register-container">
@@ -68,19 +79,24 @@ export default function Register() {
                     <Form
                     form={form}
                         name="formOTP"
+                        layout={'vertical'}
                         onFinish={handleOk}
                     >
                         <Form.Item
-                            hasFeedback
+                            
                             name="otp"
                             rules={[{ required: true, message: 'Không được trống mã OTP !' }]}
-                            validateStatus="success"
+                            label="Mã OTP"
                             style={{textAlign: 'center'}}
                         >
-                            <Input.OTP  />
+                            <Input style={{ width: '100%' }} />
                         </Form.Item>
+                        
 
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                            <Button  onClick={handleSendOTP}>
+                                Gửi lại mã OTP
+                            </Button>
                             <Button key="back" onClick={handleCancel}>
                                 Bỏ qua
                             </Button>
@@ -111,10 +127,10 @@ export default function Register() {
                         label="Email"
                         name="email"
                         rules={[
-                            // {
-                            //     type: 'email',
-                            //     message: 'Định dạng email không hợp lệ !',
-                            // },
+                            {
+                                type: 'email',
+                                message: 'Định dạng email không hợp lệ !',
+                            },
                             {
                                 required: true,
                                 message: 'Bạn chưa nhập email!',
@@ -132,7 +148,7 @@ export default function Register() {
                         <Input.Password />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType='submit' onClick={onFinish} style={{ width: '100%' }}>
+                        <Button type="primary" htmlType='submit' style={{ width: '100%' }}>
                             Đăng ký
                         </Button>
                         <div className="outer-link">
