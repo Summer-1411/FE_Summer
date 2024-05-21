@@ -216,15 +216,6 @@ export default function ProductDetail() {
                     <Button key="submit" type="primary" onClick={handleOk}>
                         Đăng nhập
                     </Button>,
-                    // <Button
-                    //   key="link"
-                    //   href="https://google.com"
-                    //   type="primary"
-                    //   loading={loading}
-                    //   onClick={handleOk}
-                    // >
-                    //   Search on Google
-                    // </Button>,
                 ]}>
 
             </Modal>

@@ -53,12 +53,30 @@ export function useDeleteProductInCart() {
     const queryClient = useQueryClient()
     return useMutation(
         'DLETE_PRODUCT_IN_CART',
-        (idFilter) => {
+        () => {
             return request.delete(`/cart/delete/${idFilter}`)
         },
         {
             onSuccess: async (data, variables, context) => {
                 toast.success(data?.data?.message, toastOption);
+                await queryClient.invalidateQueries('list-cart')
+            },
+            onError: (error, variables, context) => {
+                toast.error(error?.message, toastOption);
+            },
+        }
+    )
+}
+
+export function useClearCart() {
+    const queryClient = useQueryClient()
+    return useMutation(
+        'CLEAR_CART',
+        () => {
+            return request.delete(`/cart/clear`)
+        },
+        {
+            onSuccess: async (data, variables, context) => {
                 await queryClient.invalidateQueries('list-cart')
             },
             onError: (error, variables, context) => {

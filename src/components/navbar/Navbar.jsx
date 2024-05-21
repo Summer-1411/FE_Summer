@@ -5,38 +5,34 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import 'react-toastify/dist/ReactToastify.css';
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {  IMAGE_DEFAULT, IMAGE_LINK, request } from "../../requestMethod";
+import { IMAGE_DEFAULT, IMAGE_LINK, request } from "../../requestMethod";
 import { toast } from "react-toastify";
 import { toastOption } from "../../constants";
 import HeadlessTippy from '@tippyjs/react/headless';
 import useDebounce from '../../hooks/useDebounce'
 import RotateRightOutlinedIcon from '@mui/icons-material/RotateRightOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
-import { Button,  Flex, Popover } from 'antd';
+import { Button, Flex, Popover, Select } from 'antd';
 import { handleLogout } from "../../utils/utils";
 import { AppContext } from "../../context/AppContext";
+import { useGetCategory } from "../../services/category";
 
 export default function NavBar() {
-    const { productFilter, setProductFilter,productCart } = useContext(AppContext)
+    const { productCart,setFilterProduct } = useContext(AppContext)
     const currentUser = useSelector((state) => state.user.currentUser);
-    const [openOption, setOpenOption] = useState(false)
-    const [category, setCategory] = useState("All category");
-    const handleClickOption = (category) => {
-        setCategory(category.name);
-        setProductFilter(prev => ({ category: category.id, producer: null }))
-        setOpenOption(false);
-    }
-    const [listCategory, setListCategory] = useState([])
+   
     const [name, setName] = useState("")
     const [resultSearch, setResultSearch] = useState([])
     const [isShow, setIsShow] = useState(true)
     const [loading, setLoading] = useState(false);
     let debounced = useDebounce(name, 500);
     const inputRef = useRef()
+
+    const { listCategory } = useGetCategory()
+
     useEffect(() => {
         if (!debounced.trim()) {
             setResultSearch([]);
@@ -59,17 +55,20 @@ export default function NavBar() {
             setName(searchValue);
         }
     };
-    useEffect(() => {
-        const getCategory = async () => {
-            try {
-                const res = await request.get(`/category`)
-                setListCategory(res.data.category)
-            } catch (error) {
-                console.log(error);
+
+
+    const handleChangeSelect = (value) => {
+        setFilterProduct(prev => {
+            return {
+                ...prev,
+                sample: {
+                    ...prev.sample,
+                    idCategory: value,
+                }
             }
-        }
-        getCategory()
-    }, [])
+        })
+        
+      };
     const handleHideResult = () => {
         setIsShow(false);
     };
@@ -113,26 +112,25 @@ export default function NavBar() {
                         onClickOutside={handleHideResult}
                     >
                         <div className="search">
-                            <div className="selection">
-                                <div onClick={() => { openOption ? setOpenOption(false) : setOpenOption(true) }} className="selection-title">
-                                    {productFilter.category ? category : "Tất cả"} <KeyboardArrowDownIcon className={openOption ? "icon-category open-option" : "icon-category"} />
-                                </div>
-                                <div className={openOption ? "option open" : "option"}>
-                                    <div className="option-item" onClick={() => handleClickOption({ name: "All Category", id: null })}>
-                                        Tất cả
-                                    </div>
-                                    {listCategory.map((category) => (
-                                        <div key={category.id} className="option-item" onClick={() => handleClickOption(category)}>
-                                            {category.name}
-                                        </div>
-                                    ))}
-                                </div>
+
+                            <div className="div">
+                                <Select
+                                    defaultValue=""
+                                    style={{ width: 140 }}
+                                    size="large"
+                                    bordered={false}
+                                    onChange={handleChangeSelect}
+                                    options={listCategory}
+
+                                />
+                                
                             </div>
 
                             <SearchOutlinedIcon />
                             <input
                                 placeholder="Search...."
                                 value={name}
+                                className="search_input"
                                 onChange={handleChange}
                                 onFocus={() => setIsShow(true)}
                                 ref={inputRef}
@@ -147,7 +145,7 @@ export default function NavBar() {
                     </HeadlessTippy>
                 </div>
                 <div className="right">
-                    
+
                     <Link to={"/cart"} className="icon-cart">
                         <ShoppingCartOutlinedIcon />
                         {productCart.length > 0 && (
@@ -179,7 +177,7 @@ export default function NavBar() {
                                 <Button onClick={logout}>
                                     Đăng xuất
                                 </Button>
-                                
+
                             </div>)}
 
                             className="user"

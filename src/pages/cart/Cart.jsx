@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './cart.scss'
 import { numberWithCommas } from '../../utils/formatMoney';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -12,6 +12,7 @@ import { AppContext } from '../../context/AppContext';
 import { useDeleteProductInCart } from '../../services/products';
 
 export default function Cart() {
+    const navigate = useNavigate()
     const { productCart } = useContext(AppContext)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -40,6 +41,14 @@ export default function Cart() {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+
+    const handleClickOrder = () => {
+        if(productCart.length > 0){
+            navigate('/order')
+        }else {
+            toast.error('Bạn chưa có sản phẩm trong giỏ hàng !', toastOption);
+        }
+    }
     const columns = [
         {
             title: 'Ảnh sản phẩm',
@@ -117,12 +126,10 @@ export default function Cart() {
                 columns={columns}
                 rowKey={'id'}
                 dataSource={productCart ?? []}
-                footer={() => <FotterTable data={productCart}/>}
+                footer={() => <FotterTable data={productCart} />}
             />
-            <Button type='primary' size='large' style={{ width: '100%' }}>
-                <Link to={"/order"}>
-                    Đặt hàng
-                </Link>
+            <Button type='primary' size='large' style={{ width: '100%' }} onClick={handleClickOrder}>
+                Đặt hàng
             </Button>
             <Modal
                 title="Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?" open={isModalOpen} onOk={handleOk}
@@ -147,7 +154,7 @@ export default function Cart() {
 const FotterTable = ({ data }) => {
     const sumPrice = useMemo(() => data.reduce(
         (accumulator, item) => {
-            console.log({item, accumulator});
+            console.log({ item, accumulator });
             return item.price * item.quantity + accumulator
         },
         0,
