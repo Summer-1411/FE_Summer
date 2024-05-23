@@ -3,8 +3,11 @@ import './orderItem.scss'
 import { IMAGE_LINK, request } from '../../requestMethod';
 import { numberWithCommas } from '../../utils/formatMoney';
 import { formatDate } from '../../utils/formatDate';
-export default function OrderItem({ order }) {
+import { Button } from 'antd';
+import { useFeedback } from '../../pages/completedOrder/FeedbackContext';
+export default function OrderItem({ order, complete }) {
     const [products, setProducts] = useState([])
+    const { open, setOpen, setProduct } = useFeedback()
     useEffect(() => {
         const getProductByBill = async () => {
             const res = await request.get(`/order_detail/${order.id}`)
@@ -14,6 +17,13 @@ export default function OrderItem({ order }) {
         getProductByBill();
     }, [order.id])
 
+    const handleOpenFeedback = (pro) => {
+        console.log('handleOpenFeedback', open);
+        setOpen(true)
+        setProduct(pro)
+    }
+
+    console.log('products', products);
     return (
         <div className='orderItem-wrapper'>
             {products.map(pro => (
@@ -33,6 +43,11 @@ export default function OrderItem({ order }) {
                     <div className="orderItem-content-right">
                         <div className="price-product">
                             {numberWithCommas(pro.price)}
+                        </div>
+                        <div style={{ textAlign: 'right', marginTop: 20 }}>
+                            {complete && <Button type="primary" danger onClick={() => handleOpenFeedback(pro)}>
+                                Đánh giá sản phẩm
+                            </Button>}
                         </div>
                     </div>
                 </div>
@@ -63,8 +78,13 @@ export default function OrderItem({ order }) {
                             {numberWithCommas(order.total_amount)}
                         </div>
                     </div>
+
                 </div>
+
             </div>
+
+
+
         </div>
     )
 }

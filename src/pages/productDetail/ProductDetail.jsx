@@ -10,8 +10,9 @@ import { numberWithCommas } from '../../utils/formatMoney';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
-import { Button, Modal } from 'antd';
+import { Button, Divider, Modal } from 'antd';
 import {  useInsertUpdateCart } from '../../services/products';
+import Review from '../../components/Review/Review';
 
 export default function ProductDetail() {
     const navigate = useNavigate()
@@ -359,12 +360,16 @@ export default function ProductDetail() {
                                 </div>
                             </div>
                         </div>
+                        <Divider orientation="center">Chi tiết sản phẩm</Divider>
                         <p className="infor-productDetail">
                             {information.product.information}
                         </p>
+                        <Divider orientation="center">Đánh giá sản phẩm</Divider>
+                        <Review />
                     </div>
                 )
             }
+            
         </>
     )
 }
