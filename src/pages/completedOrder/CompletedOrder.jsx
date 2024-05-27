@@ -16,8 +16,7 @@ export default function CompletedOrder() {
         }
         getOrderItem();
     }, [])
-
-    console.log('open',orderItem);
+    
 
     return (
         <FeedbackProvider>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
-import { Avatar, List, Rate, Space } from 'antd';
+import { Avatar, Image, List, Rate, Space } from 'antd';
+import { IMAGE_LINK } from '../../requestMethod';
 
 const data = Array.from({ length: 23 }).map((_, i) => ({
   // href: 'https://ant.design',
@@ -19,7 +20,7 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
-const Review = () => (
+const Review = ({feedbackListProduct}) => (
   <List
     itemLayout="vertical"
     size="large"
@@ -29,31 +30,31 @@ const Review = () => (
       },
       pageSize: 3,
     }}
-    dataSource={data}
+    dataSource={feedbackListProduct}
     
     renderItem={(item) => (
       <List.Item
-        key={item.title}
+        key={item.id}
         
         extra={
-          <img
-            width={272}
-            alt="logo"
-            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-          />
+          item.img ? <Image
+          width={120}
+          src={`${IMAGE_LINK}/${item.img}`}
+        /> : ''
+          
         }
       >
         <List.Item.Meta
-          avatar={<Avatar src={item.avatar} />}
-          title={<a href={item.href}>{item.title}</a>}
-          description={item.description}
+          avatar={<Avatar src={`${IMAGE_LINK}/${item.avatar}`} />}
+          title={<p>{item.email}</p>}
+          description={item.createAt}
         />
         <div>
 
-        <Rate disabled  value={5} />
+        <Rate disabled  value={item.rate} />
         </div>
         <div>
-          {item.content}
+          {item.description}
         </div>
       </List.Item>
     )}

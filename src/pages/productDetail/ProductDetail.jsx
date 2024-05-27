@@ -1,18 +1,19 @@
 import './productDetail.scss'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import StarIcon from '@mui/icons-material/Star';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {  IMAGE_LINK, request } from '../../requestMethod';
+import { IMAGE_LINK, request } from '../../requestMethod';
 import { useDispatch, useSelector } from 'react-redux';
 import { numberWithCommas } from '../../utils/formatMoney';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
-import { Button, Divider, Modal } from 'antd';
-import {  useInsertUpdateCart } from '../../services/products';
+import { Button, Divider, Modal, Rate } from 'antd';
+import { useInsertUpdateCart } from '../../services/products';
 import Review from '../../components/Review/Review';
+import { useGetFeedbackProduct } from '../../services/feedback';
 
 export default function ProductDetail() {
     const navigate = useNavigate()
@@ -34,30 +35,36 @@ export default function ProductDetail() {
     const [quantity, setQuantity] = useState(1)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+    const { feedbackListProduct } = useGetFeedbackProduct(id)
     const serviceInsertUpdateCart = useInsertUpdateCart()
     const showModal = () => {
-      setIsModalOpen(true);
+        setIsModalOpen(true);
     };
-  
+
+    const caculatorRateValue = useMemo(() => {
+        const total = feedbackListProduct.reduce((accumulator, currentValue) => accumulator + currentValue.rate,
+            0,)
+        return feedbackListProduct.length > 0 ? total/feedbackListProduct.length : 5
+    }, [feedbackListProduct.length])
+
+
+
     const handleOk = () => {
         navigate("/login")
-            // toast.info('Bạn vui lòng đăng nhập để thực hiện chức năng này', toastOption);
-      setIsModalOpen(false);
+        setIsModalOpen(false);
     };
-  
+
     const handleCancel = () => {
-      setIsModalOpen(false);
+        setIsModalOpen(false);
     };
-    //console.log(quantity, typeof quantity);
 
     useEffect(() => {
         const getProductDetail = async () => {
             try {
                 const res = await request.get(`/product/detail/${id}`)
                 const result = await request.get(`/stat/sold/${id}`)
-                //console.log(result.data);
                 setCountSold(result.data.total_quantity)
-                //console.log(res.data);
                 setInformation({
                     ...information,
                     product: res.data.product,
@@ -75,12 +82,10 @@ export default function ProductDetail() {
         getProductDetail()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id])
-    //console.log(information);
     useEffect(() => {
         const getPriceByOption = async () => {
             try {
                 const res = await request.get(`/filter/details?idpro=${id}&size=${size}&color=${color}`)
-                //console.log(res.data);
                 setDetailProduct(res.data.detail)
             } catch (error) {
 
@@ -88,7 +93,6 @@ export default function ProductDetail() {
         }
         color && size && getPriceByOption()
     }, [color, size, id])
-    // console.log({detailProduct});
     useEffect(() => {
         const handleChangeColor = async () => {
             try {
@@ -121,7 +125,6 @@ export default function ProductDetail() {
         size && handleChangeSize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, size])
-    //console.log(quantity);
     const handleChangeQuantityOrder = (action) => {
         if (action === "increase") {
             if (quantity < detailProduct.quantity) {
@@ -133,7 +136,6 @@ export default function ProductDetail() {
             }
         }
     }
-    //console.log("information:", information);
     useEffect(() => {
         if (detailProduct.quantity < 1) {
             setQuantity(0)
@@ -142,8 +144,7 @@ export default function ProductDetail() {
         }
     }, [detailProduct.quantity])
 
-    //console.log({ detailProduct });
-    //console.log("client",{filter: detailProduct.id, quantity: quantity});
+
     const handleAddToCart = async () => {
         if (!currentUser) {
             showModal()
@@ -165,12 +166,12 @@ export default function ProductDetail() {
                 filter: detailProduct.id,
                 quantity: quantity
             })
-            
+
         }
     }
     const handleBuyNow = () => {
         if (!currentUser) {
-            
+
             showModal()
             return;
         }
@@ -242,19 +243,15 @@ export default function ProductDetail() {
                                     </div>
                                     <div className="info-product">
                                         <div className="star">
-                                            <div className="star-number">5.0</div>
+                                            <div className="star-number">{caculatorRateValue}</div>
                                             <div className="list-star">
-                                                <StarIcon className='icon-star' />
-                                                <StarIcon className='icon-star' />
-                                                <StarIcon className='icon-star' />
-                                                <StarIcon className='icon-star' />
-                                                <StarIcon className='icon-star' />
+                                                <Rate allowHalf disabled value={caculatorRateValue} />
 
                                             </div>
                                         </div>
                                         <div className="info-item">
                                             <div className="info-item-number">
-                                                318
+                                                {feedbackListProduct.length}
                                             </div>
                                             <div className="info-item-title">
                                                 Đánh giá
@@ -361,15 +358,15 @@ export default function ProductDetail() {
                             </div>
                         </div>
                         <Divider orientation="center">Chi tiết sản phẩm</Divider>
-                        <p className="infor-productDetail">
+                        <p style={{ padding: 20 }}>
                             {information.product.information}
                         </p>
                         <Divider orientation="center">Đánh giá sản phẩm</Divider>
-                        <Review />
+                        <Review feedbackListProduct={feedbackListProduct} />
                     </div>
                 )
             }
-            
+
         </>
     )
 }

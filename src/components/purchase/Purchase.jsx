@@ -1,22 +1,42 @@
-import { Link, Outlet } from 'react-router-dom'
 import './purchase.scss'
-import { useState } from 'react'
-import { routesPurchasePage } from '../../constants'
-export default function Purchase() {
+import { Tabs } from 'antd';
+import PendingOrder from '../../pages/pendingOrder/PendingOrder';
+import ToShipOrder from '../../pages/toShipOrder/ToShipOrder';
+import CompletedOrder from '../../pages/completedOrder/CompletedOrder';
+import CancelledOrder from '../../pages/cancelledOrder/CancelledOrder';
 
-    const [currentRouteId, setCurrentRouteId] = useState(1);
+
+
+export default function Purchase() {
+    const dataOrderStatus = [
+        {
+            key: '1',
+            children: <PendingOrder />,
+            label: "Chờ xác nhận"
+        },
+        {
+            key: '2',
+            children: <ToShipOrder />,
+            label: "Đang giao"
+        },
+        {
+            key: '3',
+            children: <CompletedOrder />,
+            label: "Hoàn thành"
+        },
+        {
+            key: '4',
+            children: <CancelledOrder />,
+            label: "Đã huỷ"
+        },
+    ]
     return (
-        <div className='purchase-wrapper'>
-            <div className="purchase-heading">
-                {routesPurchasePage.map((route) => (
-                    <Link to={route.path} key={route.id} className={route.id === currentRouteId ? "purchase-heading-item active" : "purchase-heading-item"} onClick={() => setCurrentRouteId(route.id)}>
-                        {route.title}
-                    </Link>
-                ))}
-            </div>
-            <div className="purchase-content">
-                <Outlet />
-            </div>
-        </div>
+      
+        <Tabs
+            defaultActiveKey="1"
+            centered
+            items={dataOrderStatus}
+        />
+       
     )
 }

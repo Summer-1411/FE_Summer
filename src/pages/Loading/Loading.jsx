@@ -13,10 +13,8 @@ const Loading = forwardRef((props, ref) => {
         setSpinning(false)
       }
 
-      console.log('spinning', spinning);
   
       useEffect(() => {
-        console.log('ref', ref, spinning);
         // Expose the functions through the ref
         if (ref && typeof ref === 'object') {
           (ref).current = {

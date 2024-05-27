@@ -13,7 +13,6 @@ import { toastOption } from '../../constants';
 export default function Profile() {
     const dispatch = useDispatch()
     const currentUser = useSelector((state) => state.user.currentUser);
-    console.log(currentUser);
     const [gender, setGender] = useState(currentUser.gender)
     const [name, setName] = useState(currentUser.username)
     const [date, setDate] = useState("");

@@ -163,7 +163,7 @@ export default function NavBar() {
                             <div style={{ zIndex: 100000, display: 'flex', flexDirection: 'column', gap: 10 }}>
                                 <Button type="primary">
                                     <Link to={"/user/profile"} >
-                                        iProfile
+                                        Trang cá nhân
                                     </Link>
 
                                 </Button>

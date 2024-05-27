@@ -11,7 +11,6 @@ export function useGetProduct(params) {
         },
 
     )
-    console.log('res', response);
     return {
         productList: response?.data?.data ?? []
     }
@@ -53,7 +52,7 @@ export function useDeleteProductInCart() {
     const queryClient = useQueryClient()
     return useMutation(
         'DLETE_PRODUCT_IN_CART',
-        () => {
+        (idFilter) => {
             return request.delete(`/cart/delete/${idFilter}`)
         },
         {

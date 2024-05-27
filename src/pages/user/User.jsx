@@ -13,7 +13,6 @@ export default function User() {
     const dispatch = useDispatch()
     const currentUser = useSelector((state) => state.user.currentUser);
     const location = useLocation().pathname;
-    console.log(location);
     const [currentPage, setCurrentPage] = useState("profile")
     useEffect(() => {
         setCurrentPage(location.split("/")[2])

@@ -10,9 +10,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
 import { numberWithCommas } from '../../utils/formatMoney';
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Form, Input, Space, Select, Row, Col } from 'antd';
 import { AppContext } from '../../context/AppContext';
 import { useClearCart } from '../../services/products';
+
+const { Option } = Select;
 
 export default function Order() {
     const dispatch = useDispatch()
@@ -37,7 +39,7 @@ export default function Order() {
         return true
     }
     const handleOrder = async (values) => {
-        if(!checkCondition()){
+        if (!checkCondition()) {
             return;
         }
         let data = {
@@ -52,7 +54,7 @@ export default function Order() {
             serviceClearCart.mutateAsync()
             navigate("/user/purchase")
         } catch (error) {
-            console.log('error.response',error);
+            console.log('error.response', error);
             toast.error(error.message, toastOption);
         }
 
@@ -105,11 +107,39 @@ export default function Order() {
                 >
                     <Input />
                 </Form.Item>
+
+                
+                <Form.Item label="Mã giảm giá" extra="Nhập mã giảm giá nếu có">
+                <Row gutter={8}>
+                    <Col span={20}>
+                        <Form.Item
+                            name="voucher"
+                            // label="Mã giảm giá"
+
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                        <Button type='primary'>Áp dụng</Button>
+                    </Col>
+                </Row>
+                </Form.Item>
                 <Form.Item
                     name="note"
                     label="Ghi chú"
                 >
                     <Input.TextArea showCount maxLength={100} />
+                </Form.Item>
+                <Form.Item name="paymentMethod" label="Hình thức thanh toán" rules={[{ required: true, message: 'Vui lòng chọn hình thức thanh toán!' }]}>
+                    <Select
+                        placeholder="Chọn hình thức thanh toán"
+                        // onChange={onGenderChange}
+                        allowClear
+                    >
+                        <Option value="1">Thanh toán khi nhận hàng</Option>
+                        <Option value="2">Thanh toán trực tuyến</Option>
+                    </Select>
                 </Form.Item>
 
 
@@ -143,7 +173,7 @@ export default function Order() {
                     </Space>
 
                 </Form.Item>
-                
+
             </Form>
         </div>
     )

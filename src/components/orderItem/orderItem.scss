@@ -29,6 +29,20 @@
                     flex-direction: column;
                     gap: 4px;
 
+                    &:hover {
+                        color: rgb(40, 40, 193);
+                        transition: all linear 0.25s;
+                        .name-product {
+                            color: rgb(40, 40, 193);
+                           
+                        }
+    
+                        .filter-product {
+                            color: rgb(40, 40, 193);
+                           
+                        }
+                    }
+
                     .name-product {
                         color: themed("textBold");
                         font-size: 18px;

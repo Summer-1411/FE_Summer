@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space, Modal, Upload, DatePicker, Image, Flex, Rate } from 'antd';
 import { useFeedback } from '../../pages/completedOrder/FeedbackContext';
 import DescriptionItem from '../../ui/DescriptionItem/DescriptionItem';
+import { request } from '../../requestMethod';
+import { useSendFeedback } from '../../services/feedback';
 const desc = ['Rất tệ', 'Tệ', 'Ổn', 'Tuyệt', 'Rất tuyệt'];
 
 const getBase64 = (file) =>
@@ -14,23 +16,25 @@ const getBase64 = (file) =>
         reader.onerror = (error) => reject(error);
     });
 
-const { Option } = Select;
 
-const Feedback = (props) => {
-    const { open, setOpen, product } = useFeedback()
+const Feedback = () => {
+    const { open, setOpen, feedbackInfor } = useFeedback()
 
     const [formCreateUpdate] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const [value, setValue] = useState(3);
+    const [value, setValue] = useState(5);
 
+    const serviceSendFeedback = useSendFeedback()
 
     const [fileList, setFileList] = useState([]);
     const dummyRequest = ({ onSuccess }) => {
         onSuccess('ok')
     }
-    const handleCancel = () => setPreviewOpen(false);
+    const handleCancel = () => {
+        setPreviewOpen(false)
+    };
 
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
@@ -47,7 +51,6 @@ const Feedback = (props) => {
 
 
 
-
     const onClose = () => {
         setOpen(false);
         onReset()
@@ -56,52 +59,32 @@ const Feedback = (props) => {
     };
     const onFinish = async () => {
         const param = formCreateUpdate.getFieldsValue()
-
-
-        // if (edit) {
-        //   if (fileList && fileList.length > 0) {
-        //     const data = new FormData()
-        //     const fileName = fileList[0]?.originFileObj?.name ? Date.now() + fileList[0]?.originFileObj?.name : ""
-        //     data.append("name", fileName)
-        //     data.append("file", fileList[0]?.originFileObj || "")
-        //     await axios.post(`http://localhost:6868/api/upload`, data)
-        //     param.avatar = fileName
-        //   } else {
-        //     param.avatar = initValue?.avatar
-        //   }
-        //   param.birthday = param.birthday
-        //     ? dayjs(param.birthday).format('YYYY-MM-DD')
-        //     : ''
-        //   param.id = initValue?.id
-        //   const update = {
-        //     ...param,
-        //   }
-        //   await updateStudent.mutateAsync(update);
-        //   onClose();
-        // } else {
-        //   //Thêm mới
-        //   if (fileList && fileList.length > 0) {
-        //     const data = new FormData()
-        //     const fileName = fileList[0]?.originFileObj?.name ? Date.now() + fileList[0]?.originFileObj?.name : ""
-        //     data.append("name", fileName)
-        //     data.append("file", fileList[0]?.originFileObj || "")
-        //     await axios.post(`http://localhost:6868/api/upload`, data)
-        //     param.avatar = fileName
-        //     param.birthday = param.birthday
-        //       ? dayjs(param.birthday).format('YYYY-MM-DD')
-        //       : ''
-
-        //     const newStudent = {
-        //       ...param,
-        //       // idClass: classInfor?.id
-        //     }
-        //     await createStudent.mutateAsync(newStudent);
-        //     onClose();
-        //   } else {
-        //     toast.error("Bạn chưa chọn ảnh đại diện !", toastOption);
-        //   }
-        // }
-
+        let fileName = null;
+        if (fileList && fileList.length > 0) {
+            const data = new FormData()
+            fileName = fileList[0]?.originFileObj?.name ? Date.now() + fileList[0]?.originFileObj?.name : ""
+            data.append("name", fileName)
+            data.append("file", fileList[0]?.originFileObj || "")
+  
+            try {
+                await request.post(`/upload`, data)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const data = {
+            idProduct : feedbackInfor.id_pro, 
+            idOrder : feedbackInfor.idOrder,
+            description: param.description, 
+            rate: value, 
+            img: fileName
+        }
+        try {
+            await serviceSendFeedback.mutateAsync(data)
+            onClose()
+        } catch (error) {
+            console.log(error);
+        }
     };
     const onReset = () => {
         formCreateUpdate.resetFields()
@@ -112,7 +95,7 @@ const Feedback = (props) => {
         <div style={{ marginTop: 8 }}>Tải ảnh</div>
 
     );
-    console.log('product',product);
+    console.log('feedbackInfor', feedbackInfor);
 
 
     return (
@@ -123,7 +106,7 @@ const Feedback = (props) => {
             open={open}
             bodyStyle={{ paddingBottom: 80 }}
         >
-            <DescriptionItem title='Sản phẩm' content={product?.name + ` (${product?.color} - ${product.size})`} />
+            <DescriptionItem title='Sản phẩm' content={feedbackInfor?.name + ` (${feedbackInfor?.color} - ${feedbackInfor.size})`} />
             <Form layout="vertical" hideRequiredMark form={formCreateUpdate} onFinish={onFinish}>
                 <Flex gap="middle" vertical>
                     <Rate tooltips={desc} onChange={setValue} value={value} />

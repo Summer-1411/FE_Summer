@@ -3,11 +3,14 @@ import './orderItem.scss'
 import { IMAGE_LINK, request } from '../../requestMethod';
 import { numberWithCommas } from '../../utils/formatMoney';
 import { formatDate } from '../../utils/formatDate';
-import { Button } from 'antd';
+import { Button, Typography } from 'antd';
 import { useFeedback } from '../../pages/completedOrder/FeedbackContext';
+import { useGetFeedbackUser } from '../../services/feedback';
+import { Link } from 'react-router-dom';
 export default function OrderItem({ order, complete }) {
     const [products, setProducts] = useState([])
-    const { open, setOpen, setProduct } = useFeedback()
+    const { Text } = Typography;
+    const { open, setOpen, setFeedbackInfor } = useFeedback()
     useEffect(() => {
         const getProductByBill = async () => {
             const res = await request.get(`/order_detail/${order.id}`)
@@ -18,19 +21,25 @@ export default function OrderItem({ order, complete }) {
     }, [order.id])
 
     const handleOpenFeedback = (pro) => {
-        console.log('handleOpenFeedback', open);
         setOpen(true)
-        setProduct(pro)
+        setFeedbackInfor({
+            ...pro,
+            idOrder: order.id
+        })
     }
 
-    console.log('products', products);
+    const { feedbackList } = useGetFeedbackUser()
+
+    const checkFeedbackValid = (feedbackList, pro) => {
+        return feedbackList.find((feedbackItem) => feedbackItem.id_product === pro.id_pro && feedbackItem.id_order === order.id)
+    }
     return (
         <div className='orderItem-wrapper'>
             {products.map(pro => (
-                <div key={pro.id} className="orderItem-content">
+                <div  key={pro.id} className="orderItem-content">
                     <div className="orderItem-content-left">
                         <img src={`${IMAGE_LINK}/${pro.img}`} alt="" className="img-product" />
-                        <div className="infor-product">
+                        <Link to={`/product/${pro.id_pro}`} style={{textDecoration: 'none'}} className="infor-product">
                             <div className="name-product">{pro.name}</div>
                             <div className="filter-product">
                                 Phân loại: {pro.size}, {pro.color}
@@ -38,17 +47,18 @@ export default function OrderItem({ order, complete }) {
                             <div className="quantity-product">
                                 x{pro.quantity}
                             </div>
-                        </div>
+                        </Link>
                     </div>
                     <div className="orderItem-content-right">
                         <div className="price-product">
                             {numberWithCommas(pro.price)}
                         </div>
-                        <div style={{ textAlign: 'right', marginTop: 20 }}>
+                        {checkFeedbackValid(feedbackList, pro) ? <Text type="success">Sản phẩm đã được đánh giá</Text> : <div style={{ textAlign: 'right', marginTop: 20 }}>
                             {complete && <Button type="primary" danger onClick={() => handleOpenFeedback(pro)}>
                                 Đánh giá sản phẩm
                             </Button>}
-                        </div>
+                        </div>}
+                        
                     </div>
                 </div>
 

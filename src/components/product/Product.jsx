@@ -1,9 +1,12 @@
 import './product.scss'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {
+    ShoppingCartOutlined
+  } from '@ant-design/icons';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { Link } from 'react-router-dom';
 import { numberWithCommas } from '../../utils/formatMoney';
 import { IMAGE_LINK } from '../../requestMethod';
+import { Button } from 'antd';
 export default function Product({ product }) {
     //console.log(product.img);
     return (
@@ -41,9 +44,9 @@ export default function Product({ product }) {
                             <StarRateIcon className="star" />
                         </div>
                     </div>
-                    <button>
-                        ADD TO CART <ShoppingCartIcon />
-                    </button>
+                    <Button>
+                        Mua ngay <ShoppingCartOutlined />
+                    </Button>
                 </div>
             </div>
 
