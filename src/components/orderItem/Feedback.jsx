@@ -5,7 +5,7 @@ import { Button, Col, Drawer, Form, Input, Row, Select, Space, Modal, Upload, Da
 import { useFeedback } from '../../pages/completedOrder/FeedbackContext';
 import DescriptionItem from '../../ui/DescriptionItem/DescriptionItem';
 import { request } from '../../requestMethod';
-import { useSendFeedback } from '../../services/feedback';
+import { useSendFeedback, useUpdateFeedback } from '../../services/feedback';
 const desc = ['Rất tệ', 'Tệ', 'Ổn', 'Tuyệt', 'Rất tuyệt'];
 
 const getBase64 = (file) =>
@@ -18,15 +18,14 @@ const getBase64 = (file) =>
 
 
 const Feedback = () => {
-    const { open, setOpen, feedbackInfor } = useFeedback()
+    const { open, setOpen, feedbackInfor, formCreateUpdate, pointRate, setPointRate } = useFeedback()
 
-    const [formCreateUpdate] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const [value, setValue] = useState(5);
 
     const serviceSendFeedback = useSendFeedback()
+    const serviceUpdateFeedback = useUpdateFeedback()
 
     const [fileList, setFileList] = useState([]);
     const dummyRequest = ({ onSuccess }) => {
@@ -54,37 +53,47 @@ const Feedback = () => {
     const onClose = () => {
         setOpen(false);
         onReset()
-
-
     };
     const onFinish = async () => {
         const param = formCreateUpdate.getFieldsValue()
-        let fileName = null;
+        let fileName = feedbackInfor.edit ? feedbackInfor.prevImg : null;
+
         if (fileList && fileList.length > 0) {
             const data = new FormData()
             fileName = fileList[0]?.originFileObj?.name ? Date.now() + fileList[0]?.originFileObj?.name : ""
             data.append("name", fileName)
             data.append("file", fileList[0]?.originFileObj || "")
-  
+
             try {
                 await request.post(`/upload`, data)
             } catch (error) {
                 console.log(error);
             }
         }
-        const data = {
-            idProduct : feedbackInfor.id_pro, 
-            idOrder : feedbackInfor.idOrder,
-            description: param.description, 
-            rate: value, 
-            img: fileName
-        }
         try {
-            await serviceSendFeedback.mutateAsync(data)
-            onClose()
+            if (feedbackInfor.edit) {
+                const data = {
+                    description: param.description,
+                    rate: pointRate,
+                    img: fileName
+                }
+                await serviceUpdateFeedback.mutateAsync({ id: feedbackInfor.idEdit, params: data })
+                onClose()
+            } else {
+                const data = {
+                    idProduct: feedbackInfor.id_pro,
+                    idOrder: feedbackInfor.idOrder,
+                    description: param.description,
+                    rate: pointRate,
+                    img: fileName
+                }
+                await serviceSendFeedback.mutateAsync(data)
+                onClose()
+            }
         } catch (error) {
             console.log(error);
         }
+
     };
     const onReset = () => {
         formCreateUpdate.resetFields()
@@ -95,12 +104,11 @@ const Feedback = () => {
         <div style={{ marginTop: 8 }}>Tải ảnh</div>
 
     );
-    console.log('feedbackInfor', feedbackInfor);
 
 
     return (
         <Drawer
-            title={"Đánh giá sản phẩm"}
+            title={feedbackInfor?.edit ? "Cập nhật đánh giá" : "Đánh giá sản phẩm"}
             width={720}
             onClose={onClose}
             open={open}
@@ -109,8 +117,8 @@ const Feedback = () => {
             <DescriptionItem title='Sản phẩm' content={feedbackInfor?.name + ` (${feedbackInfor?.color} - ${feedbackInfor.size})`} />
             <Form layout="vertical" hideRequiredMark form={formCreateUpdate} onFinish={onFinish}>
                 <Flex gap="middle" vertical>
-                    <Rate tooltips={desc} onChange={setValue} value={value} />
-                    {value ? <span>{desc[value - 1]}</span> : null}
+                    <Rate tooltips={desc} onChange={setPointRate} value={pointRate} />
+                    {pointRate ? <span>{desc[pointRate - 1]}</span> : null}
                 </Flex>
                 <Row gutter={16}>
                     <Col span={24}>

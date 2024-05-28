@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 export default function OrderItem({ order, complete }) {
     const [products, setProducts] = useState([])
     const { Text } = Typography;
-    const { open, setOpen, setFeedbackInfor } = useFeedback()
+    const { open, setOpen, setFeedbackInfor, formCreateUpdate, setPointRate } = useFeedback()
     useEffect(() => {
         const getProductByBill = async () => {
             const res = await request.get(`/order_detail/${order.id}`)
@@ -19,27 +19,49 @@ export default function OrderItem({ order, complete }) {
         }
         getProductByBill();
     }, [order.id])
-
-    const handleOpenFeedback = (pro) => {
-        setOpen(true)
-        setFeedbackInfor({
-            ...pro,
-            idOrder: order.id
-        })
-    }
-
     const { feedbackList } = useGetFeedbackUser()
 
-    const checkFeedbackValid = (feedbackList, pro) => {
+    const handleCreateUpdateFeedback = (pro, edit) => {
+        let data = {
+            ...pro,
+            idOrder: order.id,
+            edit: false,
+            idEdit: null,
+            prevImg: null
+        }
+        if (edit) {
+            const feedbackEdit = feedbackValid(feedbackList, pro)
+            formCreateUpdate.setFieldsValue({
+                description: feedbackEdit.description
+            })
+
+            console.log('data', data);
+            console.log('feedbackEdit', feedbackEdit);
+            setPointRate(feedbackEdit.rate)
+            data = {
+                ...data,
+                edit: true,
+                idEdit: feedbackEdit.id,
+                prevImg: feedbackEdit.img
+            }
+        }
+        setOpen(true)
+        setFeedbackInfor(data)
+
+
+    }
+
+
+    const feedbackValid = (feedbackList, pro) => {
         return feedbackList.find((feedbackItem) => feedbackItem.id_product === pro.id_pro && feedbackItem.id_order === order.id)
     }
     return (
         <div className='orderItem-wrapper'>
             {products.map(pro => (
-                <div  key={pro.id} className="orderItem-content">
+                <div key={pro.id} className="orderItem-content">
                     <div className="orderItem-content-left">
                         <img src={`${IMAGE_LINK}/${pro.img}`} alt="" className="img-product" />
-                        <Link to={`/product/${pro.id_pro}`} style={{textDecoration: 'none'}} className="infor-product">
+                        <Link to={`/product/${pro.id_pro}`} style={{ textDecoration: 'none' }} className="infor-product">
                             <div className="name-product">{pro.name}</div>
                             <div className="filter-product">
                                 Phân loại: {pro.size}, {pro.color}
@@ -53,12 +75,16 @@ export default function OrderItem({ order, complete }) {
                         <div className="price-product">
                             {numberWithCommas(pro.price)}
                         </div>
-                        {checkFeedbackValid(feedbackList, pro) ? <Text type="success">Sản phẩm đã được đánh giá</Text> : <div style={{ textAlign: 'right', marginTop: 20 }}>
-                            {complete && <Button type="primary" danger onClick={() => handleOpenFeedback(pro)}>
+                        {feedbackValid(feedbackList, pro) ? <div style={{ textAlign: 'right', marginTop: 20 }}>
+                            {complete && <Button ghost type="primary" onClick={() => handleCreateUpdateFeedback(pro, true)}>
+                                Sửa đánh giá
+                            </Button>}
+                        </div> : <div style={{ textAlign: 'right', marginTop: 20 }}>
+                            {complete && <Button type="primary" danger onClick={() => handleCreateUpdateFeedback(pro, false)}>
                                 Đánh giá sản phẩm
                             </Button>}
                         </div>}
-                        
+
                     </div>
                 </div>
 

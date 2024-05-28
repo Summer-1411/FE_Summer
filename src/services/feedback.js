@@ -49,3 +49,23 @@ export function useSendFeedback() {
         }
     )
 }
+
+export function useUpdateFeedback() {
+    const queryClient = useQueryClient()
+    return useMutation(
+        'UPDATE_FEEDBACK',
+        ({id, params}) => {
+            console.log('params', params);
+            return request.put(`/feedback/update/${id}`, params)
+        },
+        {
+            onSuccess: async (data, variables, context) => {
+                toast.success(data?.data?.message, toastOption);
+                await queryClient.invalidateQueries('list-feedback')
+            },
+            onError: (error, variables, context) => {
+                toast.error(error?.message, toastOption);
+            },
+        }
+    )
+}

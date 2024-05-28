@@ -90,7 +90,7 @@ export default function NavBar() {
             <div className="navbar-container">
                 <div className="left">
                     <Link to="/" className="logoApp">
-                        HT Mobile
+                        HoangTuan Shop
                     </Link>
                     <div>
                         <WbSunnyOutlinedIcon />

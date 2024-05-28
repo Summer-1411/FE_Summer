@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
 
-export default function PendingOrder() {
+export default function PendingOrder({key}) {
     const [bill, setBill] = useState([])
     const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -18,7 +18,8 @@ export default function PendingOrder() {
             setBill([...res.data.order, ...res.data.orderError])
         }
         getBill();
-    }, [])
+    }, [key])
+
 
     const cancelOrder = async (id) => {
         try {
@@ -38,10 +39,6 @@ export default function PendingOrder() {
             {bill.map(item => (
                 <PurchaseProduct key={item.id} bill={item} cancelOrder={cancelOrder} />
             ))}
-            {/* {billError.map(item => (
-                <PurchaseProduct key={item.id} bill={item} cancelOrder={cancelOrder} />
-            ))} */}
-            
         </div>
     )
 }

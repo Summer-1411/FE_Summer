@@ -1,6 +1,8 @@
 import './login.scss'
 import { Link } from 'react-router-dom';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input,Typography } from 'antd';
+
+const { Text } = Typography;
 import { useDispatch } from 'react-redux';
 import { SUMMER_SHOP } from '../../constants';
 import { loginFailure, loginSuccess } from '../../redux/userRedux';
@@ -85,6 +87,8 @@ export default function Login() {
                         <div className="outer-link">
                             Bạn không có tài khoản? <Link className='link-item' to="/register">Đăng ký</Link>
                         </div>
+                        <Link to="/forgot-password">Quên mật khẩu ?</Link>
+
                     </Form.Item>
                 </Form>
             </div>

@@ -5,7 +5,7 @@ import Feedback from '../../components/orderItem/Feedback'
 import { Divider } from 'antd'
 import { FeedbackProvider, useFeedback } from './FeedbackContext'
 
-export default function CompletedOrder() {
+export default function CompletedOrder({key}) {
     const [orderItem,setOrderItem] = useState([])
     
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function CompletedOrder() {
             setOrderItem(res.data.order)
         }
         getOrderItem();
-    }, [])
+    }, [key])
     
 
     return (

@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from "../../../constants"
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { request } from "../../../requestMethod"
+import { exportInvoice } from "../../../services/invoice"
 export default function OrderItem(
     {
         order,
@@ -50,9 +51,24 @@ export default function OrderItem(
 
     //Confirm và cancel ở trang chờ xử lý
     //Khi xác nhận thì danh sách chờ thay đổi
-    const handleConfirm = async () => {
 
+
+    const handleConfirm = async () => {
+        let listProduct = products.map((item) => {
+            return {
+                ...item,
+                category: `${item.size} - ${item.color}`,
+                price: numberWithCommas(item.price),
+                total: numberWithCommas(item.price * item.quantity)
+            }
+        })
+        const data = {
+            ...order,
+            total_amount: numberWithCommas(order.total_amount),
+            products: listProduct
+        }
         try {
+            await request.post('/invoices/send_mail', data);
             const res = await request.put(`/order/byAdmin`,
                 {
                     id: order.id
@@ -62,9 +78,27 @@ export default function OrderItem(
             }
             toast.success(res.data.message, toastOption);
         } catch (error) {
-            toast.error(error.response.data.message, toastOption);
+            // toast.error(error.response.data.message, toastOption);
             console.log(error);
         }
+    }
+
+
+    const handleExportBill = async () => {
+        let listProduct = products.map((item) => {
+            return {
+                ...item,
+                category: `${item.size} - ${item.color}`,
+                price: numberWithCommas(item.price),
+                total: numberWithCommas(item.price * item.quantity)
+            }
+        })
+        const data = {
+            ...order,
+            total_amount: numberWithCommas(order.total_amount),
+            products: listProduct
+        }
+        exportInvoice(data)
     }
     //Khi huỷ thì danh sách chờ xwr ly thay đổi
     // const handleCancel = async () => {
@@ -96,7 +130,7 @@ export default function OrderItem(
         if (!reason) {
             toast.warning("Vui lòng nhập lý do huỷ đơn hàng !", toastOption);
             return;
-        }else {
+        } else {
             try {
                 const res = await request.put(`/order/byAdmin?refuse=true`,
                     {
@@ -143,7 +177,7 @@ export default function OrderItem(
                 <div className="address-user">{order.shipping_address}</div>
                 <div className="order-note">Ghi chú : {order.note}</div>
                 {order.status === -2 && (<div className="order-reason">Lý do huỷ : {order.reason}</div>)}
-                
+
 
             </div>
             <div className="col-item-2">
@@ -182,6 +216,9 @@ export default function OrderItem(
                         Hoàn tác
                     </div>
                 }
+                <div className="btn btn-success" onClick={handleExportBill}>
+                    Xem hóa đơn
+                </div>
             </div>
             {openCancellation &&
                 <div className="wrapper-cancel" onClick={handleCloseForm}>

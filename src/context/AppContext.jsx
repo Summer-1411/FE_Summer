@@ -8,7 +8,7 @@ const AppProvider = ({ children }) => {
     
     const [filterProduct, setFilterProduct] = useState({
         sample: {
-            name: " ",
+            name: "",
             idCategory: "",
             idOwner: "",
             id: ""

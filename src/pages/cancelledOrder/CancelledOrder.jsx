@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { request } from '../../requestMethod'
 import OrderItem from '../../components/orderItem/OrderItem'
 
-export default function CancelledOrder() {
+export default function CancelledOrder({key}) {
     const [orderItem,setOrderItem] = useState([])
     useEffect(() => {
         const getOrderItem = async () => {
@@ -11,7 +11,7 @@ export default function CancelledOrder() {
             setOrderItem(res.data.order)
         }
         getOrderItem();
-    }, [])
+    }, [key])
     return (
         <div>
             {

@@ -11,7 +11,7 @@ export default function Bottom() {
                     <div className='col l-4 c-12 m-6'>
                         <div className="item">
                             <div className="heading">
-                                Summer Mobile
+                                HoangTuanShop
                             </div>
                             <div className="item-content">
                                 <div className="item-content-row">
@@ -19,7 +19,7 @@ export default function Bottom() {
                                         Địa chỉ :
                                     </div>
                                     <div className="row-content">
-                                        30 Ngõ 7 Đường Vạn Xuân - Kim Cung - Hoài Đức - HN
+                                        16 Ngõ 2 - Phố Nguyên Xá - Phường Minh Khai - Quận Bắc Từ Liêm - Hà Nội
                                     </div>
                                 </div>
                                 <div className="item-content-row">
@@ -27,7 +27,7 @@ export default function Bottom() {
                                         Fanpage :
                                     </div>
                                     <div className="row-content">
-                                        Fb.com/SummerMobile
+                                        Fb.com/HoangTuanShop
                                     </div>
                                 </div>
                             </div>
