@@ -9,6 +9,7 @@ import { updateUser } from '../../redux/userRedux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
+import { Button } from 'antd';
 
 export default function Profile() {
     const dispatch = useDispatch()
@@ -133,9 +134,9 @@ export default function Profile() {
                 </div>
             </div>
             <div className="profile-bottom">
-                <div className="btn-save" onClick={handleSubmit}>
+                <Button type='primary' size='large' onClick={handleSubmit}>
                     Lưu
-                </div>
+                </Button>
             </div>
         </div>
     )

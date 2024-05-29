@@ -3,8 +3,9 @@ import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-
-
+import SettingsIcon from '@mui/icons-material/Settings';
+import CategoryIcon from '@mui/icons-material/Category';
+import StoreIcon from '@mui/icons-material/Store';
 const toastOption = {
     position: "top-right",
     autoClose: 3000,
@@ -46,6 +47,12 @@ const routeUserPage = [
         icon: InventoryOutlinedIcon,
         title: "Đơn mua",
         path: "purchase"
+    },
+    {
+        id: 3,
+        icon: SettingsIcon,
+        title: "Đổi mật khẩu",
+        path: "change-password"
     }
 ]
 
@@ -73,6 +80,18 @@ const sideBarAdmin = [
         icon: ShoppingCartOutlinedIcon,
         title: "Đơn hàng",
         path: "orders"
+    },
+    {
+        id: 5,
+        icon: StoreIcon,
+        title: "Nhà sản xuất",
+        path: "producer"
+    },
+    {
+        id: 6,
+        icon: CategoryIcon,
+        title: "Loại sản phẩm",
+        path: "category"
     }
 ]
 

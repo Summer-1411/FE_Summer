@@ -162,6 +162,7 @@ export default function ForgotPassword() {
                         rules={[
                             {
                                 required: true,
+                                message: 'Bạn chưa xác nhận mật khẩu !'
                             },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
