@@ -199,6 +199,16 @@ const producers = [
         name: "Masstel"
     },
 ]
+ const listStatus = [
+    {
+      value: 1,
+      label: "Hoạt động",
+    },
+    {
+      value: 0,
+      label: "Không hoạt động",
+    }
+  ]
 
 const SUMMER_SHOP = "summerShop"
 export {
@@ -210,6 +220,7 @@ export {
     routeOrderAdmin,
     toastOption,
     categorys,
-    producers
+    producers,
+    listStatus
 }
 

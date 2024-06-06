@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 
 import './order.scss'
 import ProductCheckout from '../../components/productCheckout/ProductCheckout'
@@ -13,6 +13,9 @@ import { numberWithCommas } from '../../utils/formatMoney';
 import { Button, Form, Input, Space, Select, Row, Col } from 'antd';
 import { AppContext } from '../../context/AppContext';
 import { useClearCart } from '../../services/products';
+import { useGetLocation } from './service';
+import { useWatch } from 'antd/es/form/Form';
+import useDebounce from '../../hooks/useDebounce';
 
 const { Option } = Select;
 
@@ -22,6 +25,27 @@ export default function Order() {
     const serviceClearCart = useClearCart()
     const { productCart } = useContext(AppContext)
     const [form] = Form.useForm();
+
+    const provinceId = useWatch('province', form)
+    const districtId = useWatch('district', form)
+    const wardId = useWatch('ward', form)
+    const addressDetail = useWatch('addressDetail', form)
+    const { data: lstProvince } = useGetLocation('list-province', { level: 1, code: 0 }, true)
+    const { data: lstDistrict } = useGetLocation('list-district', { level: 2, code: provinceId }, !!provinceId)
+    const { data: lstWard } = useGetLocation('list-ward', { level: 3, code: districtId }, !!districtId && !!provinceId)
+    const { data: addressInfor } = useGetLocation('address-infor', { level: 5, code: wardId }, !!wardId)
+
+
+    let debouncedAddressDetail = useDebounce(addressDetail, 500);
+    
+
+    
+    useEffect(() => {
+        console.log('123');
+        const addDetail = debouncedAddressDetail ? debouncedAddressDetail : ''
+        const addInfor = addressInfor?.full_name ? addressInfor?.full_name : ''
+        form.setFieldValue('address', addDetail + ", " + addInfor)
+    }, [wardId,debouncedAddressDetail])
 
 
     const sumPrice = useMemo(() => productCart.reduce(
@@ -95,9 +119,69 @@ export default function Order() {
                 >
                     <Input />
                 </Form.Item>
+                <Row gutter={16}>
+                    <Col xs={24} sm={24} md={12} xl={8}>
+                        <Form.Item label="Tỉnh / Thành phố" name="province"
+                            rules={[{ required: true, message: 'Vui lòng chọn tỉnh / thành phố !' }]}
+                        >
+                            <Select
+                                placeholder="Chọn tỉnh / thành phố"
+                                allowClear
+                                onChange={() => form.resetFields(['district', 'ward'])}
+                            >
+                                {lstProvince.map((item) => (
+                                    <Option key={item.id} value={item.id}>{item.full_name}</Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    
+                    <Col xs={24} sm={24} md={12} xl={8}>
+                        <Form.Item label="Quận / Huyện" name="district"
+                            rules={[{ required: true, message: 'Vui lòng chọn Quận / Huyện !' }]}
+                        >
+                            <Select
+                                placeholder="Chọn Quận / Huyện"
+                                allowClear
+                                onChange={() => form.resetFields(['ward'])}
+                            >
+                                {lstDistrict.map((item) => (
+                                    <Option key={item.id} value={item.id}>{item.full_name}</Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={12} xl={8}>
+                        <Form.Item label="Phường / Xã" name="ward"
+                            rules={[{ required: true, message: 'Vui lòng chọn Phường / Xã !' }]}
+                        >
+                            <Select
+                                placeholder="Chọn Phường / Xã"
+                                allowClear
+                            >
+                                {lstWard.map((item) => (
+                                    <Option key={item.id} value={item.id}>{item.full_name}</Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Form.Item
+                    name="addressDetail"
+                    label="Địa chỉ chi tiết"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Bạn chưa nhập địa chỉ chi tiết!'
+                        }
+                    ]}
+                >
+                    <Input placeholder='Nhập số nhà, ngõ, xóm ....'/>
+                </Form.Item>
                 <Form.Item
                     name="address"
                     label="Địa chỉ nhận hàng"
+                    
                     rules={[
                         {
                             required: true,
@@ -105,25 +189,26 @@ export default function Order() {
                         }
                     ]}
                 >
-                    <Input />
+                    <Input disabled/>
                 </Form.Item>
-
                 
+
+
                 <Form.Item label="Mã giảm giá" extra="Nhập mã giảm giá nếu có">
-                <Row gutter={8}>
-                    <Col span={20}>
-                        <Form.Item
-                            name="voucher"
+                    <Row gutter={8}>
+                        <Col span={20}>
+                            <Form.Item
+                                name="voucher"
                             // label="Mã giảm giá"
 
-                        >
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={4}>
-                        <Button type='primary'>Áp dụng</Button>
-                    </Col>
-                </Row>
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={4}>
+                            <Button type='primary'>Áp dụng</Button>
+                        </Col>
+                    </Row>
                 </Form.Item>
                 <Form.Item
                     name="note"

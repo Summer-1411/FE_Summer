@@ -9,14 +9,14 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from '@ant-design/icons';
-import { CategoryProvider, useCategory } from "./hooks/CategoryContext";
-import { useDeleteCategory, useSearchCategory } from './services';
+import { ProducerProvider, useProducer } from "./hooks/ProducerContext";
+import { useDeleteProducer, useSearchProducer } from './services';
 import Search from './components/search';
 import { listStatus } from '../../../constants';
 
 
-const CategoryManager = () => {
-  const { setEdit, formCreateUpdate, setInitValue } = useCategory()
+const ProducerManager = () => {
+  const { setEdit, formCreateUpdate, setInitValue } = useProducer()
   const [open, setOpen] = useState(false)
   const [openModel, setOpenModel] = useState(false);
   const [initSearch, setInitSearch] = useState({
@@ -24,8 +24,8 @@ const CategoryManager = () => {
     status: ''
   })
   const [idDelete, setIdDelete] = useState()
-  const { categoryList } = useSearchCategory(initSearch)
-  const deleteCategory = useDeleteCategory()
+  const { producerList } = useSearchProducer(initSearch)
+  const deleteProducer = useDeleteProducer()
 
   const handleClickDelete = (record) => {
     setOpenModel(true)
@@ -37,7 +37,7 @@ const CategoryManager = () => {
 
   const handleOk = () => {
     setOpenModel(false);
-    deleteCategory.mutateAsync(idDelete)
+    deleteProducer.mutateAsync(idDelete)
   };
   const handleCancel = () => {
     setOpenModel(false);
@@ -59,7 +59,7 @@ const CategoryManager = () => {
     },
     {
 
-      title: 'Tên loại sản phẩm',
+      title: 'Tên hãng sản xuất',
       dataIndex: 'name',
     },
     {
@@ -98,7 +98,7 @@ const CategoryManager = () => {
   const Header = () => {
     return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
       <h3>
-        Danh sách loại sản phẩm
+        Danh sách hãng sản xuất
       </h3>
       <Button type="primary" style={{ marginBottom: 16 }} onClick={showDrawer} icon={<PlusOutlined />}>
         Thêm mới
@@ -125,7 +125,7 @@ const CategoryManager = () => {
         }}
         pagination={{ pageSize: 8 }}
         columns={columns}
-        dataSource={categoryList}
+        dataSource={producerList}
       />
       <Modal
         title="Xóa bản ghi"
@@ -142,10 +142,10 @@ const CategoryManager = () => {
 
 
 
-const CategoryRoot = () => (
-  <CategoryProvider>
-    <CategoryManager />
-  </CategoryProvider>
+const ProducerRoot = () => (
+  <ProducerProvider>
+    <ProducerManager />
+  </ProducerProvider>
 )
 
-export default CategoryRoot
+export default ProducerRoot

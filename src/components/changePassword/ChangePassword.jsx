@@ -64,7 +64,7 @@ export default function ChangePassword() {
 
         <>
             <Modal
-                title="Vui lòng nhập mã OTP được gửi về Email để đăng ký dịch vụ HoangTuan Shop"
+                title="Vui lòng nhập mã OTP được gửi về Email để thay đổi mật khẩu"
                 open={isModalOpen}
                 onCancel={handleCancel}
                 footer={[

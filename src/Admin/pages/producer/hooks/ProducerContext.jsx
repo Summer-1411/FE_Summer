@@ -1,9 +1,9 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { Form } from "antd";
 
-export const CategoryContext = createContext('Context bảng Student');
+export const ProducerContext = createContext('Context bảng producer');
 
-export const CategoryProvider = ({
+export const ProducerProvider = ({
   children,
 }) => {
   const [formCreateUpdate] = Form.useForm();
@@ -16,11 +16,11 @@ export const CategoryProvider = ({
     initValue,
     setInitValue
   }
-  return <CategoryContext.Provider value={value}>
+  return <ProducerContext.Provider value={value}>
     {children}
-  </CategoryContext.Provider>
+  </ProducerContext.Provider>
 }
 
-export const useCategory = () => {
-  return useContext(CategoryContext)
+export const useProducer = () => {
+  return useContext(ProducerContext)
 }

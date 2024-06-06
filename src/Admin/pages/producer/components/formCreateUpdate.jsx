@@ -1,21 +1,21 @@
 
 import React from 'react';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from 'antd';
-import { useCategory } from '../hooks/CategoryContext';
+import { useProducer } from '../hooks/ProducerContext';
 import { listStatus } from '../../../../constants';
-import { useCreateCategory, useUpdateCategory } from '../services';
+import { useCreateProducer, useUpdateProducer } from '../services';
 
 const { Option } = Select;
 const CreateUpdate = (props) => {
-  const { formCreateUpdate, edit, setEdit, initValue } = useCategory()
+  const { formCreateUpdate, edit, setEdit, initValue } = useProducer()
   const { open, setOpen } = props
   const onClose = () => {
     setOpen(false);
     setEdit(false)
     onReset()
   };
-  const updateCategory = useUpdateCategory()
-  const createCategory = useCreateCategory()
+  const updateProducer = useUpdateProducer()
+  const createProducer = useCreateProducer()
   const onFinish = async () => {
     const param = formCreateUpdate.getFieldsValue()
     if (edit) {
@@ -23,10 +23,10 @@ const CreateUpdate = (props) => {
         ...initValue,
         ...param,
       }
-      await updateCategory.mutateAsync(update);
+      await updateProducer.mutateAsync(update);
       onClose();
     } else {
-      await createCategory.mutateAsync(param);
+      await createProducer.mutateAsync(param);
       onClose();
     }
   };
@@ -39,7 +39,7 @@ const CreateUpdate = (props) => {
 
   return (
     <Drawer
-      title={edit ? "Cập nhật loại sản phẩm" : "Thêm mới loại sản phẩm"}
+      title={edit ? "Cập nhật hãng sản xuất" : "Thêm mới hãng sản xuất"}
       width={720}
       onClose={onClose}
       open={open}
@@ -53,10 +53,10 @@ const CreateUpdate = (props) => {
           <Col span={12}>
             <Form.Item
               name="name"
-              label="Tên loại sản phẩm"
-              rules={[{ required: true, message: 'Bạn chưa nhập tên loại' }]}
+              label="Tên hãng sản xuất"
+              rules={[{ required: true, message: 'Bạn chưa nhập tên hãng' }]}
             >
-              <Input placeholder="Nhập tên loại sản phẩm" />
+              <Input placeholder="Nhập tên hãng sản xuất" />
             </Form.Item>
           </Col>
 

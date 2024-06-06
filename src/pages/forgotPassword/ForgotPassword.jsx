@@ -75,7 +75,7 @@ export default function ForgotPassword() {
 
                 </div>
                 <Modal
-                    title="Vui lòng nhập mã OTP được gửi về Email để đăng ký dịch vụ HoangTuan Shop"
+                    title="Vui lòng nhập mã OTP được gửi về Email để lấy lại mật khẩu"
                     open={isModalOpen}
                     onCancel={handleCancel}
                     footer={[
