@@ -20,7 +20,6 @@ export default function SideBar() {
         dispatch(logout());;
         localStorage.removeItem(SUMMER_SHOP)
     }
-    //console.log(location.split("/")[3]);
     return (
         <div className='sideBar-container'>
             <div className="sideBar-container-heading">

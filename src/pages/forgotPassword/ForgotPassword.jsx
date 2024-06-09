@@ -38,6 +38,7 @@ export default function ForgotPassword() {
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        form.resetFields()
     };
 
 

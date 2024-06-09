@@ -29,6 +29,7 @@ export default function Register() {
             handleCancel()
             toast.success('Bạn đã đăng ký thành công !', toastOption);
             navigate("/login")
+            
         } catch (error) {
             toast.error(error.message, toastOption);
             console.log("ERROR REGISTER: ", error);
@@ -37,6 +38,7 @@ export default function Register() {
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        form.resetFields();
     };
 
 

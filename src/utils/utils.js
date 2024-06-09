@@ -8,6 +8,8 @@ const handleLogout = (dispatch) => {
     localStorage.removeItem(SUMMER_SHOP)
 }
 
+
+
 export {
     handleLogout
 }

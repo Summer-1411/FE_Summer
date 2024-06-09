@@ -45,7 +45,7 @@ const CreateUpdate = (props) => {
       open={open}
       bodyStyle={{ paddingBottom: 80 }}
     >
-      <Form layout="vertical" hideRequiredMark form={formCreateUpdate} onFinish={onFinish}>
+      <Form layout="vertical" form={formCreateUpdate} onFinish={onFinish}>
 
         <Row gutter={16}>
 

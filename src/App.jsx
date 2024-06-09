@@ -54,6 +54,8 @@ import ForgotPassword from './pages/forgotPassword/ForgotPassword';
 import ChangePassword from './components/changePassword/ChangePassword';
 import CategoryRoot from './Admin/pages/category';
 import ProducerRoot from './Admin/pages/producer';
+import Revenue from './Admin/pages/revenue/Revenue';
+import CustomerStatistics from './Admin/pages/customerStatistics/CustomerStatistics';
 
 function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -151,6 +153,14 @@ function App() {
         {
           path: "",
           element: <DashBoardPage />
+        },
+        {
+          path: "revenue",
+          element: <Revenue />
+        },
+        {
+          path: "customer-statistics",
+          element: <CustomerStatistics />
         },
         {
           path: "category",

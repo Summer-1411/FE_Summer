@@ -6,6 +6,8 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CategoryIcon from '@mui/icons-material/Category';
 import StoreIcon from '@mui/icons-material/Store';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 const toastOption = {
     position: "top-right",
     autoClose: 3000,
@@ -60,8 +62,20 @@ const sideBarAdmin = [
     {
         id: 1,
         icon: DashboardOutlinedIcon,
-        title: "Thống kê",
+        title: "Trang chủ",
         path: ""
+    },
+    {
+        id: 9,
+        icon: BarChartIcon,
+        title: "Thống kê",
+        path: "revenue"
+    },
+    {
+        id: 8,
+        icon: TrendingUpIcon,
+        title: "Thống kê khách hàng",
+        path: "customer-statistics"
     },
     {
         id: 2,

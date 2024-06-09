@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
 import './order.scss'
 import ProductCheckout from '../../components/productCheckout/ProductCheckout'
@@ -20,11 +20,11 @@ import useDebounce from '../../hooks/useDebounce';
 const { Option } = Select;
 
 export default function Order() {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const serviceClearCart = useClearCart()
     const { productCart } = useContext(AppContext)
     const [form] = Form.useForm();
+    const [valueVoucher, setValueVoucher] = useState(0)
 
     const provinceId = useWatch('province', form)
     const districtId = useWatch('district', form)
@@ -38,10 +38,15 @@ export default function Order() {
 
     let debouncedAddressDetail = useDebounce(addressDetail, 500);
     
+    useEffect(() => {
+        if (productCart.length === 0) {
+            toast.error('Bạn chưa có sản phẩm trong giỏ hàng !', toastOption);
+            navigate("/login")
+        }
+    }, [])
 
     
     useEffect(() => {
-        console.log('123');
         const addDetail = debouncedAddressDetail ? debouncedAddressDetail : ''
         const addInfor = addressInfor?.full_name ? addressInfor?.full_name : ''
         form.setFieldValue('address', addDetail + ", " + addInfor)
@@ -61,6 +66,20 @@ export default function Order() {
             return false
         }
         return true
+    }
+    
+    const handleApplyVoucher = async () => {
+        const code = form.getFieldValue('voucher')
+        console.log('code', code);
+        try {
+            const res = await request.get(`/voucher/check/${code}`)
+            console.log('res',res.data);
+            setValueVoucher(res.data.data)
+        } catch (error) {
+            toast.error(error.message, toastOption);
+            console.log('er', error);
+        }
+        
     }
     const handleOrder = async (values) => {
         if (!checkCondition()) {
@@ -206,7 +225,7 @@ export default function Order() {
                             </Form.Item>
                         </Col>
                         <Col span={4}>
-                            <Button type='primary'>Áp dụng</Button>
+                            <Button onClick={handleApplyVoucher} type='primary'>Áp dụng</Button>
                         </Col>
                     </Row>
                 </Form.Item>
@@ -237,18 +256,18 @@ export default function Order() {
                 </div>
                 <div className="checkout-product">
                     <div className="checkout-product-right">
+                        {/* {vou} */}
                         <div className="sum-price-checkout">
                             <div className="title-checkout">
-                                Thành tiền:
+                                Thành tiền :
                             </div>
-                            <div className="price-order">
+                            <div style={{marginLeft: 10}}  className="price-order">
                                 {numberWithCommas(sumPrice)}
                             </div>
                         </div>
                     </div>
                 </div>
                 <Form.Item style={{ textAlign: 'center' }}>
-
                     <Space >
                         <Button htmlType="reset">Làm mới</Button>
                         <Button type="primary" htmlType="submit" >
@@ -256,9 +275,7 @@ export default function Order() {
                         </Button>
 
                     </Space>
-
                 </Form.Item>
-
             </Form>
         </div>
     )

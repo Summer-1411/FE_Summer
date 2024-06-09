@@ -78,7 +78,7 @@ export default function Navbar() {
             >
                 <div className="navbar-left">
                     <SearchOutlinedIcon />
-                    <input type="text" className="input-admin" placeholder='Type to search...' value={name}
+                    <input type="text" className="input-admin" placeholder='Nhâp tên sản phẩm, tên khách hàng...' value={name}
                         onChange={handleChange}
                         onFocus={() => setIsShow(true)}
                         ref={inputRef} />
