@@ -5,10 +5,13 @@ import { useEffect, useState } from "react"
 import { numberWithCommas } from "../../../utils/formatMoney"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button, Form, Input, Modal, Statistic } from 'antd';
 import { toastOption } from "../../../constants"
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { request } from "../../../requestMethod"
 import { exportInvoice } from "../../../services/invoice"
+import { useForm } from 'antd/es/form/Form';
+
 export default function OrderItem(
     {
         order,
@@ -31,6 +34,7 @@ export default function OrderItem(
     }, [order.id])
     const [openCancellation, setOpenCancellation] = useState(false)
     const [reason, setReason] = useState("")
+    const [form] = useForm();
     //Thành công ở trang đã xác nhận
     //Khi xác nhận thì danh sách đã xác nhận thay đổi
     const handleSuccess = async () => {
@@ -128,26 +132,20 @@ export default function OrderItem(
         setOpenCancellation(false)
         setReason("")
     }
-    const handleClickConfirm = async () => {
-        if (!reason) {
-            toast.warning("Vui lòng nhập lý do huỷ đơn hàng !", toastOption);
-            return;
-        } else {
-            try {
-                const res = await request.put(`/order/byAdmin?refuse=true`,
-                    {
-                        id: order.id,
-                        reason: reason
-                    })
-                if (res.data.success) {
-                    setListOrderPending(prev => prev.filter(item => item.id !== order.id))
-                }
-                toast.success(res.data.message, toastOption);
-            } catch (error) {
-                toast.error(error.response.data.message, toastOption);
-                console.log(error);
+    const handleClickConfirm = async (values) => {
+        try {
+            const res = await request.put(`/order/byAdmin?refuse=true`,
+                {
+                    id: order.id,
+                    reason: values.reason
+                })
+            if (res.data.success) {
+                setListOrderPending(prev => prev.filter(item => item.id !== order.id))
             }
-
+            toast.success(res.data.message, toastOption);
+        } catch (error) {
+            toast.error(error.response.data.message, toastOption);
+            console.log(error);
         }
     }
 
@@ -222,32 +220,37 @@ export default function OrderItem(
                     Xem hóa đơn
                 </div>
             </div>
-            {openCancellation &&
-                <div className="wrapper-cancel" onClick={handleCloseForm}>
-                    <div className="cancel-container" onClick={(e) => { e.stopPropagation() }} >
-                        <div className="cancel-heading">
-                            Bạn có chắc chắn muốn huỷ đơn hàng này <SentimentVeryDissatisfiedIcon />
-                        </div>
-                        <div className="cancel-reason">
-                            <div className="cancel-reason-label">Lý do huỷ đơn</div>
-                            <input
-                                type="text"
-                                className="cancel-reason-input"
-                                value={reason}
-                                onChange={(e) => setReason(e.target.value)}
-                            />
-                        </div>
-                        <div className="cancel-content">
-                            <div className="btn btn-agree" onClick={handleClickConfirm}>
-                                Xác nhận
-                            </div>
-                            <div className="btn btn-cancel" onClick={handleCloseForm}>
-                                Huỷ bỏ
-                            </div>
-                        </div>
+            <Modal
+                title="Bạn có chắc chắn muốn huỷ đơn hàng này ?"
+                open={openCancellation}
+                onCancel={handleCloseForm}
+                footer={[
+                    <></>
+                ]}>
+                <Form
+                    form={form}
+                    name="formCancel"
+                    layout={'vertical'}
+                    onFinish={handleClickConfirm}
+                >
+                    <Form.Item
+
+                        name="reason"
+                        rules={[{ required: true, message: 'Không được trống lý do huỷ đơn !' }]}
+                        label="Lý do huỷ đơn"
+                    >
+                        <Input.TextArea style={{ width: '100%' }} />
+                    </Form.Item>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <Button key="back" onClick={handleCloseForm}>
+                            Hủy bỏ
+                        </Button>
+                        <Button type="primary" danger htmlType='submit' >
+                            Xác nhận
+                        </Button>
                     </div>
-                </div>
-            }
+                </Form>
+            </Modal>
         </div>
     )
 }

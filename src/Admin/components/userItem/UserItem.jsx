@@ -1,14 +1,29 @@
 import { Link } from 'react-router-dom';
 import { IMAGE_DEFAULT, IMAGE_LINK } from '../../../requestMethod';
-import {  parseDate } from '../../../utils/formatDate';
+import { parseDate } from '../../../utils/formatDate';
 import './userItem.scss'
-
-export default function UserItem({view, remove, undo, user, handleDeleteUserItem, handleCancelDeleteUserItem}) {
+import { Modal } from 'antd';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { toastOption } from '../../../constants';
+export default function UserItem({ view, remove, undo, user, handleDeleteUserItem, handleCancelDeleteUserItem }) {
+    const [openModel, setOpenModel] = useState(false);
     const handleClickDeleteUser = () => {
+        showNotification()
         handleDeleteUserItem(user.id)
     }
     const handleClickRestoreUser = () => {
+        showNotification()
         handleCancelDeleteUserItem(user.id)
+    }
+    const showNotification = () => {
+        toast.success("Cập nhật thành công", toastOption);
+    }
+    const handleOpenModel = () => {
+        setOpenModel(true)
+    }
+    const handleCancelModel = () => {
+        setOpenModel(false)
     }
     return (
         <div className='row-userItem'>
@@ -33,9 +48,17 @@ export default function UserItem({view, remove, undo, user, handleDeleteUserItem
             </div>
             <div className="col-item col-action-admin">
                 {view && <Link to={`/2020606605/admin/users/detail-user/${user.id}`} className="btn-action btn-view">Xem</Link>}
-                {remove && <div className="btn-action btn-remove" onClick={handleClickDeleteUser}>Xoá</div>}
+                {remove && <div className="btn-action btn-remove" onClick={handleOpenModel}>Xoá</div>}
                 {undo && <div className="btn-action btn-undo" onClick={handleClickRestoreUser}>Khôi phục</div>}
             </div>
+            <Modal
+                title="Xóa bản ghi"
+                open={openModel}
+                onOk={handleClickDeleteUser}
+                onCancel={handleCancelModel}
+            >
+                <p>Sau khi xóa sẽ chuyển trạng thái về không hoạt động. Bạn có muốn xóa ?</p>
+            </Modal>
         </div>
     )
 }
