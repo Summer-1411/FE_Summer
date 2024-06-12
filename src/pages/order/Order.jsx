@@ -8,14 +8,15 @@ import { request } from '../../requestMethod';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { toastOption } from '../../constants';
+import { PAYMENT_METHOD, toastOption } from '../../constants';
 import { numberWithCommas } from '../../utils/formatMoney';
-import { Button, Form, Input, Space, Select, Row, Col } from 'antd';
+import { Button, Form, Input, Space, Select, Row, Col, Checkbox, } from 'antd';
 import { AppContext } from '../../context/AppContext';
 import { useClearCart } from '../../services/products';
 import { useGetLocation } from './service';
 import { useWatch } from 'antd/es/form/Form';
 import useDebounce from '../../hooks/useDebounce';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -25,32 +26,28 @@ export default function Order() {
     const { productCart } = useContext(AppContext)
     const [form] = Form.useForm();
     const [valueVoucher, setValueVoucher] = useState(0)
+    const [voucherOld, setVoucherOld] = useState('')
 
     const provinceId = useWatch('province', form)
     const districtId = useWatch('district', form)
     const wardId = useWatch('ward', form)
     const addressDetail = useWatch('addressDetail', form)
+    const codeVoucher = useWatch('voucher', form)
+
     const { data: lstProvince } = useGetLocation('list-province', { level: 1, code: 0 }, true)
     const { data: lstDistrict } = useGetLocation('list-district', { level: 2, code: provinceId }, !!provinceId)
     const { data: lstWard } = useGetLocation('list-ward', { level: 3, code: districtId }, !!districtId && !!provinceId)
     const { data: addressInfor } = useGetLocation('address-infor', { level: 5, code: wardId }, !!wardId)
 
+    let debouncedAddressDetail = useDebounce(addressDetail, 1000);
 
-    let debouncedAddressDetail = useDebounce(addressDetail, 500);
-    
-    useEffect(() => {
-        if (productCart.length === 0) {
-            toast.error('Bạn chưa có sản phẩm trong giỏ hàng !', toastOption);
-            navigate("/login")
-        }
-    }, [])
 
-    
+
     useEffect(() => {
         const addDetail = debouncedAddressDetail ? debouncedAddressDetail : ''
         const addInfor = addressInfor?.full_name ? addressInfor?.full_name : ''
         form.setFieldValue('address', addDetail + ", " + addInfor)
-    }, [wardId,debouncedAddressDetail])
+    }, [wardId, debouncedAddressDetail])
 
 
     const sumPrice = useMemo(() => productCart.reduce(
@@ -67,20 +64,25 @@ export default function Order() {
         }
         return true
     }
-    
+
     const handleApplyVoucher = async () => {
         const code = form.getFieldValue('voucher')
         console.log('code', code);
+        
         try {
             const res = await request.get(`/voucher/check/${code}`)
-            console.log('res',res.data);
+            toast.success(`${res.data.message}, giảm ${res.data.data}%`, toastOption);
             setValueVoucher(res.data.data)
+            setVoucherOld(code)
         } catch (error) {
             toast.error(error.message, toastOption);
             console.log('er', error);
         }
-        
+
     }
+    const moneyVoucher = useMemo(() => {
+        return sumPrice * (valueVoucher / 100)
+    }, [sumPrice, valueVoucher])
     const handleOrder = async (values) => {
         if (!checkCondition()) {
             return;
@@ -88,20 +90,28 @@ export default function Order() {
         let data = {
             ...values,
             methodShip: 'Giao hàng',
-            total: sumPrice,
-            products: productCart
+            products: productCart,
+            voucherValue: moneyVoucher,
+            total: valueVoucher ? (sumPrice - moneyVoucher) : sumPrice
         }
         try {
             const res = await request.post(`/order`, data)
-            toast.success(res.data.message, toastOption);
             serviceClearCart.mutateAsync()
-            navigate("/user/purchase")
+            if (data.paymentMethod === PAYMENT_METHOD.DIRECT_PAYMENT) {
+                toast.success(res.data.message, toastOption);
+                // navigate("/user/purchase")
+            } else if (data.paymentMethod === PAYMENT_METHOD.ONLINE_PAYMENT) {
+                window.open(res.data.redirectUrl, "_blank")
+            }
+            
+            
         } catch (error) {
             console.log('error.response', error);
             toast.error(error.message, toastOption);
         }
 
     }
+
     return (
         <div className='order-wrapper'>
             <Form
@@ -154,7 +164,7 @@ export default function Order() {
                             </Select>
                         </Form.Item>
                     </Col>
-                    
+
                     <Col xs={24} sm={24} md={12} xl={8}>
                         <Form.Item label="Quận / Huyện" name="district"
                             rules={[{ required: true, message: 'Vui lòng chọn Quận / Huyện !' }]}
@@ -195,12 +205,12 @@ export default function Order() {
                         }
                     ]}
                 >
-                    <Input placeholder='Nhập số nhà, ngõ, xóm ....'/>
+                    <Input placeholder='Nhập số nhà, ngõ, xóm ....' />
                 </Form.Item>
                 <Form.Item
                     name="address"
                     label="Địa chỉ nhận hàng"
-                    
+
                     rules={[
                         {
                             required: true,
@@ -208,9 +218,9 @@ export default function Order() {
                         }
                     ]}
                 >
-                    <Input disabled/>
+                    <Input disabled />
                 </Form.Item>
-                
+
 
 
                 <Form.Item label="Mã giảm giá" extra="Nhập mã giảm giá nếu có">
@@ -225,10 +235,11 @@ export default function Order() {
                             </Form.Item>
                         </Col>
                         <Col span={4}>
-                            <Button onClick={handleApplyVoucher} type='primary'>Áp dụng</Button>
+                            <Button onClick={handleApplyVoucher} disabled={voucherOld === codeVoucher} type='primary'>Áp dụng</Button>
                         </Col>
                     </Row>
                 </Form.Item>
+
                 <Form.Item
                     name="note"
                     label="Ghi chú"
@@ -256,13 +267,20 @@ export default function Order() {
                 </div>
                 <div className="checkout-product">
                     <div className="checkout-product-right">
-                        {/* {vou} */}
+                        {valueVoucher && <div className="sum-price-checkout">
+                            <div className="title-checkout">
+                                Giảm (voucher) :
+                            </div>
+                            <div style={{ marginLeft: 10, textDecoration: 'line-through' }} className="price-order">
+                                - {numberWithCommas(moneyVoucher)}
+                            </div>
+                        </div>}
                         <div className="sum-price-checkout">
                             <div className="title-checkout">
                                 Thành tiền :
                             </div>
-                            <div style={{marginLeft: 10}}  className="price-order">
-                                {numberWithCommas(sumPrice)}
+                            <div style={{ marginLeft: 10 }} className="price-order">
+                                {numberWithCommas(sumPrice - moneyVoucher)}
                             </div>
                         </div>
                     </div>

@@ -9,7 +9,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 const toastOption = {
-    position: "top-right",
+    position: "top-center",
     autoClose: 3000,
     pauseOnHover: false,
     draggable: false,
@@ -20,7 +20,13 @@ const toastOption = {
 //0: Đang chờ xử ý
 //1: Đã duyệt đơn
 //2: Đã hoàn thành
-//-2: Không chấp nhận
+//-2: Không chấp nhận direct payment
+
+const PAYMENT_METHOD = {
+    ONLINE_PAYMENT: '2', //thanh toán khi nhận hàng
+    DIRECT_PAYMENT: '1' // thanh toán trực tuyến
+}
+
 
 const genders = [
     {
@@ -235,6 +241,7 @@ export {
     toastOption,
     categorys,
     producers,
-    listStatus
+    listStatus,
+    PAYMENT_METHOD
 }
 

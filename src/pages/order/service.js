@@ -18,3 +18,4 @@ export const useGetLocation = (key, params, enabled) => {
         response
     }
 }
+

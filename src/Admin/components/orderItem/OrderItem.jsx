@@ -95,6 +95,8 @@ export default function OrderItem(
         })
         const data = {
             ...order,
+            orderDate: formatDate(order.orderDate),
+            voucherValue: numberWithCommas(order.voucherValue),
             total_amount: numberWithCommas(order.total_amount),
             products: listProduct
         }
