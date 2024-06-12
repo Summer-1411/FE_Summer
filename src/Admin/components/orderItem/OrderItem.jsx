@@ -137,7 +137,8 @@ export default function OrderItem(
             const res = await request.put(`/order/byAdmin?refuse=true`,
                 {
                     id: order.id,
-                    reason: values.reason
+                    reason: values.reason,
+                    email: order.email
                 })
             if (res.data.success) {
                 setListOrderPending(prev => prev.filter(item => item.id !== order.id))
