@@ -5,8 +5,9 @@ import axios from "axios"
 import { SUMMER_SHOP } from "./constants"
 import { spinningLoaderRef } from "./pages/Loading/hook"
 
+
 // const BASE_URL = 'https://api-summer-shop.vercel.app/api'
-const SERVICE = 'http://localhost:6868'
+const SERVICE = 'https://api-summer-shop.vercel.app/api'
 const BASE_URL = SERVICE +'/api'
 const IMAGE_LINK = SERVICE +'/images'
 const IMAGE_DEFAULT = IMAGE_LINK +'/default.jpg'
