@@ -7,7 +7,7 @@ import { spinningLoaderRef } from "./pages/Loading/hook"
 
 
 // const BASE_URL = 'https://api-summer-shop.vercel.app/api'
-const SERVICE = 'https://api-summer-shop.vercel.app/api'
+const SERVICE = 'https://api-summer-shop.vercel.app'
 const BASE_URL = SERVICE +'/api'
 const IMAGE_LINK = SERVICE +'/images'
 const IMAGE_DEFAULT = IMAGE_LINK +'/default.jpg'
