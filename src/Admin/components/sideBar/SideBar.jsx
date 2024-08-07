@@ -23,7 +23,7 @@ export default function SideBar() {
     return (
         <div className='sideBar-container'>
             <div className="sideBar-container-heading">
-                HoangTuan Admin
+            CoolFate Admin
             </div>
             <div className="list-navlink">
                 {sideBarAdmin.map((nav) => (

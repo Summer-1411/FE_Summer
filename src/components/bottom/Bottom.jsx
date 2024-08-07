@@ -11,7 +11,7 @@ export default function Bottom() {
                     <div className='col l-4 c-12 m-6'>
                         <div className="item">
                             <div className="heading">
-                                HoangTuanShop
+                            CoolFate
                             </div>
                             <div className="item-content">
                                 <div className="item-content-row">
@@ -27,7 +27,7 @@ export default function Bottom() {
                                         Fanpage :
                                     </div>
                                     <div className="row-content">
-                                        Fb.com/HoangTuanShop
+                                        Fb.com/CoolFate
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@ export default function Bottom() {
             </div>
         </div>
             <Footer style={{ textAlign: 'center' }}>
-                HT Shop ©{new Date().getFullYear()} Created by HoangTuan
+                HT Shop ©{new Date().getFullYear()} Created by CoolFate
             </Footer>
         </>
     )

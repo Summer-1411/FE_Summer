@@ -72,7 +72,7 @@ export default function Register() {
 
                 </div>
                 <Modal
-                    title="Vui lòng nhập mã OTP được gửi về Email để đăng ký dịch vụ HoangTuan Shop"
+                    title="Vui lòng nhập mã OTP được gửi về Email để đăng ký dịch vụ CoolFate Shop"
                     open={isModalOpen}
                     onCancel={handleCancel}
                     footer={[
