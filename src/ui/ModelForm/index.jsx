@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { ModalForm } from '@ant-design/pro-form'
 import { useIntl } from 'react-intl'
 import { CloseOutlined, SaveFilled } from '@ant-design/icons'
@@ -30,6 +30,7 @@ const CustomModalForm = (props) => {
         onFinish,
         modalProps = {},
         isDisable,
+        isDisableReset = false,
         trigger,
         isLoading = false,
     } = props
@@ -63,7 +64,7 @@ const CustomModalForm = (props) => {
                     submitter={{
                         resetButtonProps: {
                             onClick: () => onReset?.(),
-                            disabled: false,
+                            disabled: isDisableReset,
                         },
                         submitButtonProps: { disabled: isDisable, loading: isLoading },
                         searchConfig: {

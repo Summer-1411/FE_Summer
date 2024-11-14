@@ -255,6 +255,12 @@ const ACTION_TYPE = {
     UPDATE: 'UPDATE',
     VIEW: 'VIEW'
 }
+
+
+const DELETE_ITEM = {
+    COLOR: 'COLOR',
+    SIZE: 'SIZE'
+}
 const SUMMER_SHOP = "summerShop"
 
 export const DATE_FORMAT = 'DD/MM/YYYY'
@@ -282,6 +288,7 @@ export {
     NUMBER_INPUT_TYPE,
     PAYMENT_METHOD,
     ModalType,
-    ACTION_TYPE
+    ACTION_TYPE,
+    DELETE_ITEM
 }
 
