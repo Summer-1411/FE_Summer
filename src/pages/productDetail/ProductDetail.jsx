@@ -45,7 +45,7 @@ export default function ProductDetail() {
     const caculatorRateValue = useMemo(() => {
         const total = feedbackListProduct.reduce((accumulator, currentValue) => accumulator + currentValue.rate,
             0,)
-        return feedbackListProduct.length > 0 ? total/feedbackListProduct.length : 5
+        return feedbackListProduct.length > 0 ? total / feedbackListProduct.length : 5
     }, [feedbackListProduct.length])
 
 
