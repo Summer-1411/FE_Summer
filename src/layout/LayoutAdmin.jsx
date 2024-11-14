@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../Admin/components/navbar/Navbar"
 import SideBar from "../Admin/components/sideBar/SideBar"
+import { ConfirmModal } from "../ui/ConfirmModel"
 
 const LayoutAdmin = () => {
 
@@ -14,6 +15,7 @@ const LayoutAdmin = () => {
                     <Navbar />
                     <Outlet />
                 </div>
+                <ConfirmModal />
             </div>
         </div>
     )

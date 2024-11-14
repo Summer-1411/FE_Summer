@@ -1,10 +1,15 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from 'antd';
 import { useProducer } from '../hooks/ProducerContext';
 import { listStatus } from '../../../../constants';
 import { useCreateProducer, useUpdateProducer } from '../services';
-
+import {
+  ProForm,
+  ProFormMoney,
+  ProFormSwitch,
+} from '@ant-design/pro-form';
+import { NumberInput } from '../../../../ui/NumberInput';
 const { Option } = Select;
 const CreateUpdate = (props) => {
   const { formCreateUpdate, edit, setEdit, initValue } = useProducer()
@@ -36,6 +41,7 @@ const CreateUpdate = (props) => {
     setFileList([])
   }
 
+  const formRef = useRef();
 
   return (
     <Drawer
@@ -45,7 +51,39 @@ const CreateUpdate = (props) => {
       open={open}
       bodyStyle={{ paddingBottom: 80 }}
     >
-      <Form layout="vertical" form={formCreateUpdate} onFinish={onFinish}>
+      <ProForm
+        onFinish={async (values) => {
+
+          console.log(values);
+        }}
+        formRef={formRef}
+        params={{ id: '100' }}
+        formKey="base-form-use-demo"
+        autoFocusFirstInput
+      >
+
+        <NumberInput
+          isDotNumberFormat
+          isNonTypingZero
+          colProps={{ sm: 24, md: 12, lg: 12 }}
+          fieldProps={{
+            maxLength: 15,
+            addonAfter: 'VNĐ',
+            onPaste: (event) => {
+              const pastedText = event.clipboardData.getData('text/plain')
+              if (!/^\d+$/.test(pastedText)) {
+                event.preventDefault()
+              }
+            },
+          }}
+          name={"amout"}
+          label={"Test"}
+          autoRequired
+        />
+
+
+      </ProForm>
+      {/* <Form layout="vertical" form={formCreateUpdate} onFinish={onFinish}>
 
         <Row gutter={16}>
 
@@ -59,6 +97,7 @@ const CreateUpdate = (props) => {
               <Input placeholder="Nhập tên hãng sản xuất" />
             </Form.Item>
           </Col>
+          
 
 
           <Col span={12}>
@@ -84,7 +123,7 @@ const CreateUpdate = (props) => {
             Lưu dữ liệu
           </Button>
         </Space>
-      </Form>
+      </Form> */}
     </Drawer>
   );
 };

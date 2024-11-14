@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space, Modal, Upload, DatePicker, Image, Flex, Rate } from 'antd';
 import { useFeedback } from '../../pages/completedOrder/FeedbackContext';
 import DescriptionItem from '../../ui/DescriptionItem/DescriptionItem';
-import { request } from '../../requestMethod';
+import { IMAGE_LINK, request } from '../../requestMethod';
 import { useSendFeedback, useUpdateFeedback } from '../../services/feedback';
 const desc = ['Rất tệ', 'Tệ', 'Ổn', 'Tuyệt', 'Rất tuyệt'];
 
@@ -24,6 +24,8 @@ const Feedback = () => {
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
 
+    console.log('feedbackInfor', feedbackInfor);
+
     const serviceSendFeedback = useSendFeedback()
     const serviceUpdateFeedback = useUpdateFeedback()
 
@@ -35,6 +37,16 @@ const Feedback = () => {
         setPreviewOpen(false)
     };
 
+    // const handlePreview = async (file) => {
+    //     if (!file.url && !file.preview) {
+    //         file.preview = await getBase64(file.originFileObj);
+    //     }
+
+    //     setPreviewImage(file.url || (file.preview));
+    //     setPreviewOpen(true);
+    //     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    // };
+
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
@@ -42,7 +54,6 @@ const Feedback = () => {
 
         setPreviewImage(file.url || (file.preview));
         setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
     };
 
     const handleChange = ({ fileList: newFileList }) =>
@@ -124,7 +135,7 @@ const Feedback = () => {
                     <Col span={24}>
                         {<Image
                             width={300}
-                        // src={`${IMAGE_LINK}/${initValue?.avatar}`}
+                            src={feedbackInfor.prevImg ? `${IMAGE_LINK}/${feedbackInfor.prevImg}` : null}
                         />}
                         <Form.Item
                             name="avatar"

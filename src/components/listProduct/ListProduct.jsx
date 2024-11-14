@@ -1,7 +1,7 @@
 import "./listProduct.scss"
-import {List } from 'antd';
+import { List } from 'antd';
 import Product from "../product/Product";
-export default function ListProduct({productList}) {
+export default function ListProduct({ productList }) {
     return (
         <div className="list-products">
             <List
@@ -12,7 +12,7 @@ export default function ListProduct({productList}) {
                     md: 3,
                     lg: 4,
                     xl: 4,
-                    xxl: 1
+                    xxl: 6
                 }}
                 pagination={{
                     onChange: (page) => {

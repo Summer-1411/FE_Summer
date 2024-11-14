@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom"
 import NavBar from "../components/navbar/Navbar"
 import Bottom from "../components/bottom/Bottom"
 import ScrollToTop from "../ui/ScrollToTop/ScrollToTop";
+import { ConfirmModal } from "../ui/ConfirmModel";
 const Layout = () => {
     const { pathname } = useLocation();
     return (
@@ -11,6 +12,7 @@ const Layout = () => {
             <div className="wrapper-container">
                 <Outlet />
             </div>
+            <ConfirmModal />
             <Bottom />
         </div>
     )

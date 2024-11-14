@@ -21,9 +21,9 @@ import { AppContext } from "../../context/AppContext";
 import { useGetCategory } from "../../services/category";
 
 export default function NavBar() {
-    const { productCart,setFilterProduct } = useContext(AppContext)
+    const { productCart, setFilterProduct } = useContext(AppContext)
     const currentUser = useSelector((state) => state.user.currentUser);
-   
+
     const [name, setName] = useState("")
     const [resultSearch, setResultSearch] = useState([])
     const [isShow, setIsShow] = useState(true)
@@ -67,8 +67,8 @@ export default function NavBar() {
                 }
             }
         })
-        
-      };
+
+    };
     const handleHideResult = () => {
         setIsShow(false);
     };
@@ -90,7 +90,7 @@ export default function NavBar() {
             <div className="navbar-container">
                 <div className="left">
                     <Link to="/" className="logoApp">
-                    CoolFate Shop
+                        CoolFate Shop
                     </Link>
                     <div>
                         <WbSunnyOutlinedIcon />
@@ -118,12 +118,12 @@ export default function NavBar() {
                                     defaultValue=""
                                     style={{ width: 140 }}
                                     size="large"
-                                    bordered={false}
+                                    variant="unstyled"
                                     onChange={handleChangeSelect}
                                     options={listCategory}
 
                                 />
-                                
+
                             </div>
 
                             <SearchOutlinedIcon />

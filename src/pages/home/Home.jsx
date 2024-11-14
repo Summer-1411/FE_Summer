@@ -3,19 +3,23 @@ import { useContext } from "react";
 import ListProduct from "../../components/listProduct/ListProduct";
 import Slider from "../../components/slider/Slider";
 import './home.scss'
-import {  request } from "../../requestMethod";
+import { request } from "../../requestMethod";
 import { Radio } from 'antd';
 import { AppContext } from "../../context/AppContext";
 import { useGetProduct } from "../../services/products";
 import { useGetProducer } from "../../services/producer";
-
+import {
+    ProForm,
+    ProFormMoney,
+    ProFormSwitch,
+} from '@ant-design/pro-form';
 
 function Home() {
     const { filterProduct, setFilterProduct } = useContext(AppContext)
-    
+
     const { productList } = useGetProduct(filterProduct)
     const { listProducer } = useGetProducer()
-    
+
     const handleChange = (e) => {
         setFilterProduct(prev => {
             return {
@@ -30,7 +34,7 @@ function Home() {
     return (
         <>
             <div className="home">
-                
+
                 <div className="home-container">
                     <Slider />
                     <div className="home-heading">
@@ -43,7 +47,7 @@ function Home() {
                             </div>
                             <div className='col l-8 c-12 m-6'>
                                 <div className="home-manufacturer">
-                                    <Radio.Group  onChange={handleChange}>
+                                    <Radio.Group onChange={handleChange}>
                                         {listProducer.map((producer) => (
                                             <Radio.Button key={producer.id} value={producer.id}>{producer.name}</Radio.Button>
                                         ))}
@@ -56,7 +60,8 @@ function Home() {
 
 
                     </div>
-                    <ListProduct productList={productList}/>
+
+                    <ListProduct productList={productList} />
                 </div>
             </div>
         </>);

@@ -1,7 +1,5 @@
 @import "../../style.scss";
 
-
-
 .product-item {
     @include themify($themes) {
         border-radius: 8px;
@@ -13,104 +11,89 @@
         text-decoration: none;
         border: 1px solid transparent;
         height: 100%;
-        
-            .img {
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                flex-shrink: 0;
-            }
-        
+        transition: border 0.3s ease;
+
+        .img {
+            width: 100%;
+            height: 200px;
+            /* Chiều cao cố định để hình ảnh luôn đồng nhất */
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
         &:hover {
-            border: 1px solid themed("border");
+            border-color: themed("border");
+            cursor: pointer;
+
+            .name-product {
+                color: #f82e56;
+            }
+
+            .btn button {
+                color: white;
+                background-color: #1677ff;
+            }
         }
 
         .product-content {
-
             flex: 1;
             display: flex;
             flex-direction: column;
-            
-            
-
-            .list-star {
-                //f82e56
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgb(235, 235, 37);
-
-                .star {
-                    width: 18px;
-                    height: 18px;
-                }
-            }
+            padding: 10px;
 
             .product-content-top {
-                display: flex;
-                flex-direction: column;
                 flex: 1;
-                padding: 20px 20px 0 20px;
+                text-align: center;
 
                 .name-product {
-                    margin: 10px 0;
                     font-size: 18px;
+                    font-weight: bold;
                     color: themed("textBold");
-                    font-family: 900;
-                    flex: 1;
-                    transition: all 0.3s linear;
-                    text-align: center;
+                    margin: 10px 0;
+                    min-height: 50px;
+                    /* Đảm bảo phần tên sản phẩm có cùng chiều cao */
+                    transition: color 0.3s ease;
                 }
-    
+
                 .price-product {
-                    text-align: center;
                     color: red;
                     font-size: 16px;
-                    font-weight: 1000;
-                    margin-top: auto;
-                    flex-shrink: 0;
+                    font-weight: 700;
+                    margin-bottom: 10px;
                 }
             }
 
             .btn {
-                margin-top: auto;
-                flex-shrink: 0;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                padding: 20px;
+                padding-top: 10px;
+
+                .list-star {
+                    display: flex;
+                    align-items: center;
+                    color: rgb(235, 235, 37);
+
+                    .star {
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
 
                 button {
                     background-color: themed("bg");
                     border: 1px solid themed("border");
                     border-radius: 5px;
-                    display: flex;
-                    align-items: center;
                     padding: 4px 8px;
-                    transition: all 0.3s linear;
+                    transition: all 0.3s ease;
                     color: themed("textColorSoft");
-                }
-            }
-        }
 
-        &:hover {
-            cursor: pointer;
-
-            .product-content {
-                .product-content-top {
-                    .name-product {
-                        color: #f82e56;
+                    &:hover {
+                        color: white;
+                        background-color: #1677ff;
                     }
                 }
             }
-
-            .btn {
-                button {
-                    color: white;
-                    background-color: #1677ff;
-                }
-            }
         }
-
     }
 }

@@ -2,7 +2,7 @@ import './navbar.scss'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { useSelector } from 'react-redux';
-import {  IMAGE_DEFAULT, IMAGE_LINK, request } from '../../../requestMethod';
+import { IMAGE_DEFAULT, IMAGE_LINK, request } from '../../../requestMethod';
 import { useEffect, useRef, useState } from 'react';
 import useDebounce from '../../../hooks/useDebounce';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -77,7 +77,7 @@ export default function Navbar() {
                 onClickOutside={handleHideResult}
             >
                 <div className="navbar-left">
-                    <SearchOutlinedIcon />
+                    {/* <SearchOutlinedIcon />
                     <input type="text" className="input-admin" placeholder='Nhâp tên sản phẩm, tên khách hàng...' value={name}
                         onChange={handleChange}
                         onFocus={() => setIsShow(true)}
@@ -87,7 +87,7 @@ export default function Navbar() {
                     )}
                     {loading && (
                         <RotateRightOutlinedIcon className="loading" />
-                    )}
+                    )} */}
                 </div>
             </HeadlessTippy>
             <div className="navbar-right">

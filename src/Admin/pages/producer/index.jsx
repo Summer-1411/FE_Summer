@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Button, Tag, Modal } from 'antd';
+import { Button, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import CreateUpdate from "./components/formCreateUpdate";
 import Table from "antd/es/table";
@@ -13,36 +13,35 @@ import { ProducerProvider, useProducer } from "./hooks/ProducerContext";
 import { useDeleteProducer, useSearchProducer } from './services';
 import Search from './components/search';
 import { listStatus } from '../../../constants';
+import { useModalConfirm } from '../../../ui/ConfirmModel/ModalContextCustom';
+import { ModalType } from '../../../ui/ConfirmModel/contanst';
 
 
 const ProducerManager = () => {
   const { setEdit, formCreateUpdate, setInitValue } = useProducer()
+  const { showConfirm } = useModalConfirm()
+
   const [open, setOpen] = useState(false)
-  const [openModel, setOpenModel] = useState(false);
   const [initSearch, setInitSearch] = useState({
     name: '',
     status: ''
   })
-  const [idDelete, setIdDelete] = useState()
   const { producerList } = useSearchProducer(initSearch)
   const deleteProducer = useDeleteProducer()
 
   const handleClickDelete = (record) => {
-    setOpenModel(true)
-    setIdDelete(record.id)
+    showConfirm({
+      message: "Sau khi xóa sẽ chuyển trạng thái về không hoạt động. Bạn có muốn xóa ?",
+      type: ModalType.WARNING,
+      title: "Xóa bản ghi",
+      onOk: async () => {
+        await deleteProducer.mutateAsync(record.id)
+      },
+    })
   }
   const showDrawer = () => {
     setOpen(true);
   };
-
-  const handleOk = () => {
-    setOpenModel(false);
-    deleteProducer.mutateAsync(idDelete)
-  };
-  const handleCancel = () => {
-    setOpenModel(false);
-  };
-
   //Edit
   const handleClickEdit = (record) => {
     formCreateUpdate.setFieldsValue(record)
@@ -96,7 +95,7 @@ const ProducerManager = () => {
     }
   ];
   const Header = () => {
-    return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    return <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <h3>
         Danh sách hãng sản xuất
       </h3>
@@ -111,9 +110,9 @@ const ProducerManager = () => {
   return (
     <div>
 
-      <Search setParams={setInitSearch}/>
+      <Search setParams={setInitSearch} />
       <Table
-        title={() =><Header />}
+        title={() => <Header />}
         rowKey={'id'}
         onRow={(record) => {
           return {
@@ -127,14 +126,6 @@ const ProducerManager = () => {
         columns={columns}
         dataSource={producerList}
       />
-      <Modal
-        title="Xóa bản ghi"
-        open={openModel}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>Sau khi xóa sẽ chuyển trạng thái về không hoạt động. Bạn có muốn xóa ?</p>
-      </Modal>
       <CreateUpdate open={open} setOpen={setOpen} />
     </div>
   )
