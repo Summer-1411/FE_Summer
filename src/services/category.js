@@ -16,7 +16,7 @@ export function useGetCategory() {
                 const valueSelect = res.data.category.map(item => ({
                     value: item.id, label: item.name
                 }))
-                setResult(prev => [{ value: '', label: 'Tất cả' }, ...valueSelect])
+                setResult(valueSelect)
             },
         }
 

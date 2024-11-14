@@ -13,16 +13,22 @@ import { QueryClient } from 'react-query'
 import QueryClientProvider from './queries/Query';
 import Loading from './pages/Loading/Loading';
 import { spinningLoaderRef } from './pages/Loading/hook';
+import IntlProvider from './context/IntlContext';
+import { ModalProvider } from './ui/ConfirmModel/ModalContextCustom';
 
 const Main = () => {
   const queryClient = new QueryClient()
   return (
     <Loading ref={spinningLoaderRef}>
       <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <App />
-          <ToastContainer />
-        </AppProvider>
+        <IntlProvider>
+          <AppProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+            <ToastContainer />
+          </AppProvider>
+        </IntlProvider>
       </QueryClientProvider>
     </Loading>
   )

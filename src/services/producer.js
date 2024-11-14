@@ -12,8 +12,10 @@ export function useGetProducer() {
         },
         {
             onSuccess: ({ ...res }) => {
-                const value = res.data.producer
-                setResult([{ id: '', name: 'Tất cả' }, ...value])
+                const value = res.data.producer.map(item => ({
+                    ...item, value: item.id, label: item.name,
+                }))
+                setResult(value)
             },
         }
 

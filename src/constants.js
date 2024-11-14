@@ -90,6 +90,12 @@ const sideBarAdmin = [
         path: "products"
     },
     {
+        id: 7,
+        icon: SmartphoneIcon,
+        title: "Quản lý sản phẩm",
+        path: "manage-product"
+    },
+    {
         id: 3,
         icon: AccountCircleOutlinedIcon,
         title: "Khách hàng",
@@ -219,18 +225,49 @@ const producers = [
         name: "Masstel"
     },
 ]
- const listStatus = [
+const listStatus = [
     {
-      value: 1,
-      label: "Hoạt động",
+        value: 1,
+        label: "Hoạt động",
     },
     {
-      value: 0,
-      label: "Không hoạt động",
+        value: 0,
+        label: "Không hoạt động",
     }
-  ]
+]
 
+
+const NUMBER_INPUT_TYPE = {
+    TEXT_NUMBER: 'TEXT_NUMBER',
+    NUMBER: 'NUMBER',
+}
+
+const ModalType = {
+    SUCCESS: 'SUCCESS',
+    ERROR: 'ERROR',
+    WARNING: 'WARNING',
+    DELETE: 'DELETE',
+    INFO: 'INFO',
+}
+
+const ACTION_TYPE = {
+    CREATE: 'CREATE',
+    UPDATE: 'UPDATE',
+    VIEW: 'VIEW'
+}
 const SUMMER_SHOP = "summerShop"
+
+export const DATE_FORMAT = 'DD/MM/YYYY'
+export const DATE_FORMAT_2 = 'DDMMYYYY'
+export const DATE_FORMAT_3 = 'YYYY-MM-DD'
+export const DATE_FORMAT_4 = 'MM/YYYY'
+export const DATE_FORMAT_5 = 'DD-MM-YYYY'
+export const TIME_FORMAT = 'HH:mm:ss'
+export const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm:ss'
+export const DATE_TIME_FORMAT2 = 'DD-MM-YYYY HH:mm:ss'
+export const DATE_TIME_FORMAT3 = 'YYYY-MM-DD HH:mm:ss'
+export const DATE_TIME_FORMAT_FIX_TIME = 'DD/MM/YYYY 00:00:00'
+export const DATE_TIME_FORMAT_FIX_END_TIME = 'DD/MM/YYYY 23:59:59'
 export {
     genders,
     routesPurchasePage,
@@ -242,6 +279,9 @@ export {
     categorys,
     producers,
     listStatus,
-    PAYMENT_METHOD
+    NUMBER_INPUT_TYPE,
+    PAYMENT_METHOD,
+    ModalType,
+    ACTION_TYPE
 }
 

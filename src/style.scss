@@ -10,7 +10,7 @@ $themes: (
         textBold: #000,
         colorPink: #d83131,
         pageColor: orange,
-        
+
     ),
     dark: (textColor: whitesmoke,
         bg: #222,
@@ -25,6 +25,7 @@ $themes: (
         pageColor: orange,
     )
 );
+
 * {
     margin: 0;
     padding: 0;
@@ -39,15 +40,19 @@ $theme-map: null;
 @mixin themify($themes) {
     @each $theme, $map in $themes {
         .theme-#{$theme} & {
-            $theme-map: () !global;
+            $theme-map: (
+                ) !global;
+
             @each $key, $submap in $map {
-                $value: map-get(map-get($themes, $theme), "#{$key}");
-                $theme-map: map-merge($theme-map, ($key: $value)) !global;
-            }
-            @content;
-            $theme-map: null !global;
+                $value: map-get(map-get($themes, $theme), "#{$key}"
+                );
+            $theme-map: map-merge($theme-map, ($key: $value)) !global;
         }
+
+        @content;
+        $theme-map: null !global;
     }
+}
 }
 
 @function themed($key) {
@@ -61,7 +66,7 @@ $theme-map: null;
 }
 
 @mixin tablet {
-    @media  (min-width: 481px) and ( max-width: 960px) {
+    @media (min-width: 481px) and (max-width: 960px) {
         @content;
     }
 }
@@ -79,11 +84,182 @@ $theme-map: null;
 .admin-wrapper {
     .container-admin {
         display: flex;
+
         .side-bar {
             flex: 2;
         }
+
         .main {
             flex: 8;
         }
     }
+}
+
+.bss-form-modal {
+    .bss-modal-header {
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(0, 53, 128, 0.08);
+        margin: -20px -24px 20px !important;
+    }
+}
+
+.bss-creator-form>span {
+    font-family: Inter, serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-align: left;
+    background: #00204DE5;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+//ant-pro-form-list-item css-dev-only-do-not-override-11c8p3y 
+// false
+// ant-pro-form-list-item-show-label
+
+
+.ant-pro-form-list-item.css-dev-only-do-not-override-11c8p3y.ant-pro-form-list-item-show-label {
+    display: block !important;
+}
+
+.bss-pro-form-list-action {
+    margin-block-end: 12px;
+}
+
+.bss-pro-form-list-item {
+    align-items: center !important;
+}
+
+
+table.fixed {
+    table-layout: fixed;
+}
+
+td.truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.react-resizable {
+    position: relative;
+    background-clip: padding-box;
+}
+
+.bss-pro-table {
+    border-radius: 8px !important;
+}
+
+.bss-pro-table-no-border {
+    border: 0 !important;
+}
+
+
+.bss-pro-table-list-toolbar-title {
+    padding-left: 20px;
+    font-weight: 600 !important;
+}
+
+.bss-table-column-title {
+    //styleName: Heading/H9 • 12px;
+    font-family: Inter, serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0em;
+    background-blend-mode: multiply;
+}
+
+.bss-table-wrapper {
+    overflow: unset !important;
+
+    .bss-table-container table>thead>tr:first-child>*:first-child {
+        border-start-start-radius: 0 !important;
+    }
+
+    .bss-table-container table>thead>tr:first-child>*:last-child {
+        border-start-end-radius: 0 !important;
+    }
+
+    .bss-table-cell {
+        .bss-typography {
+            //styleName: Heading/H9 • 12px;
+            font-family: Inter, serif;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0em;
+            // text-align: left;
+            background-blend-mode: multiply;
+        }
+
+        .bss-badge-status-text {
+            font-family: Inter, serif;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0em;
+            text-align: left;
+            background-blend-mode: multiply;
+        }
+    }
+
+    .bss-table-thead {
+        th {
+            font-size: 13px !important;
+            font-weight: 600;
+            line-height: 20px !important;
+            letter-spacing: 0 !important;
+            background-blend-mode: multiply !important;
+        }
+    }
+}
+
+// li.bss-pagination-total-text {
+//   visibility: hidden
+// }
+
+.react-resizable-handle {
+    position: absolute;
+    right: -5px;
+    bottom: 0;
+    z-index: 1;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+}
+
+.bss-pro-card .bss-pro-card-body {
+    padding-inline: 0 !important;
+}
+
+.bss-pro-table-list-toolbar-search {
+    .bss-input {
+        height: 32px !important;
+    }
+}
+
+.bss-table-filter-dropdown {
+    .bss-input {
+        height: 32px !important;
+    }
+}
+
+.bss-table-row-highlighted {
+    background-color: #ebeff5 !important;
+    font-weight: bold;
+
+    .bss-table-cell-fix-left {
+        background-color: #f0f7ff !important;
+    }
+
+    .bss-table-cell-fix-right {
+        background-color: #f0f7ff !important;
+    }
+}
+
+.bss-table-cell-row-hover {
+    background-color: #ebeff5 !important;
 }

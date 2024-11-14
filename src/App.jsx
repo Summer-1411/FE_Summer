@@ -56,6 +56,8 @@ import CategoryRoot from './Admin/pages/category';
 import ProducerRoot from './Admin/pages/producer';
 import Revenue from './Admin/pages/revenue/Revenue';
 import CustomerStatistics from './Admin/pages/customerStatistics/CustomerStatistics';
+import DemoForm from './pages/DemoForm';
+import ProductRoot from './Admin/pages/manageProduct';
 
 function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -68,7 +70,7 @@ function App() {
     return children
   }
   //Nếu chưa đăng nhập trả về màn home
-  const IsLogin = ({children}) => {
+  const IsLogin = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/" />
     }
@@ -131,12 +133,12 @@ function App() {
             {
               path: "purchase",
               element: <Purchase />,
-              
+
             },
             {
               path: "change-password",
               element: <ChangePassword />,
-              
+
             },
             {
               path: "logout",
@@ -165,6 +167,10 @@ function App() {
         {
           path: "category",
           element: <CategoryRoot />,
+        },
+        {
+          path: "manage-product",
+          element: <ProductRoot />,
         },
         {
           path: "producer",
@@ -243,6 +249,10 @@ function App() {
       element: <Logged><Login /></Logged>,
     },
     {
+      path: "/demo",
+      element: <DemoForm />,
+    },
+    {
       path: "/forgot-password",
       element: <Logged><ForgotPassword /></Logged>,
     },
@@ -253,7 +263,7 @@ function App() {
   ]);
   return (
     <div>
-      
+
       <RouterProvider router={router} />
     </div>
   );

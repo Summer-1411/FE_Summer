@@ -43,7 +43,7 @@
 
 
 
-:where(.css-dev-only-do-not-override-mzwlov).ant-list-grid .ant-col>.ant-list-item {
+/* :where(.css-dev-only-do-not-override-mzwlov).ant-list-grid .ant-col>.ant-list-item {
   flex: 1;
 }
 
@@ -53,8 +53,9 @@
   display: flex;
   flex-direction: column;
 }
+
 .ant-col.css-dev-only-do-not-override-mzwlov {
   display: flex;
   flex-direction: column;
   flex: 1;
-}
+} */
