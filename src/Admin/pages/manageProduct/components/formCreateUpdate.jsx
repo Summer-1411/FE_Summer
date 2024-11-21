@@ -1,19 +1,17 @@
 
-import { Button, Col, Divider, Form, Image, Row, Upload } from 'antd'
-import { CloudUploadOutlined, DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, Divider, Image, Row } from 'antd'
+import { CloudUploadOutlined, DeleteFilled } from '@ant-design/icons';
 import CustomModalForm from '../../../../ui/ModelForm'
 import { useModalConfirm } from '../../../../ui/ConfirmModel/ModalContextCustom'
 import TextInput from '../../../../ui/TextInput'
 import { useManageProduct } from '../hooks/ManageProductContext'
 import { TextArea } from '../../../../ui/TextArea'
-import { useState } from 'react'
 import { NumberInput } from '../../../../ui/NumberInput';
 import ListForm from '../../../../ui/ListForm';
 import SelectInput from '../../../../ui/Select';
-import { useCreateProduct } from '../../../../services/product';
-import { ACTION_TYPE, DELETE_ITEM, ModalType } from '../../../../constants';
-
-
+import { useCreateProduct, useUpdateProduct } from '../../../../services/product';
+import { ACTION_TYPE, DELETE_ITEM, listStatus, ModalType, toastOption } from '../../../../constants';
+import { toast } from 'react-toastify';
 
 const FormCreateUpdate = () => {
     const { formCreate,
@@ -28,6 +26,7 @@ const FormCreateUpdate = () => {
     const { showConfirm } = useModalConfirm()
 
     const createProduct = useCreateProduct()
+    const updateProduct = useUpdateProduct()
 
 
 
@@ -73,13 +72,15 @@ const FormCreateUpdate = () => {
 
 
     const convertDataToProductDetail = (list) => {
-        console.log('start');
-
         const flatListWithImages = list.flatMap(item =>
             item.listDetail.map(detail => {
                 // Tìm link ảnh tương ứng với màu sắc từ mảng `img`
                 const imgLink = imageUrls.find(image => image.key === item.color)?.value || null;
 
+                if (!imgLink) {
+                    toast.error(`Bạn chưa upload ảnh cho màu ${item.color}`, toastOption);
+                    return null;
+                }
                 return {
                     id: detail.id,
                     color: item.color,
@@ -90,22 +91,30 @@ const FormCreateUpdate = () => {
                 };
             })
         );
-        console.log('end', flatListWithImages);
+        console.log('run');
 
-        return flatListWithImages;
+        // Kiểm tra nếu bất kỳ phần tử nào là `null` thì trả về `false`
+        if (flatListWithImages.includes(null)) {
+            return { valid: false, data: [] };
+        }
+        return { valid: true, data: flatListWithImages };
     }
 
-    console.log('imageUrls', imageUrls);
 
 
 
-    const handleCreateOrUpdate = async (values) => {
-
+    const handleSubmitData = async (values) => {
         await formCreate.validateFields()
-
         const { listColor, priceRange, ...rest } = values
         const priceRangeValue = parseInt(String(priceRange).replace(/\./g, ''), 10);
-        const productDetail = convertDataToProductDetail(listColor)
+        const { valid, data: productDetail } = convertDataToProductDetail(listColor)
+        console.log('valid', valid);
+
+        if (!valid) {
+            console.log('123');
+
+            return;
+        }
         const dataSubmit = {
             ...statusForm.initData,
             ...rest,
@@ -113,11 +122,35 @@ const FormCreateUpdate = () => {
             img: mainImg,
             productDetail,
         }
-        console.log('values', values);
-        console.log('dataSubmit', dataSubmit);
+        showConfirm({
+            title: `Xác nhận lưu dữ liệu`,
+            message: 'Bạn có chắc chắn lưu thông tin sản phẩm này?',
+            type: ModalType.INFO,
+            onOk: async () => {
+                await saveData(dataSubmit)
+            },
+        })
+    }
+    const saveData = async (dataSubmit) => {
+        if (statusForm.action === ACTION_TYPE.CREATE) {
+            await createProduct.mutateAsync(dataSubmit);
+        } else if (statusForm.action === ACTION_TYPE.UPDATE) {
+            await updateProduct.mutateAsync(dataSubmit);
+        }
+        handleClose()
+    }
+    const getTitleModelForm = () => {
+        switch (statusForm.action) {
+            case ACTION_TYPE.CREATE:
+                return 'Thêm mới sản phẩm'
+            case ACTION_TYPE.UPDATE:
+                return 'Cập nhật sản phẩm'
+            case ACTION_TYPE.VIEW:
+                return 'Chi tiết sản phẩm'
+            default:
+                return 'Thêm mới sản phẩm'
+        }
 
-        // await createProduct.mutateAsync(dataSubmit);
-        // handleClose()
     }
 
 
@@ -156,10 +189,11 @@ const FormCreateUpdate = () => {
         <CustomModalForm
             width={1000}
             open={statusForm.open}
-            title={"Thêm mới sản phẩm"}
-            onFinish={handleCreateOrUpdate}
+            title={getTitleModelForm()}
+            onFinish={handleSubmitData}
             form={formCreate}
             onCancel={onCancel}
+            disabled={statusForm.action === ACTION_TYPE.VIEW}
             isDisableReset={statusForm.action !== ACTION_TYPE.CREATE}
             onReset={handleResetForm}
         >
@@ -171,9 +205,6 @@ const FormCreateUpdate = () => {
                         autoRequired
                         label={"Tên sản phẩm"}
                         key="name"
-                        fieldProps={{
-                            maxLength: 30,
-                        }}
                     />
                     <TextArea
                         name="description"
@@ -208,9 +239,6 @@ const FormCreateUpdate = () => {
                         autoRequired
                         label={"Tình trạng sản phẩm"}
                         key="qualityGrade"
-                        fieldProps={{
-                            maxLength: 30,
-                        }}
                     />
                     <SelectInput
                         autoRequired
@@ -225,6 +253,16 @@ const FormCreateUpdate = () => {
                         name="id_producer"
                         options={listProducer}
                         label={"Nhà sản xuất"}
+                    />
+                    <SelectInput
+                        form={formCreate}
+                        name="status"
+                        options={listStatus}
+                        label={"Trạng thái"}
+                        disabled={[ACTION_TYPE.CREATE, ACTION_TYPE.VIEW].includes(statusForm.action)}
+                        fieldProps={{
+                            defaultValue: 1,
+                        }}
                     />
                 </Col>
                 <Col xs={24} sm={24} md={8} xl={8}>

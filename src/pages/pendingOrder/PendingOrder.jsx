@@ -6,10 +6,14 @@ import PurchaseProduct from '../../components/purchaseProduct/PurchaseProduct';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastOption } from '../../constants';
+import { useHistoryOrder } from '../../components/purchase/Purchase';
 
-export default function PendingOrder({key}) {
+export default function PendingOrder() {
+    const { activeKey: key } = useHistoryOrder()
     const [bill, setBill] = useState([])
     const currentUser = useSelector((state) => state.user.currentUser);
+
+
 
     useEffect(() => {
         const getBill = async () => {
@@ -17,7 +21,7 @@ export default function PendingOrder({key}) {
             console.log(res.data);
             setBill([...res.data.order, ...res.data.orderError])
         }
-        getBill();
+        key === '1' && getBill();
     }, [key])
 
 

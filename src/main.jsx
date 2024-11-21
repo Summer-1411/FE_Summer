@@ -15,6 +15,7 @@ import Loading from './pages/Loading/Loading';
 import { spinningLoaderRef } from './pages/Loading/hook';
 import IntlProvider from './context/IntlContext';
 import { ModalProvider } from './ui/ConfirmModel/ModalContextCustom';
+import { register } from './serviceWorker';
 
 const Main = () => {
   const queryClient = new QueryClient()
@@ -46,3 +47,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
   </React.StrictMode>
 )
+register();

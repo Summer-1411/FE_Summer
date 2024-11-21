@@ -146,10 +146,10 @@
                                 min-height: 34px;
                                 padding: 0.25rem 0.75rem;
                                 margin: 0 8px 8px 0;
-                                color: rgba(0, 0, 0, .8);
+                                color: rgba(0, 0, 0, 0.8);
                                 text-align: center;
                                 border-radius: 2px;
-                                border: 1px solid rgba(0, 0, 0, .09);
+                                border: 1px solid rgba(0, 0, 0, 0.09);
                                 display: inline-flex;
                                 align-items: center;
                                 justify-content: center;
@@ -209,7 +209,7 @@
                         &.add-cart {
                             color: #d0011b;
                             border: 1px solid #d0011b;
-                            background-color: rgba(208, 1, 27, .08);
+                            background-color: rgba(208, 1, 27, 0.08);
                         }
 
                         &.buy-now {
@@ -234,6 +234,10 @@
                 flex: 1;
                 padding: 10px;
                 max-width: 100%;
+            }
+
+            .left {
+                width: 100%;
             }
 
             .bottom-productDetail .btn {

@@ -1,15 +1,8 @@
 
-import React, { useRef } from 'react';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from 'antd';
 import { useProducer } from '../hooks/ProducerContext';
 import { listStatus } from '../../../../constants';
 import { useCreateProducer, useUpdateProducer } from '../services';
-import {
-  ProForm,
-  ProFormMoney,
-  ProFormSwitch,
-} from '@ant-design/pro-form';
-import { NumberInput } from '../../../../ui/NumberInput';
 const { Option } = Select;
 const CreateUpdate = (props) => {
   const { formCreateUpdate, edit, setEdit, initValue } = useProducer()
@@ -38,10 +31,8 @@ const CreateUpdate = (props) => {
 
   const onReset = () => {
     formCreateUpdate.resetFields()
-    setFileList([])
   }
 
-  const formRef = useRef();
 
   return (
     <Drawer
@@ -51,7 +42,7 @@ const CreateUpdate = (props) => {
       open={open}
       bodyStyle={{ paddingBottom: 80 }}
     >
-      <ProForm
+      {/* <ProForm
         onFinish={async (values) => {
 
           console.log(values);
@@ -82,8 +73,8 @@ const CreateUpdate = (props) => {
         />
 
 
-      </ProForm>
-      {/* <Form layout="vertical" form={formCreateUpdate} onFinish={onFinish}>
+      </ProForm> */}
+      <Form layout="vertical" form={formCreateUpdate} onFinish={onFinish}>
 
         <Row gutter={16}>
 
@@ -97,7 +88,7 @@ const CreateUpdate = (props) => {
               <Input placeholder="Nhập tên hãng sản xuất" />
             </Form.Item>
           </Col>
-          
+
 
 
           <Col span={12}>
@@ -123,7 +114,7 @@ const CreateUpdate = (props) => {
             Lưu dữ liệu
           </Button>
         </Space>
-      </Form> */}
+      </Form>
     </Drawer>
   );
 };

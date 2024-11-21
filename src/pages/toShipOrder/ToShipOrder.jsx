@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { request } from '../../requestMethod';
 import OrderItem from '../../components/orderItem/OrderItem';
+import { useHistoryOrder } from '../../components/purchase/Purchase';
 
-export default function ToShipOrder({key}) {
-    const [orderItem,setOrderItem] = useState([])
+export default function ToShipOrder() {
+    const { activeKey: key } = useHistoryOrder()
+    const [orderItem, setOrderItem] = useState([])
     useEffect(() => {
         const getOrderItem = async () => {
             const res = await request.get(`/order/byCustomer?confirm=true`)
-            //console.log(res.data);
             setOrderItem(res.data.order)
         }
-        getOrderItem();
+        key === '2' && getOrderItem();
     }, [key])
     return (
         <div>
