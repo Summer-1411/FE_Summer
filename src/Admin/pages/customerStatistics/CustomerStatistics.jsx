@@ -57,7 +57,7 @@ const generateDataChart = (labels, dataArray, field, colNameSuccess) => {
 export default function CustomerStatistics() {
     const [params, setParams] = useState({
         startDate: getCurrentYearMonth(),
-            endDate:  getCurrentYearMonth(true)
+        endDate: getCurrentYearMonth(true)
     })
     const { data } = useCustomerStatistics(params)
 
@@ -78,7 +78,7 @@ export default function CustomerStatistics() {
 
 
 
-    return <div style={{ padding: 20 }}>
+    return <div>
         <Search setParams={setParams} />
         <Bar options={generateOptions('Thống kê số lượng khách đăng ký mới')} data={dataChartRegister} />
         <Divider />

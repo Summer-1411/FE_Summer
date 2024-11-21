@@ -1,54 +1,54 @@
+
 import { Link, useLocation } from 'react-router-dom'
-import { SUMMER_SHOP, sideBarAdmin, toastOption } from '../../../constants'
-import './sideBar.scss'
-import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../redux/userRedux';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-export default function SideBar() {
+import { SUMMER_SHOP, sideBarAdmin, toastOption } from '../../../constants'
+function SideBar({ isOpen, closeSidebar }) {
     const dispatch = useDispatch()
     const location = useLocation().pathname;
-    const [currentPage, setCurrentPage] = useState("dashboard")
 
-    useEffect(() => {
-        setCurrentPage(location.split("/")[3] || "")
-    }, [location])
+    // Hàm kiểm tra mục nào là "active" dựa trên URL
+    const getActiveClass = (path) => {
+        return location.split("/")[3] === path ? 'active' : '';
+    };
     const handleLogout = () => {
         toast.info("Bạn đã đăng xuất thành công !", toastOption)
-        dispatch(logout());;
+        dispatch(logout());
         localStorage.removeItem(SUMMER_SHOP)
     }
+
     return (
-        <div className='sideBar-container'>
-            <div className="sideBar-container-heading">
-            CoolFate Admin
-            </div>
-            <div className="list-navlink">
+        <aside className={`style-ai-sidebar ${isOpen ? 'active' : ''}`}>
+            <div className="style-ai-sidebar-logo">Summer Admin</div>
+            <nav className="style-ai-menu">
                 {sideBarAdmin.map((nav) => (
                     <Link
                         to={nav.path}
                         key={nav.id}
-                        className={nav.path === currentPage ? "navlink-item active" : "navlink-item"}
-                        onClick={() => setCurrentPage(nav.path)}
+                        className={`style-ai-menu-item ${getActiveClass(nav.path)}`}
+                        onClick={closeSidebar}
                     >
                         <nav.icon /> {nav.title}
                     </Link>
                 ))}
                 <Link
                     to="/"
-                    className="exit-admin"
+                    className="style-ai-menu-item"
                 >
                     <HighlightOffIcon /> Thoát Admin
                 </Link>
                 <div
-                    className="btn-logout"
+                    className="style-ai-menu-item"
                     onClick={handleLogout}
                 >
                     <ExitToAppOutlinedIcon /> Đăng xuất
                 </div>
-            </div>
-        </div>
-    )
+            </nav>
+        </aside>
+    );
 }
+
+export default SideBar;

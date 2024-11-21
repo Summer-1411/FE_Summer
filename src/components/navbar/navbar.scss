@@ -2,8 +2,6 @@
 
 .navbar {
     @include themify($themes) {
-
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -14,6 +12,10 @@
         background-color: themed("bg");
         color: themed("textColor");
         z-index: 9;
+
+        @media (max-width: 576px) {
+            padding: 0;
+        }
 
         .navbar-container {
             flex: 1;
@@ -26,8 +28,6 @@
                 display: flex;
                 align-items: center;
                 gap: 30px;
-
-                span {}
 
                 .logoApp {
                     text-decoration: none;
@@ -72,6 +72,7 @@
                     border-radius: 5px;
                     height: 45px;
                     position: relative;
+
                     .clear,
                     .loading {
                         position: absolute;
@@ -84,60 +85,6 @@
                         opacity: 0.5;
                     }
 
-                    .selection {
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        height: 100%;
-                        padding: 0 15px;
-
-
-                        border-right: 1px solid themed("border");
-                        position: relative;
-                        user-select: none;
-
-                        .selection-title {
-                            height: 100%;
-                            width: 140px;
-                            justify-content: space-between;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        .icon-category {
-                            margin-left: 10px;
-                            transition: all 0.2 ease-in;
-
-                            &.open-option {
-                                transform: rotateZ(180deg);
-                            }
-                        }
-
-                        .option {
-                            display: none;
-                            position: absolute;
-                            top: calc(100% + 5px);
-                            left: 0;
-                            background-color: themed("bg");
-                            border: 1px solid themed("border");
-
-                            .option-item {
-                                padding: 10px 20px;
-                                background-color: themed("bg");
-                                transition: all 0.2s ease-in;
-
-                                &:hover {
-                                    background-color: themed("bgHover");
-                                    color: themed("textHover");
-                                }
-                            }
-
-                            &.open {
-                                display: block;
-                            }
-                        }
-                    }
-
                     .search_input {
                         border: none;
                         outline: none;
@@ -145,6 +92,7 @@
                         background-color: transparent;
                         color: themed("textColor");
 
+                        // Ẩn thanh tìm kiếm trên màn hình mobile
                         @include mobile {
                             display: none;
                         }
@@ -182,10 +130,10 @@
                     }
                 }
 
-                @include mobile {
-                    display: none;
-                }
-
+                // // Ẩn các icon bên phải trong chế độ mobile
+                // @include mobile {
+                //     display: none;
+                // }
                 .user {
                     display: flex;
                     gap: 10px;
@@ -193,9 +141,13 @@
                     align-items: center;
                     text-decoration: none;
                     color: inherit;
-                    @include tablet {
-                        display: none;
-                    }
+
+                    // Ẩn thông tin người dùng trên tablet
+                    // @include tablet {
+                    //     display: none;
+                    // }
+
+
 
                     img {
                         width: 30px;
@@ -204,12 +156,65 @@
                         object-fit: cover;
                     }
 
-                    
+                    @media (max-width: 576px) {
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Ẩn các phần tử cụ thể với class `.mobile-hide` trên mobile
+        @media (max-width: 768px) {
+            .mobile-hide {
+                display: none !important;
+            }
+
+            .navbar-container {
+                padding: 10px 20px;
+
+                .left {
+                    gap: 15px;
+
+                    .logoApp {
+                        font-size: 18px;
+                    }
+                }
+
+                .right {
+                    gap: 15px;
+                }
+            }
+
+            // Xử lý responsive cho màn hình nhỏ hơn 576px
+            @media (max-width: 576px) {
+                .navbar-container {
+                    // flex-direction: column;
+                    // align-items: flex-start;
+
+                    .left {
+                        width: 100%;
+                        justify-content: space-between;
+
+                        .logoApp {
+                            font-size: 16px;
+                        }
+                    }
+
+                    .right {
+                        width: 100%;
+                        justify-content: space-around;
+                    }
                 }
             }
         }
     }
 }
+
 @keyframes spinner {
     from {
         transform: rotate(0);

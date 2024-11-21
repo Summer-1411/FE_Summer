@@ -29,7 +29,7 @@ export default function Register() {
             handleCancel()
             toast.success('Bạn đã đăng ký thành công !', toastOption);
             navigate("/login")
-            
+
         } catch (error) {
             toast.error(error.message, toastOption);
             console.log("ERROR REGISTER: ", error);
@@ -72,7 +72,7 @@ export default function Register() {
 
                 </div>
                 <Modal
-                    title="Vui lòng nhập mã OTP được gửi về Email để đăng ký dịch vụ CoolFate Shop"
+                    title="Vui lòng nhập mã OTP được gửi về Email để đăng ký dịch vụ Summer Shop"
                     open={isModalOpen}
                     onCancel={handleCancel}
                     footer={[
