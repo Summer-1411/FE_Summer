@@ -8,6 +8,8 @@ import CategoryIcon from '@mui/icons-material/Category';
 import StoreIcon from '@mui/icons-material/Store';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 const toastOption = {
     position: "top-center",
     autoClose: 3000,
@@ -69,7 +71,13 @@ const sideBarAdmin = [
         id: 1,
         icon: DashboardOutlinedIcon,
         title: "Trang chủ",
-        path: ""
+        path: "dashboard"
+    },
+    {
+        id: 12,
+        icon: MessageOutlinedIcon,
+        title: "Tin nhắn",
+        path: "chat"
     },
     {
         id: 9,
@@ -83,12 +91,12 @@ const sideBarAdmin = [
         title: "Thống kê khách hàng",
         path: "customer-statistics"
     },
-    {
-        id: 2,
-        icon: SmartphoneIcon,
-        title: "Sản phẩm",
-        path: "products"
-    },
+    // {
+    //     id: 2,
+    //     icon: SmartphoneIcon,
+    //     title: "Sản phẩm",
+    //     path: "products"
+    // },
     {
         id: 7,
         icon: SmartphoneIcon,
@@ -96,10 +104,16 @@ const sideBarAdmin = [
         path: "manage-product"
     },
     {
-        id: 3,
+        id: 10,
         icon: AccountCircleOutlinedIcon,
-        title: "Khách hàng",
-        path: "users"
+        title: "Quản lý khách hàng",
+        path: "manage-user"
+    },
+    {
+        id: 11,
+        icon: ManageHistoryIcon,
+        title: "Theo dõi hệ thống",
+        path: "tracking-log"
     },
     {
         id: 4,
@@ -187,6 +201,26 @@ const categorys = [
         id: 3
     }
 ]
+
+const METHOD_API = [
+    {
+        value: 'POST',
+        label: 'POST'
+    },
+    {
+        value: 'PUT',
+        label: 'PUT'
+    },
+    {
+        value: 'DELETE',
+        label: 'DELETE'
+    },
+    {
+        value: 'GET',
+        label: 'GET'
+    }
+]
+
 const producers = [
     {
         id: 1,
@@ -236,6 +270,22 @@ const listStatus = [
     }
 ]
 
+const listGender = [
+    {
+        value: 1,
+        label: "Nam",
+    },
+    {
+        value: 2,
+        label: "Nữ",
+    },
+    {
+        value: 3,
+        label: "Khác",
+    }
+]
+
+
 
 const NUMBER_INPUT_TYPE = {
     TEXT_NUMBER: 'TEXT_NUMBER',
@@ -261,6 +311,17 @@ const DELETE_ITEM = {
     COLOR: 'COLOR',
     SIZE: 'SIZE'
 }
+
+const INFOR_PRODUCT = {
+    COLOR: 'color',
+    SIZE: 'size'
+}
+
+const STATUS = {
+    ACTIVE: 1,
+    INACTIVE: 0
+}
+
 const SUMMER_SHOP = "summerShop"
 
 export const DATE_FORMAT = 'DD/MM/YYYY'
@@ -289,6 +350,10 @@ export {
     PAYMENT_METHOD,
     ModalType,
     ACTION_TYPE,
-    DELETE_ITEM
+    DELETE_ITEM,
+    INFOR_PRODUCT,
+    listGender,
+    STATUS,
+    METHOD_API
 }
 
