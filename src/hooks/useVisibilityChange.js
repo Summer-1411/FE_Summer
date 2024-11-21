@@ -1,0 +1,19 @@
+// useVisibilityChange.js
+import { useEffect, useState } from 'react';
+
+const useVisibilityChange = () => {
+    const [isForeground, setIsForeground] = useState(true);
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            setIsForeground(document.visibilityState === 'visible');
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
+    console.log('isForeground 1', isForeground);
+
+    return isForeground;
+};
+export default useVisibilityChange;

@@ -11,8 +11,6 @@ export const ModalProvider = ({ children }) => {
     open: false,
   })
   const showConfirm = (optionModal) => {
-    console.log('optionModal', optionModal);
-
     setOption({
       ...optionModal,
       open: true,

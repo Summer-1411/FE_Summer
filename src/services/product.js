@@ -10,11 +10,32 @@ export function useCreateProduct() {
     return useMutation(
         'create-product',
         (params) => {
-            return request.post(`/product/create-update`, params)
+            return request.post(`/v1/product/create`, params)
         },
         {
             onSuccess: async (data) => {
-                await queryClient.invalidateQueries('list-product')
+                console.log('123');
+                await queryClient.invalidateQueries('list-product-admin')
+                toast.success("Lưu dữ liệu thành công", toastOption);
+            },
+            onError: async (error) => {
+                toast.error("Lưu dữ liệu thất bại !", toastOption);
+            }
+        }
+    )
+}
+
+export function useUpdateProduct() {
+    const queryClient = useQueryClient()
+    return useMutation(
+        'update-product',
+        (params) => {
+            return request.post(`/v1/product/update`, params)
+        },
+        {
+            onSuccess: async (data) => {
+                console.log('123');
+                await queryClient.invalidateQueries('list-product-admin')
                 toast.success("Lưu dữ liệu thành công", toastOption);
             },
             onError: async (error) => {
@@ -35,6 +56,20 @@ export function useGetProduct(params) {
     return {
         productList: response?.data?.data ?? []
     }
+}
+
+export function useGetProductById(params) {
+    const { data: response, ...props } = useQuery(
+        ['list-product-id', params],
+        () => {
+            return request.get(`/v1/product/find/${params}`)
+        },
+        {
+            enabled: !!params
+        }
+    )
+
+    return response?.data?.data ?? {}
 }
 
 export function useDeleteProduct() {
