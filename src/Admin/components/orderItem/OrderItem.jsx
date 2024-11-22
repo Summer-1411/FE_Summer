@@ -1,7 +1,7 @@
 import "./orderItem.scss"
 import ProductSmall from '../productSmall/ProductSmall'
 import { formatDate } from "../../../utils/formatDate"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { numberWithCommas } from "../../../utils/formatMoney"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -35,13 +35,31 @@ export default function OrderItem(
     const [openCancellation, setOpenCancellation] = useState(false)
     const [reason, setReason] = useState("")
     const [form] = useForm();
+    const listProduct = useMemo(() => {
+        return products.map((item) => {
+            return {
+                ...item,
+                category: `${item.size} - ${item.color}`,
+                price: numberWithCommas(item.price),
+                total: numberWithCommas(item.price * item.quantity)
+            }
+        })
+    }, [products])
     //Thành công ở trang đã xác nhận
     //Khi xác nhận thì danh sách đã xác nhận thay đổi
     const handleSuccess = async () => {
         try {
             const res = await request.put(`/order/byAdmin?success=true`,
                 {
-                    id: order.id
+                    ...order,
+                    id: order.id,
+                    userId: order.id_user,
+                    email: order.email,
+                    fullName: order.fullname,
+                    orderDate: formatDate(order.orderDate),
+                    voucherValue: numberWithCommas(order.voucherValue),
+                    total_amount: numberWithCommas(order.total_amount),
+                    products: listProduct
                 })
             toast.success(res.data.message, toastOption);
             if (res.data.success) {
@@ -57,15 +75,8 @@ export default function OrderItem(
     //Khi xác nhận thì danh sách chờ thay đổi
 
 
+
     const handleConfirm = async () => {
-        let listProduct = products.map((item) => {
-            return {
-                ...item,
-                category: `${item.size} - ${item.color}`,
-                price: numberWithCommas(item.price),
-                total: numberWithCommas(item.price * item.quantity)
-            }
-        })
         const data = {
             ...order,
             total_amount: numberWithCommas(order.total_amount),
@@ -75,7 +86,15 @@ export default function OrderItem(
             await request.post('/invoices/send_mail', data);
             const res = await request.put(`/order/byAdmin`,
                 {
-                    id: order.id
+                    ...order,
+                    id: order.id,
+                    userId: order.id_user,
+                    email: order.email,
+                    fullName: order.fullname,
+                    orderDate: formatDate(order.orderDate),
+                    voucherValue: numberWithCommas(order.voucherValue),
+                    total_amount: numberWithCommas(order.total_amount),
+                    products: listProduct
                 })
             if (res.data.success) {
                 setListOrderPending(prev => prev.filter(item => item.id !== order.id))
@@ -89,14 +108,6 @@ export default function OrderItem(
 
 
     const handleExportBill = async () => {
-        let listProduct = products.map((item) => {
-            return {
-                ...item,
-                category: `${item.size} - ${item.color}`,
-                price: numberWithCommas(item.price),
-                total: numberWithCommas(item.price * item.quantity)
-            }
-        })
         const data = {
             ...order,
             orderDate: formatDate(order.orderDate),
@@ -106,25 +117,6 @@ export default function OrderItem(
         }
         exportInvoice(data)
     }
-    //Khi huỷ thì danh sách chờ xwr ly thay đổi
-    // const handleCancel = async () => {
-    //     try {
-    //         const res = await request.put(`/order/byAdmin?refuse=true`,
-    //         {
-    //             id: order.id
-    //         },
-    //         {
-    //             headers: { Authorization: `Bearer ${localStorage[SUMMER_SHOP]}` }
-    //         })
-    //         if(res.data.success){
-    //             setListOrderPending(prev => prev.filter(item => item.id !== order.id))
-    //         }
-    //         toast.success(res.data.message, toastOption);
-    //     } catch (error) {
-    //         toast.error(error.response.data.message, toastOption);
-    //         console.log(error);
-    //     }
-    // }
     const handleOpenForm = () => {
         setOpenCancellation(true)
     }
@@ -136,9 +128,16 @@ export default function OrderItem(
         try {
             const res = await request.put(`/order/byAdmin?refuse=true`,
                 {
+                    ...order,
                     id: order.id,
                     reason: values.reason,
-                    email: order.email
+                    email: order.email,
+                    userId: order.id_user,
+                    fullName: order.fullname,
+                    orderDate: formatDate(order.orderDate),
+                    voucherValue: numberWithCommas(order.voucherValue),
+                    total_amount: numberWithCommas(order.total_amount),
+                    products: listProduct
                 })
             if (res.data.success) {
                 setListOrderPending(prev => prev.filter(item => item.id !== order.id))
@@ -156,8 +155,16 @@ export default function OrderItem(
         try {
             const res = await request.put(`/order/byAdmin?undo=true`,
                 {
+                    ...order,
                     id: order.id,
                     reason: null,
+                    userId: order.id_user,
+                    email: order.email,
+                    fullName: order.fullname,
+                    orderDate: formatDate(order.orderDate),
+                    voucherValue: numberWithCommas(order.voucherValue),
+                    total_amount: numberWithCommas(order.total_amount),
+                    products: listProduct
                 })
             if (res.data.success) {
                 //console.log("Undo", order);

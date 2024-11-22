@@ -12,12 +12,12 @@ import { ManageProductProvider, useManageProduct } from "./hooks/ManageProductCo
 import { ACTION_TYPE, listStatus } from '../../../constants';
 import Filter from './components/filter';
 import { useDeleteProduct, useGetProduct } from '../../../services/product';
-import moment from 'moment/moment';
 import { numberWithCommas } from '../../../utils/formatMoney';
 import { useModalConfirm } from '../../../ui/ConfirmModel/ModalContextCustom';
 import { ModalType } from '../../../ui/ConfirmModel/contanst';
 import { useSearchProductDetail } from '../../../services/filter';
 import { useState } from 'react';
+import { formatDate } from '../../../utils/formatDate';
 
 
 const ManageProduct = () => {
@@ -194,7 +194,7 @@ const ManageProduct = () => {
             dataIndex: 'createAt',
             render: (field, record) => {
                 return (
-                    <>{moment(record.createAt).format("DD/MM/YYYY")}</>
+                    <>{formatDate(record.createAt)}</>
                 )
             },
         },
@@ -204,7 +204,7 @@ const ManageProduct = () => {
             dataIndex: 'updateAt',
             render: (field, record) => {
                 return (
-                    <>{moment(record.updateAt).format("DD/MM/YYYY")}</>
+                    <>{formatDate(record.updateAt)}</>
                 )
             },
         },

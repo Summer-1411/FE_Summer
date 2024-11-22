@@ -1,6 +1,16 @@
 const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString();
+    // Lấy ngày, tháng, năm
+    const day = String(date.getDate()).padStart(2, '0'); // Thêm số 0 nếu cần
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    const year = date.getFullYear();
+
+    // Lấy giờ, phút
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    // Ghép thành chuỗi định dạng dd/mm/yyyy HH:mm
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 
 const parseDate = (dateString) => {
@@ -43,7 +53,7 @@ const getCurrentYearMonth = (timeNow) => {
     const now = new Date();
     const year = now.getFullYear();
     // Thêm 1 vào tháng vì getMonth() trả về giá trị từ 0-11
-    const month =timeNow ? String(now.getMonth() + 1).padStart(2, '0') : String(1).padStart(2, '0'); // Đảm bảo tháng có 2 chữ số
+    const month = timeNow ? String(now.getMonth() + 1).padStart(2, '0') : String(1).padStart(2, '0'); // Đảm bảo tháng có 2 chữ số
     return `${year}-${month}`;
 };
 

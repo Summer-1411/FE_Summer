@@ -35,16 +35,16 @@ const Main = () => {
   )
 }
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
 
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
 
-        <Main />
+      <Main />
 
-      </PersistGate>
-    </Provider>
+    </PersistGate>
+  </Provider>
 
-  </React.StrictMode>
+  // </React.StrictMode>
 )
 register();

@@ -5,7 +5,7 @@ import { useManageUser } from '../hooks/ManageUserContext';
 import { useEffect, useMemo, useState } from 'react';
 import { numberWithCommas } from '../../../../utils/formatMoney';
 import { IMAGE_DEFAULT, IMAGE_LINK, request } from '../../../../requestMethod';
-import moment from 'moment';
+import { formatDate } from '../../../../utils/formatDate';
 
 const { Title } = Typography;
 
@@ -75,12 +75,12 @@ const FormCreateUpdate = () => {
             {
                 key: '4',
                 label: 'Ngày sinh',
-                children: user?.birthday && moment(user?.birthday).format("DD/MM/YYYY"),
+                children: user?.birthday && formatDate(user?.birthday),
             },
             {
                 key: '5',
                 label: 'Ngày đăng ký',
-                children: user?.createAt && moment(user?.createAt).format("DD/MM/YYYY"),
+                children: user?.createAt && formatDate(user?.createAt),
             },
         ];
     }, [user])

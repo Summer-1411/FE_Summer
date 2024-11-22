@@ -6,7 +6,6 @@ import Table from "antd/es/table";
 import { TrackingLogProvider, useTrackingLog } from "./hooks/TrackingLogContext";
 import { ACTION_TYPE } from '../../../constants';
 import Filter from './components/filter';
-import moment from 'moment/moment';
 import { useModalConfirm } from '../../../ui/ConfirmModel/ModalContextCustom';
 import { ModalType } from '../../../ui/ConfirmModel/contanst';
 import { useSearchProductDetail } from '../../../services/filter';
@@ -41,34 +40,44 @@ const TrackingLog = () => {
 
     const columns = [
         {
+            width: 150,
             title: 'Method',
             dataIndex: 'method',
         },
         {
+            width: 150,
             title: 'User Id',
             dataIndex: 'userId',
         },
         {
+            width: 150,
             title: 'Url',
             dataIndex: 'url'
         },
         {
+
+            width: 300,
             title: 'Request',
             dataIndex: 'requestBody',
+            ellipsis: true,
         },
         {
+            width: 150,
             title: 'Status',
             dataIndex: 'statusCode',
         },
         {
+            width: 150,
             title: 'Thời gian',
             dataIndex: 'createAt',
         },
         {
+            width: 150,
             title: 'Địa chỉ ip',
             dataIndex: 'ipAddress',
         },
         {
+            width: 150,
             key: "action",
             render: (field, record) => (
                 <div style={{ display: "flex", gap: 10 }}>

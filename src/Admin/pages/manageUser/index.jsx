@@ -10,12 +10,12 @@ import {
 import { ManageUserProvider, useManageUser } from "./hooks/ManageUserContext";
 import { ACTION_TYPE, listGender, listStatus, STATUS } from '../../../constants';
 import Filter from './components/filter';
-import moment from 'moment/moment';
 import { useModalConfirm } from '../../../ui/ConfirmModel/ModalContextCustom';
 import { ModalType } from '../../../ui/ConfirmModel/contanst';
 import { useDeleteUser, useGetListUser, useRestoreUser } from '../../../services/user';
 import { IMAGE_DEFAULT, IMAGE_LINK } from '../../../requestMethod';
 import FormCreateUpdate from './components/formCreateUpdate';
+import { formatDate } from '../../../utils/formatDate';
 
 
 const ManageUser = () => {
@@ -97,7 +97,7 @@ const ManageUser = () => {
             dataIndex: 'birthday',
             render: (field, record) => {
                 return (
-                    <>{record.birthday && moment(record.birthday).format("DD/MM/YYYY")}</>
+                    <>{record.birthday && formatDate(record.birthday)}</>
                 )
             },
         },
@@ -107,7 +107,7 @@ const ManageUser = () => {
             dataIndex: 'createAt',
             render: (field, record) => {
                 return (
-                    <>{record.createAt && moment(record.createAt).format("DD/MM/YYYY")}</>
+                    <>{record.createAt && formatDate(record.createAt)}</>
                 )
             },
         },
@@ -129,7 +129,7 @@ const ManageUser = () => {
             dataIndex: 'updateAt',
             render: (field, record) => {
                 return (
-                    <>{moment(record.updateAt).format("DD/MM/YYYY")}</>
+                    <>{formatDate(record.updateAt)}</>
                 )
             },
         },

@@ -12,8 +12,6 @@ const useVisibilityChange = () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
     }, []);
-    console.log('isForeground 1', isForeground);
-
     return isForeground;
 };
 export default useVisibilityChange;

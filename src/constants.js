@@ -17,6 +17,13 @@ const toastOption = {
     draggable: false,
     theme: 'light'
 }
+const toastOptionRight = {
+    position: "top-right",
+    autoClose: 3000,
+    pauseOnHover: false,
+    draggable: false,
+    theme: 'light'
+}
 
 //-1: Đơn hàng khách huỷ
 //0: Đang chờ xử ý
@@ -354,6 +361,7 @@ export {
     INFOR_PRODUCT,
     listGender,
     STATUS,
-    METHOD_API
+    METHOD_API,
+    toastOptionRight
 }
 

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const AppContext = createContext();
 const AppProvider = ({ children }) => {
     const currentUser = useSelector((state) => state.user.currentUser);
-    
+
     const [filterProduct, setFilterProduct] = useState({
         sample: {
             name: "",
@@ -14,11 +14,11 @@ const AppProvider = ({ children }) => {
             id: ""
         },
         orders: {
-            property: "",
-            direction: ""
+            property: "createAt",
+            direction: "desc"
         }
     })
-    const {productCart} = useGetCart(currentUser)
+    const { productCart } = useGetCart(currentUser)
     const values = {
         filterProduct,
         setFilterProduct,

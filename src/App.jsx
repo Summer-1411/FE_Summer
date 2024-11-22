@@ -58,18 +58,15 @@ import ProductRoot from './Admin/pages/manageProduct';
 import TrackingLog from './Admin/pages/trackingLog';
 import UserRoot from './Admin/pages/manageUser';
 import ChatAdmin from './Admin/pages/chat';
-import useVisibilityChange from './hooks/useVisibilityChange';
-import { useEffect } from 'react';
-import { setupNotifications } from './firebase';
 import useCurrentUser from './hooks/useCurrentUser';
+import { useSetupNotifications } from './firebase';
+import BlogEditor from './pages/blog';
 
 function App() {
   const currentUser = useCurrentUser()
-  const isForeground = useVisibilityChange();
 
-  useEffect(() => {
-    setupNotifications();
-  }, []);
+  useSetupNotifications()
+
   // Nếu chưa đăng nhập trả về màn login
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
@@ -109,6 +106,10 @@ function App() {
         {
           path: "/",
           element: <Home />
+        },
+        {
+          path: "/blog",
+          element: <BlogEditor />
         },
         {
           path: "/product/:id",

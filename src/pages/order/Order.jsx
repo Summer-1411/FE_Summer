@@ -106,7 +106,7 @@ export default function Order() {
             serviceClearCart.mutateAsync()
             if (data.paymentMethod === PAYMENT_METHOD.DIRECT_PAYMENT) {
                 toast.success(res.data.message, toastOption);
-                // navigate("/user/purchase")
+                navigate("/user/purchase")
             } else if (data.paymentMethod === PAYMENT_METHOD.ONLINE_PAYMENT) {
                 window.open(res.data.redirectUrl, "_blank")
             }
