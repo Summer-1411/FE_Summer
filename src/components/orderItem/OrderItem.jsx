@@ -7,18 +7,11 @@ import { Button, Typography } from 'antd';
 import { useFeedback } from '../../pages/completedOrder/FeedbackContext';
 import { useGetFeedbackUser } from '../../services/feedback';
 import { Link } from 'react-router-dom';
+import { useGetListProductInOrderByOrderId } from '../../services/order';
 export default function OrderItem({ order, complete }) {
-    const [products, setProducts] = useState([])
-    const { Text } = Typography;
     const { open, setOpen, setFeedbackInfor, formCreateUpdate, setPointRate } = useFeedback()
-    useEffect(() => {
-        const getProductByBill = async () => {
-            const res = await request.get(`/order_detail/${order.id}`)
-            setProducts(res.data.products)
-            console.log(res.data);
-        }
-        getProductByBill();
-    }, [order.id])
+
+    const { products } = useGetListProductInOrderByOrderId(order?.id)
     const { feedbackList } = useGetFeedbackUser()
 
     const handleCreateUpdateFeedback = (pro, edit) => {
@@ -34,9 +27,6 @@ export default function OrderItem({ order, complete }) {
             formCreateUpdate.setFieldsValue({
                 description: feedbackEdit.description
             })
-
-            console.log('data', data);
-            console.log('feedbackEdit', feedbackEdit);
             setPointRate(feedbackEdit.rate)
             data = {
                 ...data,
@@ -114,13 +104,8 @@ export default function OrderItem({ order, complete }) {
                             {numberWithCommas(order.total_amount)}
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
-
-
         </div>
     )
 }

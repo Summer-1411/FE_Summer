@@ -1,7 +1,6 @@
 
-import { useState } from 'react';
-import { Button, Tag, Modal, Divider, Image } from 'antd';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Tag, Image } from 'antd';
+import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import FormCreateUpdate from "./components/formCreateUpdate";
 import Table from "antd/es/table";
 
@@ -10,17 +9,15 @@ import {
     CloseCircleOutlined,
 } from '@ant-design/icons';
 import { ManageProductProvider, useManageProduct } from "./hooks/ManageProductContext";
-// import { useDeleteCategory, useSearchCategory } from './services';
-// import Search from './components/search';
 import { ACTION_TYPE, listStatus } from '../../../constants';
 import Filter from './components/filter';
 import { useDeleteProduct, useGetProduct } from '../../../services/product';
-import { render } from '@testing-library/react';
-import moment from 'moment/moment';
 import { numberWithCommas } from '../../../utils/formatMoney';
 import { useModalConfirm } from '../../../ui/ConfirmModel/ModalContextCustom';
 import { ModalType } from '../../../ui/ConfirmModel/contanst';
 import { useSearchProductDetail } from '../../../services/filter';
+import { useState } from 'react';
+import { formatDate } from '../../../utils/formatDate';
 
 
 const ManageProduct = () => {
@@ -41,59 +38,7 @@ const ManageProduct = () => {
         })
     }
 
-    // {
-    //     "name": "666666666",
-    //     "description": "MM TẢ",
-    //     "information": "6666 FF",
-    //     "priceRange": "666.666",
-    //     "qualityGrade": "666",
-    //     "id_category": 6,
-    //     "id_producer": 7,
-    // "listColor": [
-    //     {
-    //         "listDetail": [
-    //             {
-    //                 "size": "11",
-    //                 "quantity": "11",
-    //                 "price": "11"
-    //             },
-    //             {
-    //                 "size": "55",
-    //                 "quantity": "555",
-    //                 "price": "55"
-    //             }
-    //         ],
-    //         "color": "11"
-    //     },
-    //     {
-    //         "listDetail": [
-    //             {
-    //                 "size": "111",
-    //                 "quantity": "11",
-    //                 "price": "11"
-    //             }
-    //         ],
-    //         "color": "T555"
-    //     }
-    // ]
-    // }
-    //Edit
 
-    // {
-    //     "id": 48,
-    //     "name": "Sản phẩm 1",
-    //     "description": "Mô tả 1",
-    //     "information": "Thông tin 1",
-    //     "priceRange": 10000000,
-    //     "qualityGrade": "Tốt, còn bảo hành",
-    //     "img": "http://res.cloudinary.com/drkmrlmla/image/upload/v1731348882/qzhclg74y8si4smzrle1.png",
-    //     "star": 5,
-    //     "id_producer": 1,
-    //     "id_category": 1,
-    //     "createAt": "2024-11-11T18:17:35.000Z",
-    //     "updateAt": "2024-11-11T18:17:35.000Z",
-    //     "status": 1
-    // },
     function convertData(data) {
         const result = [];
 
@@ -135,12 +80,10 @@ const ManageProduct = () => {
 
         return result;
     }
-    const handleClickEdit = async (record) => {
+    const handleSetDataFormModal = async (record) => {
         const result = await serviceSearchProdDetail.mutateAsync(record.id)
-        console.log('result', result);
 
         const listColorConvert = convertData(result)
-        console.log('listColorConvert', listColorConvert);
 
         const imgs = getColorImageArray(result);
         const dataUpdate = {
@@ -151,14 +94,22 @@ const ManageProduct = () => {
         formCreate.setFieldsValue(dataUpdate);
         setMainImg(record.img)
         setImageUrls(imgs)
+    }
+    const handleClickEdit = async (record) => {
+        await handleSetDataFormModal(record)
         setStatusForm({
             open: true,
             action: ACTION_TYPE.UPDATE,
             initData: record
         })
-        // setOpen(true);
-        // setEdit(true)
-        // setInitValue(record)
+    }
+    const handleView = async (record) => {
+        await handleSetDataFormModal(record)
+        setStatusForm({
+            open: true,
+            action: ACTION_TYPE.VIEW,
+            initData: record
+        })
     }
 
     const handleDelete = (record) => {
@@ -243,7 +194,7 @@ const ManageProduct = () => {
             dataIndex: 'createAt',
             render: (field, record) => {
                 return (
-                    <>{moment(record.createAt).format("DD/MM/YYYY")}</>
+                    <>{formatDate(record.createAt)}</>
                 )
             },
         },
@@ -253,7 +204,7 @@ const ManageProduct = () => {
             dataIndex: 'updateAt',
             render: (field, record) => {
                 return (
-                    <>{moment(record.updateAt).format("DD/MM/YYYY")}</>
+                    <>{formatDate(record.updateAt)}</>
                 )
             },
         },
@@ -262,8 +213,11 @@ const ManageProduct = () => {
             key: "action",
             render: (field, record) => (
                 <div style={{ display: "flex", gap: 10 }}>
-                    <Button type="primary" ghost onClick={() => handleClickEdit(record)} icon={<EditOutlined />} />
-                    <Button danger disabled={record.status == 0} onClick={() => handleDelete(record)} icon={<DeleteOutlined />} />
+                    <Button size='small' type="primary" ghost onClick={() => handleClickEdit(record)} icon={<EditOutlined />} />
+                    <Button size='small' danger disabled={record.status == 0} onClick={() => handleDelete(record)} icon={<DeleteOutlined />} />
+                    <Button size='small' type='default' onClick={() => handleView(record)} icon={<EyeOutlined />} />
+
+
                 </div>
             )
         }
@@ -278,9 +232,25 @@ const ManageProduct = () => {
             </Button>
         </div>
     }
+    const [pagination, setPagination] = useState({
+        current: 1, // Trang hiện tại
+        pageSize: 5, // Số bản ghi mỗi trang
+    });
 
+    const handleTableChange = (pagination) => {
+        console.log('pagination', pagination);
 
+        // Cập nhật lại trạng thái pagination khi người dùng thay đổi trang
+        setPagination({
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+        });
 
+        // Thực hiện các tác vụ khác nếu cần (ví dụ gọi API, tải lại dữ liệu, v.v.)
+        // Bạn có thể sử dụng `pagination.current` để gọi API với trang mới
+        console.log('Current page:', pagination.current);
+        console.log('Page size:', pagination.pageSize);
+    };
     return (
         <div>
 
@@ -288,17 +258,13 @@ const ManageProduct = () => {
             <Table
                 title={() => <Header />}
                 rowKey={'id'}
-                onRow={(record) => {
-                    return {
-                        onClick: () => {
-
-                        }, // click row
-
-                    };
-                }}
-                pagination={{ pageSize: 8 }}
                 columns={columns}
                 dataSource={productList}
+                pagination={{
+                    current: pagination.current,
+                    pageSize: pagination.pageSize,
+                    onChange: handleTableChange, // Đặt sự kiện onChange
+                }}
             />
             <FormCreateUpdate />
         </div>

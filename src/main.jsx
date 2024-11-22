@@ -15,6 +15,7 @@ import Loading from './pages/Loading/Loading';
 import { spinningLoaderRef } from './pages/Loading/hook';
 import IntlProvider from './context/IntlContext';
 import { ModalProvider } from './ui/ConfirmModel/ModalContextCustom';
+import { register } from './serviceWorker';
 
 const Main = () => {
   const queryClient = new QueryClient()
@@ -34,15 +35,16 @@ const Main = () => {
   )
 }
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
 
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
 
-        <Main />
+      <Main />
 
-      </PersistGate>
-    </Provider>
+    </PersistGate>
+  </Provider>
 
-  </React.StrictMode>
+  // </React.StrictMode>
 )
+register();

@@ -1,0 +1,128 @@
+.chatapp-msg-messenger-container {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 110px);
+}
+
+.chatapp-msg-sidebar {
+    width: 30%;
+    max-width: 300px;
+    background-color: #2d3e50;
+    color: #fff;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.chatapp-msg-contact {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+
+    &:hover {
+        background-color: #3b4a5a;
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    span {
+        flex: 1;
+    }
+}
+
+.chatapp-msg-chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.chatapp-msg-chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.chatapp-msg-message-input {
+    display: flex;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 2px solid #f0f0f0;
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #45a049;
+        }
+    }
+}
+
+.chatapp-msg-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+
+    &.user {
+        background-color: #d1f7d3;
+        align-self: flex-end;
+    }
+
+    &.bot {
+        background-color: #e9e9e9;
+        align-self: flex-start;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chatapp-msg-messenger-container {
+        flex-direction: row;
+    }
+
+    .chatapp-msg-sidebar {
+        width: 70px;
+        padding: 5px;
+    }
+
+    .chatapp-msg-contact {
+        flex-direction: column;
+        padding: 10px 5px;
+
+        img {
+            width: 50px;
+            height: 50px;
+            margin-right: 0;
+            margin-bottom: 5px;
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+    .chatapp-msg-chat-container {
+        width: calc(100% - 70px);
+    }
+}

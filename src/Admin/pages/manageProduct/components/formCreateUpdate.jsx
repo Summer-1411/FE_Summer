@@ -1,18 +1,17 @@
 
-import { Button, Col, Divider, Form, Image, Row, Upload } from 'antd'
-import { CloudUploadOutlined, DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, Divider, Image, Row } from 'antd'
+import { CloudUploadOutlined, DeleteFilled } from '@ant-design/icons';
 import CustomModalForm from '../../../../ui/ModelForm'
 import { useModalConfirm } from '../../../../ui/ConfirmModel/ModalContextCustom'
 import TextInput from '../../../../ui/TextInput'
 import { useManageProduct } from '../hooks/ManageProductContext'
 import { TextArea } from '../../../../ui/TextArea'
-import { useState } from 'react'
 import { NumberInput } from '../../../../ui/NumberInput';
 import ListForm from '../../../../ui/ListForm';
 import SelectInput from '../../../../ui/Select';
-import { useCreateProduct } from '../../../../services/product';
-
-
+import { useCreateProduct, useUpdateProduct } from '../../../../services/product';
+import { ACTION_TYPE, DELETE_ITEM, listStatus, ModalType, toastOption } from '../../../../constants';
+import { toast } from 'react-toastify';
 
 const FormCreateUpdate = () => {
     const { formCreate,
@@ -27,6 +26,7 @@ const FormCreateUpdate = () => {
     const { showConfirm } = useModalConfirm()
 
     const createProduct = useCreateProduct()
+    const updateProduct = useUpdateProduct()
 
 
 
@@ -66,19 +66,21 @@ const FormCreateUpdate = () => {
 
         widget.open(); // Open the widget
     };
-    const resetForm = () => {
-
+    const handleResetForm = () => {
+        formCreate.resetFields();
     }
 
 
     const convertDataToProductDetail = (list) => {
-        console.log('start');
-
         const flatListWithImages = list.flatMap(item =>
             item.listDetail.map(detail => {
                 // Tìm link ảnh tương ứng với màu sắc từ mảng `img`
                 const imgLink = imageUrls.find(image => image.key === item.color)?.value || null;
 
+                if (!imgLink) {
+                    toast.error(`Bạn chưa upload ảnh cho màu ${item.color}`, toastOption);
+                    return null;
+                }
                 return {
                     id: detail.id,
                     color: item.color,
@@ -89,22 +91,30 @@ const FormCreateUpdate = () => {
                 };
             })
         );
-        console.log('end', flatListWithImages);
+        console.log('run');
 
-        return flatListWithImages;
+        // Kiểm tra nếu bất kỳ phần tử nào là `null` thì trả về `false`
+        if (flatListWithImages.includes(null)) {
+            return { valid: false, data: [] };
+        }
+        return { valid: true, data: flatListWithImages };
     }
 
-    console.log('imageUrls', imageUrls);
 
 
 
-    const handleCreateOrUpdate = async (values) => {
-
+    const handleSubmitData = async (values) => {
         await formCreate.validateFields()
-
         const { listColor, priceRange, ...rest } = values
         const priceRangeValue = parseInt(String(priceRange).replace(/\./g, ''), 10);
-        const productDetail = convertDataToProductDetail(listColor)
+        const { valid, data: productDetail } = convertDataToProductDetail(listColor)
+        console.log('valid', valid);
+
+        if (!valid) {
+            console.log('123');
+
+            return;
+        }
         const dataSubmit = {
             ...statusForm.initData,
             ...rest,
@@ -112,11 +122,35 @@ const FormCreateUpdate = () => {
             img: mainImg,
             productDetail,
         }
-        console.log('values', values);
-        console.log('dataSubmit', dataSubmit);
+        showConfirm({
+            title: `Xác nhận lưu dữ liệu`,
+            message: 'Bạn có chắc chắn lưu thông tin sản phẩm này?',
+            type: ModalType.INFO,
+            onOk: async () => {
+                await saveData(dataSubmit)
+            },
+        })
+    }
+    const saveData = async (dataSubmit) => {
+        if (statusForm.action === ACTION_TYPE.CREATE) {
+            await createProduct.mutateAsync(dataSubmit);
+        } else if (statusForm.action === ACTION_TYPE.UPDATE) {
+            await updateProduct.mutateAsync(dataSubmit);
+        }
+        handleClose()
+    }
+    const getTitleModelForm = () => {
+        switch (statusForm.action) {
+            case ACTION_TYPE.CREATE:
+                return 'Thêm mới sản phẩm'
+            case ACTION_TYPE.UPDATE:
+                return 'Cập nhật sản phẩm'
+            case ACTION_TYPE.VIEW:
+                return 'Chi tiết sản phẩm'
+            default:
+                return 'Thêm mới sản phẩm'
+        }
 
-        // await createProduct.mutateAsync(dataSubmit);
-        // handleClose()
     }
 
 
@@ -139,8 +173,15 @@ const FormCreateUpdate = () => {
         width: '100%'
     }
 
-    const onDeleteAction = (index, action) => {
-        action.remove(index)
+    const onDeleteAction = (index, action, typeDelete) => {
+        showConfirm({
+            title: `Xóa ${typeDelete === DELETE_ITEM.COLOR ? 'màu sắc' : 'dung lượng'}`,
+            message: `${typeDelete === DELETE_ITEM.COLOR ? 'Khi xóa màu sắc này của sản phẩm, tất cả các bản ghi dung lượng liên quan cũng sẽ bị xóa. Bạn có chắc chắn muốn xóa ?' : 'Bạn có chắc chắn muốn xóa dung lượng này?'}`,
+            type: ModalType.WARNING,
+            onOk: () => {
+                action.remove(index)
+            },
+        })
     }
 
 
@@ -148,13 +189,13 @@ const FormCreateUpdate = () => {
         <CustomModalForm
             width={1000}
             open={statusForm.open}
-            title={"Thêm mới sản phẩm"}
-            onFinish={handleCreateOrUpdate}
+            title={getTitleModelForm()}
+            onFinish={handleSubmitData}
             form={formCreate}
             onCancel={onCancel}
-            onReset={() => {
-                formCreate.resetFields();
-            }}
+            disabled={statusForm.action === ACTION_TYPE.VIEW}
+            isDisableReset={statusForm.action !== ACTION_TYPE.CREATE}
+            onReset={handleResetForm}
         >
             <Row gutter={16}>
                 <Col xs={24} sm={24} md={16} xl={16}>
@@ -164,9 +205,6 @@ const FormCreateUpdate = () => {
                         autoRequired
                         label={"Tên sản phẩm"}
                         key="name"
-                        fieldProps={{
-                            maxLength: 30,
-                        }}
                     />
                     <TextArea
                         name="description"
@@ -201,9 +239,6 @@ const FormCreateUpdate = () => {
                         autoRequired
                         label={"Tình trạng sản phẩm"}
                         key="qualityGrade"
-                        fieldProps={{
-                            maxLength: 30,
-                        }}
                     />
                     <SelectInput
                         autoRequired
@@ -218,6 +253,16 @@ const FormCreateUpdate = () => {
                         name="id_producer"
                         options={listProducer}
                         label={"Nhà sản xuất"}
+                    />
+                    <SelectInput
+                        form={formCreate}
+                        name="status"
+                        options={listStatus}
+                        label={"Trạng thái"}
+                        disabled={[ACTION_TYPE.CREATE, ACTION_TYPE.VIEW].includes(statusForm.action)}
+                        fieldProps={{
+                            defaultValue: 1,
+                        }}
                     />
                 </Col>
                 <Col xs={24} sm={24} md={8} xl={8}>
@@ -261,25 +306,109 @@ const FormCreateUpdate = () => {
                         deleteIconProps: false,
                     }}
                 >
-                    {(metaDate, itemIndex, action) => {
+                    {(metaColor, indexColor, actionColor) => {
                         return (
                             <div>
-                                <Row gutter={16} align="bottom">
-                                    <Col xs={24} sm={24} md={16} xl={16}>
-                                        <TextInput
-                                            autoRequired
-                                            name="color"
-                                            label={"Màu sắc"}
-                                        // placeholder={"Nhập màu sắc"}
-                                        />
+                                <Row gutter={16} align="top">
+                                    <Col xs={24} sm={24} md={18} xl={18}>
+                                        <Row>
+                                            <Col xs={24} sm={24} md={24} xl={24}>
+                                                <TextInput
+                                                    autoRequired
+                                                    name="color"
+                                                    label={"Màu sắc"}
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row gutter={16}>
+                                            <Col span={24}>
+                                                <ListForm
+                                                    colProps={{
+                                                        xs: 24,
+                                                        sm: 24,
+                                                        md: 24,
+                                                        lg: 24,
+                                                        xxl: 24,
+                                                    }}
+                                                    initialValues={[undefined]}
+                                                    listFormProps={{
+                                                        name: ['listDetail'],
+                                                        creatorButtonProps: {
+                                                            prefixCls: 'bss-creator-form',
+                                                            style: creatorButtonStyle,
+                                                            creatorButtonText: "Thêm dung lượng, giá bán",
+                                                        },
+                                                        copyIconProps: false,
+                                                        deleteIconProps: false,
+                                                    }}
+                                                >
+                                                    {(metaDetail, indexDetail, actionDetail) => {
+                                                        return (
+                                                            <Row gutter={16} align="bottom">
+                                                                <Col xs={0} sm={0} md={0} xl={0}>
+                                                                    <TextInput
+                                                                        name="id"
+                                                                        label={"id"}
+                                                                    // placeholder={"Nhập màu sắc"}
+                                                                    />
+                                                                </Col>
+                                                                <Col xs={24} sm={24} md={8} xl={8}>
+                                                                    <TextInput
+                                                                        autoRequired
+                                                                        name="size"
+                                                                        label={"Size"}
+                                                                    />
+                                                                </Col>
+                                                                <Col xs={24} sm={24} md={6} xl={6}>
+                                                                    <TextInput
+                                                                        autoRequired
+                                                                        name="quantity"
+                                                                        label={"Số lượng"}
+                                                                    />
+                                                                </Col>
+                                                                <Col xs={24} sm={24} md={8} xl={8}>
+                                                                    <NumberInput
+                                                                        isDotNumberFormat
+                                                                        isNonTypingZero
+                                                                        fieldProps={{
+                                                                            maxLength: 15,
+                                                                            addonAfter: 'VNĐ',
+                                                                            onPaste: (event) => {
+                                                                                const pastedText = event.clipboardData.getData('text/plain')
+                                                                                if (!/^\d+$/.test(pastedText)) {
+                                                                                    event.preventDefault()
+                                                                                }
+                                                                            },
+                                                                        }}
+                                                                        name={"price"}
+                                                                        label={"Giá bán"}
+                                                                        autoRequired
+                                                                    />
+                                                                </Col>
+                                                                <Col span={2}>
+                                                                    <Button
+                                                                        style={{ marginBottom: 4 }}
+                                                                        disabled={indexDetail === 0}
+                                                                        onClick={() => onDeleteAction(indexDetail, actionDetail, DELETE_ITEM.SIZE)}
+                                                                        type="default"
+                                                                        icon={<DeleteFilled />}
+                                                                        size={"default"}
+                                                                    />
+                                                                </Col>
+                                                            </Row>
+                                                        )
+                                                    }}
+                                                </ListForm>
+                                            </Col>
+                                        </Row>
                                     </Col>
-                                    <Col xs={24} sm={24} md={6} xl={6}>
+                                    <Col xs={24} sm={24} md={4} xl={4}>
                                         <Button
                                             style={{ marginBottom: 4 }}
                                             icon={<CloudUploadOutlined />}
                                             onClick={async () => {
-                                                await formCreate.validateFields([['listColor', itemIndex, 'color']])
-                                                const colorKey = formCreate.getFieldValue('listColor')[itemIndex]?.color;
+                                                await formCreate.validateFields([['listColor', indexColor, 'color']])
+                                                const colorKey = formCreate.getFieldValue('listColor')[indexColor]?.color;
                                                 handleOpenWidget(colorKey)
                                             }}
                                             size="default"
@@ -287,95 +416,14 @@ const FormCreateUpdate = () => {
                                             Ảnh
                                         </Button>
                                         {<Image
-                                            width={200}
-                                            key={itemIndex}
-                                            src={imageUrls[itemIndex]?.value}
+                                            width={150}
+                                            key={indexColor}
+                                            src={imageUrls[indexColor]?.value}
                                         />}
                                     </Col>
-                                    <Col xs={24} sm={24} md={1} xl={1}>
-                                        <Button disabled={itemIndex === 0}
-                                            onClick={() => onDeleteAction(itemIndex, action)} type="dashed" icon={<DeleteFilled />} size={"default"} />
-                                    </Col>
-                                </Row>
-                                <Row gutter={16}>
-                                    <Col span={23}>
-                                        <ListForm
-                                            colProps={{
-                                                xs: 24,
-                                                sm: 24,
-                                                md: 24,
-                                                lg: 24,
-                                                xxl: 24,
-                                            }}
-                                            initialValues={[undefined]}
-                                            listFormProps={{
-                                                name: ['listDetail'],
-                                                creatorButtonProps: {
-                                                    prefixCls: 'bss-creator-form',
-                                                    style: creatorButtonStyle,
-                                                    creatorButtonText: "Thêm dung lượng, giá bán",
-                                                },
-                                                copyIconProps: false,
-                                                deleteIconProps: false,
-                                            }}
-                                        >
-                                            {(metaTime, index, action) => {
-                                                return (
-                                                    <Row gutter={16} align="bottom">
-                                                        <Col xs={0} sm={0} md={0} xl={0}>
-                                                            <TextInput
-                                                                name="id"
-                                                                label={"id"}
-                                                            // placeholder={"Nhập màu sắc"}
-                                                            />
-                                                        </Col>
-                                                        <Col xs={24} sm={24} md={6} xl={6}>
-                                                            <TextInput
-                                                                autoRequired
-                                                                name="size"
-                                                                label={"Size"}
-                                                            />
-                                                        </Col>
-                                                        <Col xs={24} sm={24} md={6} xl={6}>
-                                                            <TextInput
-                                                                autoRequired
-                                                                name="quantity"
-                                                                label={"Số lượng"}
-                                                            />
-                                                        </Col>
-                                                        <Col xs={24} sm={24} md={6} xl={6}>
-                                                            <NumberInput
-                                                                isDotNumberFormat
-                                                                isNonTypingZero
-                                                                fieldProps={{
-                                                                    maxLength: 15,
-                                                                    addonAfter: 'VNĐ',
-                                                                    onPaste: (event) => {
-                                                                        const pastedText = event.clipboardData.getData('text/plain')
-                                                                        if (!/^\d+$/.test(pastedText)) {
-                                                                            event.preventDefault()
-                                                                        }
-                                                                    },
-                                                                }}
-                                                                name={"price"}
-                                                                label={"Giá bán"}
-                                                                autoRequired
-                                                            />
-                                                        </Col>
-                                                        <Col span={4}>
-                                                            <Button
-                                                                style={{ marginBottom: 4 }}
-                                                                disabled={index === 0}
-                                                                onClick={() => onDeleteAction(index, action)}
-                                                                type="default"
-                                                                icon={<DeleteFilled />}
-                                                                size={"default"}
-                                                            />
-                                                        </Col>
-                                                    </Row>
-                                                )
-                                            }}
-                                        </ListForm>
+                                    <Col xs={24} sm={24} md={2} xl={2}>
+                                        <Button disabled={indexColor === 0}
+                                            onClick={() => onDeleteAction(indexColor, actionColor, DELETE_ITEM.COLOR)} type="dashed" icon={<DeleteFilled />} size={"default"} />
                                     </Col>
                                 </Row>
                             </div>

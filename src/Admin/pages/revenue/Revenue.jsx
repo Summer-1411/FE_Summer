@@ -44,7 +44,7 @@ const generateDataChart = (labels, dataArray, field, colNameCancel, colNameSucce
             label: colNameCancel,
             data: labels.map((item) => {
                 let monthSale = dataArray?.find((dataItem) => dataItem.month === item && dataItem.status === -1)
-                return monthSale ? Number(monthSale[field]): 0
+                return monthSale ? Number(monthSale[field]) : 0
             }),
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
@@ -62,7 +62,7 @@ const generateDataChart = (labels, dataArray, field, colNameCancel, colNameSucce
 export default function Revenue() {
     const [params, setParams] = useState({
         startDate: getCurrentYearMonth(),
-            endDate:  getCurrentYearMonth(true)
+        endDate: getCurrentYearMonth(true)
     })
     const { data } = useSearchRevenue(params)
 
@@ -86,9 +86,9 @@ export default function Revenue() {
         datasets: generateDataChart(labels, data?.dataCount ?? [], 'countOrder', 'Số đơn hủy', 'Số đơn thành công')
     };
 
-    
 
-    return <div style={{ padding: 20 }}>
+
+    return <div>
         <Search setParams={setParams} />
         <Bar options={generateOptions('Thống kê doanh thu (VNĐ)')} data={dataChartMoney} />
         <Divider />

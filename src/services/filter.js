@@ -19,3 +19,35 @@ export function useSearchProductDetail() {
         }
     )
 }
+
+
+export function useGetInforProductDetail(params) {
+    const { data: response, ...props } = useQuery(
+        ['infor_product_detail', params],
+        () => {
+            return request.get(`/v1/filter/infor/${params}`)
+        },
+        {
+            enabled: !!params
+        }
+    )
+    return response?.data?.data ?? {
+        listSize: [],
+        listColorImg: []
+    }
+}
+
+export function useGetProductDetailSizeColorProductId(params) {
+    const { id, color, size } = params
+    const { data: response, ...props } = useQuery(
+        ['product_detail_color_size', params],
+        () => {
+            return request.post(`/v1/filter/detail`, params)
+        },
+        {
+            enabled: !!id && !!color && !!size
+        }
+    )
+
+    return response?.data?.data
+}

@@ -90,11 +90,11 @@ export default function NavBar() {
             <div className="navbar-container">
                 <div className="left">
                     <Link to="/" className="logoApp">
-                        CoolFate Shop
+                        SummerShop
                     </Link>
-                    <div>
+                    {/* <div>
                         <WbSunnyOutlinedIcon />
-                    </div>
+                    </div> */}
                     <HeadlessTippy
                         visible={resultSearch.length > 0 && isShow}
                         interactive
@@ -109,9 +109,10 @@ export default function NavBar() {
 
                             </div>
                         )}
+                        className="mobile-hide"
                         onClickOutside={handleHideResult}
                     >
-                        <div className="search">
+                        <div className="search mobile-hide" >
 
                             <div className="div">
                                 <Select
@@ -145,7 +146,6 @@ export default function NavBar() {
                     </HeadlessTippy>
                 </div>
                 <div className="right">
-
                     <Link to={"/cart"} className="icon-cart">
                         <ShoppingCartOutlinedIcon />
                         {productCart.length > 0 && (
@@ -169,7 +169,7 @@ export default function NavBar() {
                                 </Button>
                                 {currentUser.isAdmin === 1 && (
                                     <Button type="primary">
-                                        <Link to={"/2020606605/admin"} className="icon-cart" onClick={handleToAdmin}>
+                                        <Link to={"/2020606605/admin/dashboard"} className="icon-cart" onClick={handleToAdmin}>
                                             Trang quản trị
                                         </Link>
                                     </Button>)
@@ -183,7 +183,7 @@ export default function NavBar() {
                             className="user"
                         >
                             <img src={currentUser.avatar ? `${IMAGE_LINK}/${currentUser.avatar}` : `${IMAGE_DEFAULT}`} alt="" />
-                            <span>{currentUser.username}</span>
+                            <span className="mobile-hide">{currentUser.username}</span>
                         </Popover>) : (
                         <Flex gap="small" align="center" >
                             <Button type="primary">

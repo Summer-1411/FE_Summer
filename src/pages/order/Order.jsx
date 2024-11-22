@@ -49,6 +49,8 @@ export default function Order() {
         form.setFieldValue('address', addDetail + ", " + addInfor)
     }, [wardId, debouncedAddressDetail])
 
+    console.log('productCart', productCart);
+
 
     const sumPrice = useMemo(() => productCart.reduce(
         (accumulator, item) => {
@@ -56,6 +58,9 @@ export default function Order() {
         },
         0,
     ), [productCart])
+
+
+    console.log('valueVoucher', valueVoucher);
 
     let checkCondition = () => {
         if (productCart.length === 0) {
@@ -68,7 +73,7 @@ export default function Order() {
     const handleApplyVoucher = async () => {
         const code = form.getFieldValue('voucher')
         console.log('code', code);
-        
+
         try {
             const res = await request.get(`/voucher/check/${code}`)
             toast.success(`${res.data.message}, giảm ${res.data.data}%`, toastOption);
@@ -94,17 +99,19 @@ export default function Order() {
             voucherValue: moneyVoucher,
             total: valueVoucher ? (sumPrice - moneyVoucher) : sumPrice
         }
+        console.log('data', data);
+
         try {
             const res = await request.post(`/order`, data)
             serviceClearCart.mutateAsync()
             if (data.paymentMethod === PAYMENT_METHOD.DIRECT_PAYMENT) {
                 toast.success(res.data.message, toastOption);
-                // navigate("/user/purchase")
+                navigate("/user/purchase")
             } else if (data.paymentMethod === PAYMENT_METHOD.ONLINE_PAYMENT) {
                 window.open(res.data.redirectUrl, "_blank")
             }
-            
-            
+
+
         } catch (error) {
             console.log('error.response', error);
             toast.error(error.message, toastOption);
@@ -267,14 +274,14 @@ export default function Order() {
                 </div>
                 <div className="checkout-product">
                     <div className="checkout-product-right">
-                        {valueVoucher && <div className="sum-price-checkout">
+                        {(valueVoucher && valueVoucher !== 0) ? <div className="sum-price-checkout">
                             <div className="title-checkout">
                                 Giảm (voucher) :
                             </div>
                             <div style={{ marginLeft: 10, textDecoration: 'line-through' }} className="price-order">
                                 - {numberWithCommas(moneyVoucher)}
                             </div>
-                        </div>}
+                        </div> : <></>}
                         <div className="sum-price-checkout">
                             <div className="title-checkout">
                                 Thành tiền :
