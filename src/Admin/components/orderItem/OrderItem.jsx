@@ -83,19 +83,31 @@ export default function OrderItem(
             products: listProduct
         }
         try {
-            await request.post('/invoices/send_mail', data);
-            const res = await request.put(`/order/byAdmin`,
-                {
-                    ...order,
-                    id: order.id,
-                    userId: order.id_user,
-                    email: order.email,
-                    fullName: order.fullname,
-                    orderDate: formatDate(order.orderDate),
-                    voucherValue: numberWithCommas(order.voucherValue),
-                    total_amount: numberWithCommas(order.total_amount),
-                    products: listProduct
-                })
+            console.log('check', {
+                ...order,
+                id: order.id,
+                userId: order.id_user,
+                email: order.email,
+                fullName: order.fullname,
+                orderDate: formatDate(order.orderDate),
+                voucherValue: numberWithCommas(order.voucherValue),
+                total_amount: numberWithCommas(order.total_amount),
+                products: listProduct
+            });
+
+            // await request.post('/invoices/send_mail', data);
+            // const res = await request.put(`/order/byAdmin`,
+            //     {
+            //         ...order,
+            //         id: order.id,
+            //         userId: order.id_user,
+            //         email: order.email,
+            //         fullName: order.fullname,
+            //         orderDate: formatDate(order.orderDate),
+            //         voucherValue: numberWithCommas(order.voucherValue),
+            //         total_amount: numberWithCommas(order.total_amount),
+            //         products: listProduct
+            //     })
             if (res.data.success) {
                 setListOrderPending(prev => prev.filter(item => item.id !== order.id))
             }
