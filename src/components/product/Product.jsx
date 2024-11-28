@@ -1,7 +1,7 @@
 import './product.scss'
 import {
     ShoppingCartOutlined
-  } from '@ant-design/icons';
+} from '@ant-design/icons';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { Link } from 'react-router-dom';
 import { numberWithCommas } from '../../utils/formatMoney';
@@ -10,11 +10,11 @@ import { Button } from 'antd';
 export default function Product({ product }) {
     //console.log(product.img);
     return (
-        <Link to={`/product/${product.id}`}   className="product-item">
-            
-                <img className="img" src={`${IMAGE_LINK}/${product.img}`} alt='img-product' />
+        <Link to={`/product/${product.id}`} className="product-item">
 
-           
+            <img className="img" src={product.img} alt='img-product' />
+
+
 
             <div className="product-content">
                 <div className="product-content-top">

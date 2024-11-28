@@ -3,21 +3,16 @@ import { useContext } from "react";
 import ListProduct from "../../components/listProduct/ListProduct";
 import Slider from "../../components/slider/Slider";
 import './home.scss'
-import { request } from "../../requestMethod";
 import { Radio } from 'antd';
 import { AppContext } from "../../context/AppContext";
-import { useGetProduct } from "../../services/products";
 import { useGetProducer } from "../../services/producer";
-import {
-    ProForm,
-    ProFormMoney,
-    ProFormSwitch,
-} from '@ant-design/pro-form';
+import MyMenu from "../../components/myMenu/MyMenu";
+import Voucher from "../voucher";
+import { Outlet } from "react-router-dom"
 
 function Home() {
-    const { filterProduct, setFilterProduct } = useContext(AppContext)
+    const { setFilterProduct } = useContext(AppContext)
 
-    const { productList } = useGetProduct(filterProduct)
     const { listProducer } = useGetProducer()
 
     const handleChange = (e) => {
@@ -31,12 +26,13 @@ function Home() {
             }
         })
     }
+
     return (
         <>
             <div className="home">
-
-                <div className="home-container">
+                <div style={{ maxWidth: 1200, margin: 'auto' }} className="home-container">
                     <Slider />
+                    <MyMenu />
                     <div className="home-heading">
 
                         <div className='row'>
@@ -54,14 +50,10 @@ function Home() {
                                     </Radio.Group>
                                 </div>
                             </div>
-
-
                         </div>
-
-
                     </div>
+                    <Outlet />
 
-                    <ListProduct productList={productList} />
                 </div>
             </div>
         </>);

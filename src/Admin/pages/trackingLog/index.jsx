@@ -24,11 +24,7 @@ const TrackingLog = () => {
     const { total, pageSize, current } = paginationResponse
 
 
-
-    console.log('filter', filter);
-
     const handleView = async (record) => {
-        console.log('record', record);
         formCreate.setFieldsValue(record);
         setStatusForm({
             open: true,
@@ -45,7 +41,7 @@ const TrackingLog = () => {
             dataIndex: 'method',
         },
         {
-            width: 150,
+            width: 100,
             title: 'User Id',
             dataIndex: 'userId',
         },
@@ -62,7 +58,7 @@ const TrackingLog = () => {
             ellipsis: true,
         },
         {
-            width: 150,
+            width: 100,
             title: 'Status',
             dataIndex: 'statusCode',
         },
@@ -72,12 +68,12 @@ const TrackingLog = () => {
             dataIndex: 'createAt',
         },
         {
-            width: 150,
+            width: 100,
             title: 'Địa chỉ ip',
             dataIndex: 'ipAddress',
         },
         {
-            width: 150,
+            width: 100,
             key: "action",
             render: (field, record) => (
                 <div style={{ display: "flex", gap: 10 }}>

@@ -123,11 +123,17 @@ const sideBarAdmin = [
         path: "tracking-log"
     },
     {
-        id: 4,
+        id: 13,
         icon: ShoppingCartOutlinedIcon,
-        title: "Đơn hàng",
-        path: "orders"
+        title: "Quản lý đơn hàng",
+        path: "manage-order"
     },
+    // {
+    //     id: 4,
+    //     icon: ShoppingCartOutlinedIcon,
+    //     title: "Đơn hàng",
+    //     path: "orders"
+    // },
     {
         id: 5,
         icon: StoreIcon,
@@ -323,6 +329,46 @@ const INFOR_PRODUCT = {
     COLOR: 'color',
     SIZE: 'size'
 }
+//-1: Đơn hàng khách huỷ
+//0: Đang chờ xử ý
+//1: Đã duyệt đơn
+//2: Đã hoàn thành
+//-2: Không chấp nhận
+const STATUS_ORDER = [
+    {
+        label: 'Chờ duyệt',
+        value: 0
+    },
+    {
+        label: 'Đang giao hàng',
+        value: 1
+    },
+    {
+        label: 'Đã hoàn thành',
+        value: 2
+    },
+    {
+        label: 'Đã hủy bỏ',
+        value: -2
+    },
+    {
+        label: 'Khách hủy đơn',
+        value: -1
+    }
+]
+
+const PAYMENT_TYPE = [
+    {
+        label: 'Thanh toán khi nhận hàng',
+        value: "1"
+    },
+    {
+        label: 'Thanh toán online',
+        value: "2"
+    }
+]
+
+
 
 const STATUS = {
     ACTIVE: 1,
@@ -362,6 +408,8 @@ export {
     listGender,
     STATUS,
     METHOD_API,
-    toastOptionRight
+    toastOptionRight,
+    STATUS_ORDER,
+    PAYMENT_TYPE
 }
 
