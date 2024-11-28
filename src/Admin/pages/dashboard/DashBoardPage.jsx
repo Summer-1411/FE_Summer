@@ -25,7 +25,7 @@ export default function DashBoardPage() {
                         width={50}
                         // src={record.avatar}
                         // src={record.avatar ? `${IMAGE_LINK}/${record.avatar}` : `${IMAGE_DEFAULT}`}
-                        src={`${IMAGE_LINK}/${record.img}`}
+                        src={`${record.img}`}
                     />
                     <span style={{ marginLeft: 10 }}>{record.name}</span>
                 </>

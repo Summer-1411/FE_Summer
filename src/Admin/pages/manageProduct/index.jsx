@@ -232,25 +232,7 @@ const ManageProduct = () => {
             </Button>
         </div>
     }
-    const [pagination, setPagination] = useState({
-        current: 1, // Trang hiện tại
-        pageSize: 5, // Số bản ghi mỗi trang
-    });
 
-    const handleTableChange = (pagination) => {
-        console.log('pagination', pagination);
-
-        // Cập nhật lại trạng thái pagination khi người dùng thay đổi trang
-        setPagination({
-            current: pagination.current,
-            pageSize: pagination.pageSize,
-        });
-
-        // Thực hiện các tác vụ khác nếu cần (ví dụ gọi API, tải lại dữ liệu, v.v.)
-        // Bạn có thể sử dụng `pagination.current` để gọi API với trang mới
-        console.log('Current page:', pagination.current);
-        console.log('Page size:', pagination.pageSize);
-    };
     return (
         <div>
 
@@ -260,11 +242,7 @@ const ManageProduct = () => {
                 rowKey={'id'}
                 columns={columns}
                 dataSource={productList}
-                pagination={{
-                    current: pagination.current,
-                    pageSize: pagination.pageSize,
-                    onChange: handleTableChange, // Đặt sự kiện onChange
-                }}
+                pagination={{ pageSize: 8 }}
             />
             <FormCreateUpdate />
         </div>

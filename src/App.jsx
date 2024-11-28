@@ -61,6 +61,10 @@ import ChatAdmin from './Admin/pages/chat';
 import useCurrentUser from './hooks/useCurrentUser';
 import { useSetupNotifications } from './firebase';
 import BlogEditor from './pages/blog';
+import OrderRoot from './Admin/pages/manageOrder';
+import Voucher from './pages/voucher';
+import LayoutNew from './layout/LayoutNew';
+import ListProduct from './components/listProduct/ListProduct';
 
 function App() {
   const currentUser = useCurrentUser()
@@ -105,8 +109,19 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Home />
+          element: <Home />,
+          children: [
+            {
+              path: "/",
+              element: <ListProduct />
+            },
+            {
+              path: "/voucher",
+              element: <Voucher />
+            },
+          ]
         },
+
         {
           path: "/blog",
           element: <BlogEditor />
@@ -119,10 +134,10 @@ function App() {
           path: "/cart",
           element: <ProtectedRoute><Cart /></ProtectedRoute>
         },
-        {
-          path: "/order",
-          element: <ProtectedRoute><Order /></ProtectedRoute>
-        },
+        // {
+        //   path: "/order",
+        //   element: <ProtectedRoute><Order /></ProtectedRoute>
+        // },
         {
           path: "/success-order",
           element: <ProtectedRoute><OrderResult /></ProtectedRoute>
@@ -153,6 +168,16 @@ function App() {
         }
       ]
     },
+    // {
+    //   path: "/voucher",
+    //   element: <LayoutNew />,
+    //   children: [
+    //     {
+    //       path: "/voucher",
+    //       element: <Voucher />
+    //     },
+    //   ]
+    // },
     {
       path: "/2020606605/admin",
       element: <ProtectedRoute><AdminRoute><LayoutAdmin /></AdminRoute></ProtectedRoute>,
@@ -180,6 +205,10 @@ function App() {
         {
           path: "manage-product",
           element: <ProductRoot />,
+        },
+        {
+          path: "manage-order",
+          element: <OrderRoot />,
         },
         {
           path: "tracking-log",

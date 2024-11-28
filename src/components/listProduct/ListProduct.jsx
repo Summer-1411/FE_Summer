@@ -1,7 +1,13 @@
 import "./listProduct.scss"
 import { List } from 'antd';
 import Product from "../product/Product";
-export default function ListProduct({ productList }) {
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
+import { useGetProduct } from "../../services/products";
+export default function ListProduct() {
+    const { filterProduct } = useContext(AppContext)
+
+    const { productList } = useGetProduct(filterProduct)
     return (
         <div className="list-products">
             <List
