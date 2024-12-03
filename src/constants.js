@@ -10,6 +10,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import WhatshotOutlinedIcon from '@mui/icons-material/WhatshotOutlined';
 const toastOption = {
     position: "top-center",
     autoClose: 3000,
@@ -127,6 +128,12 @@ const sideBarAdmin = [
         icon: ShoppingCartOutlinedIcon,
         title: "Quản lý đơn hàng",
         path: "manage-order"
+    },
+    {
+        id: 14,
+        icon: WhatshotOutlinedIcon,
+        title: "Quản lý voucher",
+        path: "manage-voucher"
     },
     // {
     //     id: 4,
