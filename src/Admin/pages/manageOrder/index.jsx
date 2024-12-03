@@ -143,7 +143,7 @@ const ManageOrder = () => {
             dataIndex: 'fullname',
             render: (field, record) => {
                 return (
-                    <>{record.order_detail.map((item, index) => (<div>
+                    <>{record.order_detail.map((item, index) => (<div key={item.id}>
                         <h5 style={{ marginBottom: 0 }}>{item?.filter?.product?.name}</h5>
                         <div>Loại: {item?.filter?.size}, {item?.filter?.color}  <span style={{ marginLeft: 10 }} type="danger">x{item?.quantity}</span></div>
                         <div>Đơn giá: {numberWithCommas(item?.price)}</div>

@@ -13,5 +13,5 @@ export function useGetLogApi(params) {
     )
     console.log('response.data', response?.data);
 
-    return response?.data?.data ?? {}
+    return response?.data?.data ?? []
 }

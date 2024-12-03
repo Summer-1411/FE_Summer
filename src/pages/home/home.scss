@@ -3,6 +3,7 @@
 .home {
     @include themify($themes) {
         background-color: themed("bgSoft");
+        width: 100%;
 
         // display: flex;
         // flex-shrink: 0;
