@@ -65,6 +65,7 @@ import OrderRoot from './Admin/pages/manageOrder';
 import Voucher from './pages/voucher';
 import LayoutNew from './layout/LayoutNew';
 import ListProduct from './components/listProduct/ListProduct';
+import VoucherRoot from './Admin/pages/manageVoucher';
 
 function App() {
   const currentUser = useCurrentUser()
@@ -217,6 +218,10 @@ function App() {
         {
           path: "manage-user",
           element: <UserRoot />,
+        },
+        {
+          path: "manage-voucher",
+          element: <VoucherRoot />,
         },
         {
           path: "producer",

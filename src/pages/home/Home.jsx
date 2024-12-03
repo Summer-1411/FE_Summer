@@ -21,7 +21,7 @@ function Home() {
                 ...prev,
                 sample: {
                     ...prev.sample,
-                    idOwner: e.target.value
+                    idProducer: e.target.value
                 }
             }
         })
