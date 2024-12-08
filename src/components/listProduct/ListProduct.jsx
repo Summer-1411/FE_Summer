@@ -18,7 +18,7 @@ export default function ListProduct() {
                     md: 3,
                     lg: 4,
                     xl: 4,
-                    xxl: 6
+                    xxl: 5
                 }}
                 pagination={{
                     onChange: (page) => {

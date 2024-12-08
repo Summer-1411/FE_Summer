@@ -13,11 +13,12 @@ import { useDeleteProductInCart } from '../../services/products';
 
 export default function Cart() {
     const navigate = useNavigate()
-    const { productCart } = useContext(AppContext)
+    const { productCart, setSelectedProducts } = useContext(AppContext)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [productDelete, setProductDelete] = useState();
     const serviceDeleteProductInCart = useDeleteProductInCart()
+    const [selectedIdProducts, setSelectedIdProducts] = useState([]);
     const handleDeletetItem = async (product) => {
         try {
             setConfirmLoading(true);
@@ -27,6 +28,9 @@ export default function Cart() {
             toast.error(error.message, toastOption);
         }
     }
+
+    console.log('productCart', productCart);
+
 
     const showModalDelete = (product) => {
         setIsModalOpen(true);
@@ -42,11 +46,29 @@ export default function Cart() {
         setIsModalOpen(false);
     };
 
+    const onSelectChange = (newSelectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        console.log('productCart', productCart);
+
+        setSelectedIdProducts(newSelectedRowKeys);
+    };
+
+    const rowSelection = {
+        selectedIdProducts,
+        onChange: onSelectChange,
+    };
+
+    const selectedProducts = useMemo(() => {
+        const result = productCart.filter(record => selectedIdProducts.includes(record.id));
+        return result
+    }, [productCart, selectedIdProducts])
+
     const handleClickOrder = () => {
-        if(productCart.length > 0){
+        if (selectedIdProducts.length > 0) {
+            setSelectedProducts(selectedProducts)
             navigate('/order')
-        }else {
-            toast.error('Bạn chưa có sản phẩm trong giỏ hàng !', toastOption);
+        } else {
+            toast.error('Bạn chưa chọn sản phẩm trong giỏ hàng !', toastOption);
         }
     }
     const columns = [
@@ -57,7 +79,7 @@ export default function Cart() {
             render: (_, record) => (
                 <Image
                     width={150}
-                    src={`${IMAGE_LINK}/${record.img}`}
+                    src={`${record.img}`}
                 />
 
             ),
@@ -119,16 +141,19 @@ export default function Cart() {
     ];
 
 
+
     return (
         <div className='wrapper-cart'>
+
             <Divider>Giỏ hàng</Divider>
             <Table
                 columns={columns}
+                rowSelection={rowSelection}
                 rowKey={'id'}
                 dataSource={productCart ?? []}
-                footer={() => <FotterTable data={productCart} />}
+                footer={() => <FotterTable data={selectedProducts} />}
             />
-            <Button type='primary' size='large' style={{ width: '100%' }} onClick={handleClickOrder}>
+            <Button disabled={selectedProducts.length === 0} type='primary' size='large' style={{ width: '100%' }} onClick={handleClickOrder}>
                 Đặt hàng
             </Button>
             <Modal
@@ -152,6 +177,7 @@ export default function Cart() {
 }
 
 const FotterTable = ({ data }) => {
+
     const sumPrice = useMemo(() => data.reduce(
         (accumulator, item) => {
             console.log({ item, accumulator });

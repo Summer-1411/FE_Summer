@@ -33,7 +33,7 @@ const ProducerManager = () => {
     showConfirm({
       message: "Sau khi xóa sẽ chuyển trạng thái về không hoạt động. Bạn có muốn xóa ?",
       type: ModalType.WARNING,
-      title: "Xóa bản ghi",
+      title: "Xóa nhà sản xuất",
       onOk: async () => {
         await deleteProducer.mutateAsync(record.id)
       },

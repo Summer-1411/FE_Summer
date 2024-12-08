@@ -34,7 +34,7 @@ export default function PurchaseProduct({ bill, cancelOrder }) {
             {products.map(pro => (
                 <div key={pro.id} className="purchaseProduct-content">
                     <div className="purchaseProduct-content-left">
-                        <img src={`${IMAGE_LINK}/${pro.img}`} alt="" className="img-product" />
+                        <img src={`${pro.img}`} alt="" className="img-product" />
                         <Link to={`/product/${pro.id_pro}`} className="infor-product">
                             <div className="name-product">{pro.name}</div>
                             <div className="filter-product">
