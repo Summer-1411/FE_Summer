@@ -11,7 +11,7 @@ import SelectInput from '../../../../ui/Select';
 import { TextArea } from '../../../../ui/TextArea';
 import { NumberInput } from '../../../../ui/NumberInput';
 import { DateInput } from '../../../../ui/DatePicker';
-import { ACTION_TYPE, DATE_FORMAT } from '../../../../constants';
+import { ACTION_TYPE, DATE_FORMAT, listStatus } from '../../../../constants';
 import moment from 'moment/moment';
 import dayjs from 'dayjs';
 import { useCreateVoucher, useUpdateVoucher } from '../../../../services/voucher';
@@ -176,6 +176,16 @@ const FormCreateUpdate = () => {
             <TextArea
                 name="description"
                 label={"Mô tả"}
+            />
+            <SelectInput
+                form={formCreate}
+                name="status"
+                options={listStatus}
+                label={"Trạng thái"}
+                disabled={[ACTION_TYPE.CREATE, ACTION_TYPE.VIEW].includes(statusForm.action)}
+                fieldProps={{
+                    defaultValue: 1,
+                }}
             />
         </CustomModalForm >
     )

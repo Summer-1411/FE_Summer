@@ -7,10 +7,10 @@ import { spinningLoaderRef } from "./pages/Loading/hook"
 
 
 // const BASE_URL = 'https://api-summer-shop.vercel.app/api'
-const SERVICE = 'https://api-summer-shop.vercel.app'
-const BASE_URL = SERVICE +'/api'
-const IMAGE_LINK = SERVICE +'/images'
-const IMAGE_DEFAULT = IMAGE_LINK +'/default.jpg'
+const SERVICE = 'http://localhost:6868'
+const BASE_URL = SERVICE + '/api'
+const IMAGE_LINK = SERVICE + '/images'
+const IMAGE_DEFAULT = IMAGE_LINK + '/default.jpg'
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken
 export {
     BASE_URL,
@@ -42,13 +42,13 @@ request.interceptors.request.use(
 );
 request.interceptors.response.use(
     (response) => {
-      spinningLoaderRef.current?.stop()
-      return response
+        spinningLoaderRef.current?.stop()
+        return response
     }
     ,
     async function (error) {
         spinningLoaderRef.current?.stop()
         console.log('error', error);
         return Promise.reject(error?.response?.data)
-      }
+    }
 )

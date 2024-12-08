@@ -36,6 +36,9 @@ export default function ProductDetail() {
 
     const { listSize, listColorImg } = useGetInforProductDetail(id);
     const currentProduct = useGetProductById(id);
+
+    console.log('currentProduct', currentProduct);
+
     const detailProduct = useGetProductDetailSizeColorProductId({
         id: id,
         ...sizeColor
@@ -49,7 +52,11 @@ export default function ProductDetail() {
     }, [currentProduct])
 
     const renderQuantity = useMemo(() => {
-        return detailProduct && detailProduct.quantity > 0
+        console.log('detailProduct', detailProduct);
+        if (!detailProduct) {
+            return ''
+        }
+        return detailProduct.quantity > 0
             ? `${detailProduct.quantity} sản phẩm`
             : 'Hết hàng';
     }, [detailProduct])
@@ -253,13 +260,13 @@ export default function ProductDetail() {
                                         <div className="row-title">
                                             Tình trạng
                                         </div>
-                                        {currentProduct?.qualityGrade}
+                                        {currentProduct?.description}
                                     </div>
                                     <div className="main-row">
                                         <div className="row-title">
                                             Bảo Hiểm
                                         </div>
-                                        Bảo hiểm thiết bị di động nâng cao
+                                        {currentProduct?.qualityGrade}
                                     </div>
                                     <div className="main-row">
                                         <div className="row-title">

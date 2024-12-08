@@ -21,7 +21,8 @@ export const ManageVoucherProvider = ({
       quantity: "",
       minOrderValue: "",
       maxMoney: "",
-      description: ""
+      description: "",
+      status: 1
     },
     orders: {
       property: "createAt",

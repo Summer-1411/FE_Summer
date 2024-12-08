@@ -2,7 +2,6 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 
 import './order.scss'
 import ProductCheckout from '../../components/productCheckout/ProductCheckout'
-import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid';
 import { request } from '../../requestMethod';
 import { useNavigate } from 'react-router-dom';
@@ -13,31 +12,30 @@ import { numberWithCommas } from '../../utils/formatMoney';
 import { Button, Form, Input, Space, Select, Row, Col, Checkbox, } from 'antd';
 import { AppContext } from '../../context/AppContext';
 import { useClearCart } from '../../services/products';
-import { useGetLocation } from './service';
+import { useCheckVoucher, useGetLocation } from './service';
 import { useWatch } from 'antd/es/form/Form';
 import useDebounce from '../../hooks/useDebounce';
-import axios from 'axios';
 
 const { Option } = Select;
 
 export default function Order() {
     const navigate = useNavigate()
     const serviceClearCart = useClearCart()
-    const { productCart } = useContext(AppContext)
+    const { selectedProducts, setSelectedProducts } = useContext(AppContext)
     const [form] = Form.useForm();
-    const [valueVoucher, setValueVoucher] = useState(0)
-    const [voucherOld, setVoucherOld] = useState('')
+    const [valueVoucher, setValueVoucher] = useState(null)
 
     const provinceId = useWatch('province', form)
     const districtId = useWatch('district', form)
     const wardId = useWatch('ward', form)
     const addressDetail = useWatch('addressDetail', form)
-    const codeVoucher = useWatch('voucher', form)
 
     const { data: lstProvince } = useGetLocation('list-province', { level: 1, code: 0 }, true)
     const { data: lstDistrict } = useGetLocation('list-district', { level: 2, code: provinceId }, !!provinceId)
     const { data: lstWard } = useGetLocation('list-ward', { level: 3, code: districtId }, !!districtId && !!provinceId)
     const { data: addressInfor } = useGetLocation('address-infor', { level: 5, code: wardId }, !!wardId)
+
+    const checkVoucher = useCheckVoucher();
 
     let debouncedAddressDetail = useDebounce(addressDetail, 1000);
 
@@ -49,22 +47,21 @@ export default function Order() {
         form.setFieldValue('address', addDetail + ", " + addInfor)
     }, [wardId, debouncedAddressDetail])
 
-    console.log('productCart', productCart);
 
 
-    const sumPrice = useMemo(() => productCart.reduce(
+    const sumPrice = useMemo(() => selectedProducts.reduce(
         (accumulator, item) => {
             return item.price * item.quantity + accumulator
         },
         0,
-    ), [productCart])
+    ), [selectedProducts])
 
 
-    console.log('valueVoucher', valueVoucher);
+
 
     let checkCondition = () => {
-        if (productCart.length === 0) {
-            toast.error('Bạn chưa có sản phẩm trong giỏ hàng !', toastOption);
+        if (selectedProducts.length === 0) {
+            toast.error('Bạn chưa chọn sản phẩm trong giỏ hàng !', toastOption);
             return false
         }
         return true
@@ -72,22 +69,26 @@ export default function Order() {
 
     const handleApplyVoucher = async () => {
         const code = form.getFieldValue('voucher')
-        console.log('code', code);
 
         try {
-            const res = await request.get(`/voucher/check/${code}`)
-            toast.success(`${res.data.message}, giảm ${res.data.data}%`, toastOption);
-            setValueVoucher(res.data.data)
-            setVoucherOld(code)
+            const dataRequest = {
+                code: code,
+                totalAmount: sumPrice
+            }
+            const { data: { data: dataResponse } } = await checkVoucher.mutateAsync(dataRequest)
+            // const res = await request.post(`/voucher/check-voucher`, dataRequest)
+            console.log('data', dataResponse);
+
+            setValueVoucher(dataResponse)
         } catch (error) {
-            toast.error(error.message, toastOption);
+            setValueVoucher(null)
             console.log('er', error);
         }
 
     }
-    const moneyVoucher = useMemo(() => {
-        return sumPrice * (valueVoucher / 100)
-    }, [sumPrice, valueVoucher])
+    // const moneyVoucher = useMemo(() => {
+    //     return sumPrice * (valueVoucher / 100)
+    // }, [sumPrice, valueVoucher])
     const handleOrder = async (values) => {
         if (!checkCondition()) {
             return;
@@ -95,15 +96,17 @@ export default function Order() {
         let data = {
             ...values,
             methodShip: 'Giao hàng',
-            products: productCart,
-            voucherValue: moneyVoucher,
-            total: valueVoucher ? (sumPrice - moneyVoucher) : sumPrice
+            products: selectedProducts,
+            voucherValue: valueVoucher ? valueVoucher?.discount : 0,
+            voucherCode: valueVoucher ? valueVoucher?.code : null,
+            total: valueVoucher ? (sumPrice - valueVoucher?.discount) : sumPrice
         }
-        console.log('data', data);
-
         try {
             const res = await request.post(`/order`, data)
-            serviceClearCart.mutateAsync()
+            serviceClearCart.mutateAsync({
+                products: selectedProducts
+            })
+            setSelectedProducts([])
             if (data.paymentMethod === PAYMENT_METHOD.DIRECT_PAYMENT) {
                 toast.success(res.data.message, toastOption);
                 navigate("/user/purchase")
@@ -242,7 +245,7 @@ export default function Order() {
                             </Form.Item>
                         </Col>
                         <Col span={4}>
-                            <Button onClick={handleApplyVoucher} disabled={voucherOld === codeVoucher} type='primary'>Áp dụng</Button>
+                            <Button onClick={handleApplyVoucher} type='primary'>Áp dụng</Button>
                         </Col>
                     </Row>
                 </Form.Item>
@@ -268,18 +271,18 @@ export default function Order() {
 
 
                 <div className="order-product">
-                    {productCart.map(pro => (
+                    {selectedProducts.map(pro => (
                         <ProductCheckout product={pro} key={uuidv4()} />
                     ))}
                 </div>
                 <div className="checkout-product">
                     <div className="checkout-product-right">
-                        {(valueVoucher && valueVoucher !== 0) ? <div className="sum-price-checkout">
+                        {valueVoucher ? <div className="sum-price-checkout">
                             <div className="title-checkout">
                                 Giảm (voucher) :
                             </div>
                             <div style={{ marginLeft: 10, textDecoration: 'line-through' }} className="price-order">
-                                - {numberWithCommas(moneyVoucher)}
+                                - {numberWithCommas(valueVoucher.discount)}
                             </div>
                         </div> : <></>}
                         <div className="sum-price-checkout">
@@ -287,7 +290,7 @@ export default function Order() {
                                 Thành tiền :
                             </div>
                             <div style={{ marginLeft: 10 }} className="price-order">
-                                {numberWithCommas(sumPrice - moneyVoucher)}
+                                {valueVoucher ? numberWithCommas(sumPrice - valueVoucher.discount) : numberWithCommas(sumPrice)}
                             </div>
                         </div>
                     </div>

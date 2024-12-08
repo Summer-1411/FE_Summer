@@ -63,6 +63,26 @@ export function useUpdateVoucher() {
         }
     )
 }
+
+export function useDeleteVoucher() {
+    const queryClient = useQueryClient()
+    return useMutation(
+        'delete-voucher',
+        (params) => {
+            return request.post(`/v1/voucher/delete`, params)
+        },
+        {
+            onSuccess: async (data) => {
+
+                await queryClient.invalidateQueries('list-voucher-admin')
+                toast.success("Lưu dữ liệu thành công", toastOption);
+            },
+            onError: async (error) => {
+                toast.error(error.message, toastOption);
+            }
+        }
+    )
+}
 // export function useGetListProductInOrderByOrderId(orderId) {
 //     const { data: response, ...props } = useQuery(
 //         ['list-product-order', orderId],

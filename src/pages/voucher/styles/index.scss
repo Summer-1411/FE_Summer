@@ -110,7 +110,13 @@
 
 /* Card header (Discount code and value) */
 .voucher-ai-card-header {
-    background-color: #4CAF50;
+    // background: linear-gradient(to bottom, darkblue, #1e3a8a, #1c1c1c);
+    // background: linear-gradient(to bottom, darkblue, #1e90ff, #add8e6, #ffffff);
+    // background: linear-gradient(to bottom, darkblue, cyan, white);
+    // background: radial-gradient(circle, darkblue, lightblue, white);
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
+    // background: linear-gradient(45deg, #ff6a00, #ff9100, #ffb200);
+    background-color: #4096ff;
     color: white;
     padding: 15px;
     border-radius: 15px;
@@ -171,7 +177,9 @@ progress::-moz-progress-bar {
 
 /* Hiệu ứng lửa cháy trên thanh progress */
 progress::-webkit-progress-value {
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
     background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00);
+
     /* Gradient màu lửa */
     border-radius: 12px;
     animation: flame 1.5s infinite linear;
@@ -179,6 +187,7 @@ progress::-webkit-progress-value {
 }
 
 progress::-moz-progress-bar {
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
     background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00);
     /* Gradient màu lửa */
     border-radius: 12px;
@@ -203,7 +212,9 @@ progress::-moz-progress-bar {
 .voucher-ai-save-btn {
     margin-top: 15px;
     padding: 12px 25px;
-    background-color: #4CAF50;
+    background-color: #4096ff;
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
+    // background: linear-gradient(45deg, #ff6a00, #ff9100, #ffb200);
     color: white;
     border: none;
     border-radius: 30px;
@@ -213,7 +224,7 @@ progress::-moz-progress-bar {
 }
 
 .voucher-ai-save-btn:hover {
-    background-color: #45a049;
+    background: linear-gradient(45deg, #f26907, #f59a24, #f1b324);
 }
 
 /* Các lớp cho voucher hết lượt sử dụng */

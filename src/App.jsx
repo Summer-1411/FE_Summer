@@ -135,10 +135,10 @@ function App() {
           path: "/cart",
           element: <ProtectedRoute><Cart /></ProtectedRoute>
         },
-        // {
-        //   path: "/order",
-        //   element: <ProtectedRoute><Order /></ProtectedRoute>
-        // },
+        {
+          path: "/order",
+          element: <ProtectedRoute><Order /></ProtectedRoute>
+        },
         {
           path: "/success-order",
           element: <ProtectedRoute><OrderResult /></ProtectedRoute>
@@ -267,32 +267,32 @@ function App() {
         //     }
         //   ]
         // },
-        {
-          path: "orders",
-          element: <OrderPage />,
-          children: [
-            {
-              path: "",
-              element: <OrderPending />
-            },
-            {
-              path: "confirmed",
-              element: <OrderConfirn />
-            },
-            {
-              path: "success",
-              element: <OrderSuccess />
-            },
-            {
-              path: "refuse",
-              element: <OrderRefuse />
-            },
-            {
-              path: "cancel",
-              element: <OrderCancel />
-            }
-          ]
-        }
+        // {
+        //   path: "orders",
+        //   element: <OrderPage />,
+        //   children: [
+        //     {
+        //       path: "",
+        //       element: <OrderPending />
+        //     },
+        //     {
+        //       path: "confirmed",
+        //       element: <OrderConfirn />
+        //     },
+        //     {
+        //       path: "success",
+        //       element: <OrderSuccess />
+        //     },
+        //     {
+        //       path: "refuse",
+        //       element: <OrderRefuse />
+        //     },
+        //     {
+        //       path: "cancel",
+        //       element: <OrderCancel />
+        //     }
+        //   ]
+        // }
       ]
     },
 

@@ -26,6 +26,8 @@ function Home() {
             }
         })
     }
+    console.log('listProducer', listProducer);
+
 
     return (
         <>
@@ -44,7 +46,7 @@ function Home() {
                             <div className='col l-8 c-12 m-6'>
                                 <div className="home-manufacturer">
                                     <Radio.Group onChange={handleChange}>
-                                        {listProducer.map((producer) => (
+                                        {[{ id: '', name: 'Tất cả' }, ...listProducer].map((producer) => (
                                             <Radio.Button key={producer.id} value={producer.id}>{producer.name}</Radio.Button>
                                         ))}
                                     </Radio.Group>

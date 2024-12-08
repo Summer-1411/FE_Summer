@@ -81,12 +81,12 @@ const sideBarAdmin = [
         title: "Trang chủ",
         path: "dashboard"
     },
-    {
-        id: 12,
-        icon: MessageOutlinedIcon,
-        title: "Tin nhắn",
-        path: "chat"
-    },
+    // {
+    //     id: 12,
+    //     icon: MessageOutlinedIcon,
+    //     title: "Tin nhắn",
+    //     path: "chat"
+    // },
     {
         id: 9,
         icon: BarChartIcon,

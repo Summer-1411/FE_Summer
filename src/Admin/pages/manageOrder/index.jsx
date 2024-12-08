@@ -1,5 +1,5 @@
 
-import { Button, Tag, Image, Space, Divider, Row, Col, Form } from 'antd';
+import { Button, Tag, Image, Space, Divider, Row, Col, Form, Flex } from 'antd';
 import { CheckOutlined, ClockCircleOutlined, DeleteOutlined, EditOutlined, ExclamationCircleOutlined, EyeOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons';
 import Table from "antd/es/table";
 
@@ -133,7 +133,9 @@ const ManageOrder = () => {
                     <Text>Email: {record?.user?.email}</Text>
                     <Text>SDT: {record?.phone}</Text>
                     <Text>{record?.shipping_address}</Text>
-                    <Text type="warning">Giảm giá: {hasValue(record?.voucherValue) ? numberWithCommas(record?.voucherValue) : ''}</Text>
+                    <Flex gap={10}>
+                        Mã voucher: <Text type="danger" style={{ fontWeight: 'bold' }}>{record?.voucherCode}</Text>
+                    </Flex>
                     <Text strong type="success">Ghi chú: {record?.note ?? ''}</Text>
                 </Space>
             }
@@ -167,7 +169,10 @@ const ManageOrder = () => {
             dataIndex: 'total_amount',
             render: (field, record) => {
                 return (
-                    <div>{numberWithCommas(record?.total_amount)}</div>
+                    <div>
+                        {record?.voucherValue ? <Text type="danger" delete>{numberWithCommas(record?.voucherValue)}</Text> : <></>}
+                        <div>{numberWithCommas(record?.total_amount)}</div>
+                    </div>
                 )
             },
         },

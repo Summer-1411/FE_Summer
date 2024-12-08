@@ -14,7 +14,7 @@ import { ModalType } from '../../../ui/ConfirmModel/contanst';
 import FormCreateUpdate from './components/formCreateUpdate';
 import { formatDate, parseDate } from '../../../utils/formatDate';
 import { ManageVoucherProvider, useManageVoucher } from './hooks/ManageVoucherContext';
-import { useGetVoucherAdmin } from '../../../services/voucher';
+import { useDeleteVoucher, useGetVoucherAdmin } from '../../../services/voucher';
 import { numberWithCommas } from '../../../utils/formatMoney';
 import { useIntl } from 'react-intl';
 import { hasValue } from '../../../utils/utils';
@@ -23,6 +23,7 @@ import { hasValue } from '../../../utils/utils';
 const ManageVoucher = () => {
     const intl = useIntl()
     const { setStatusForm, filter, formCreate } = useManageVoucher()
+    const serviceDelete = useDeleteVoucher()
     const { showConfirm } = useModalConfirm()
 
 
@@ -32,11 +33,11 @@ const ManageVoucher = () => {
 
     const handleDelete = (record) => {
         showConfirm({
-            title: "Xóa tài khoản",
+            title: "Xóa mã giảm giá",
             message: "Bản ghi sẽ chuyển trạng thái không hoạt động. Bạn có chắc chắn muốn xóa ?",
             type: ModalType.WARNING,
             onOk: () => {
-                // serviceDelete.mutateAsync(record.id)
+                serviceDelete.mutateAsync(record)
             },
         })
     }
@@ -92,6 +93,7 @@ const ManageVoucher = () => {
             initData: {}
         })
     }
+
     // {
     //     "id": 2,
     //     "code": "VOUCHER_99",
@@ -181,6 +183,18 @@ const ManageVoucher = () => {
             },
         },
         {
+            width: 80,
+            title: 'Trạng thái',
+            dataIndex: 'status',
+            render: (field, record) => {
+                return (
+                    <Tag icon={record.status ? <CheckCircleOutlined /> : <CloseCircleOutlined />} color={record.status ? 'success' : 'error'}>
+                        {listStatus.find((i) => i.value == record.status)?.label ?? ''}
+                    </Tag>
+                )
+            },
+        },
+        {
 
             title: 'Ngày tạo',
             dataIndex: 'createAt',
@@ -205,7 +219,7 @@ const ManageVoucher = () => {
             render: (field, record) => (
                 <div style={{ display: "flex", gap: 10 }}>
                     <Button size='small' type="primary" ghost onClick={() => handleClickEdit(record)} icon={<EditOutlined />} />
-                    {/* <Button disabled={record.status === STATUS.INACTIVE} size='small' danger onClick={() => handleDelete(record)} icon={<DeleteOutlined />} /> */}
+                    <Button disabled={record.status === STATUS.INACTIVE} size='small' danger onClick={() => handleDelete(record)} icon={<DeleteOutlined />} />
                     <Button size='small' type='default' onClick={() => handleView(record)} icon={<EyeOutlined />} />
                 </div>
             )

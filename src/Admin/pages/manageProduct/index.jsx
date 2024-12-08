@@ -1,6 +1,6 @@
 
 import { Button, Tag, Image } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import FormCreateUpdate from "./components/formCreateUpdate";
 import Table from "antd/es/table";
 
@@ -101,6 +101,15 @@ const ManageProduct = () => {
             open: true,
             action: ACTION_TYPE.UPDATE,
             initData: record
+        })
+    }
+    const handleClickCopy = async (record) => {
+        const { id, ...other } = record
+        await handleSetDataFormModal(record)
+        setStatusForm({
+            open: true,
+            action: ACTION_TYPE.CREATE,
+            initData: other
         })
     }
     const handleView = async (record) => {
@@ -216,8 +225,7 @@ const ManageProduct = () => {
                     <Button size='small' type="primary" ghost onClick={() => handleClickEdit(record)} icon={<EditOutlined />} />
                     <Button size='small' danger disabled={record.status == 0} onClick={() => handleDelete(record)} icon={<DeleteOutlined />} />
                     <Button size='small' type='default' onClick={() => handleView(record)} icon={<EyeOutlined />} />
-
-
+                    <Button size='small' type='default' onClick={() => handleClickCopy(record)} icon={<CopyOutlined />} />
                 </div>
             )
         }

@@ -131,10 +131,20 @@ const Filter = () => {
                     placeholder={DATE_FORMAT}
 
                 />
-                <TextArea
+                <SelectInput
+                    form={form}
+                    name="status"
+                    options={listStatus}
+                    label={"Trạng thái"}
+                    placeholder={"Chọn trạng thái"}
+                    fieldProps={{
+                        defaultValue: 1,
+                    }}
+                />
+                {/* <TextArea
                     name="description"
                     label={"Mô tả"}
-                />
+                /> */}
             </ProForm>
             <div style={{ justifyContent: 'flex-end', display: 'flex', marginTop: 20 }}>
                 <Button onClick={resetForm} >
