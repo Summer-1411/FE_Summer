@@ -14,6 +14,8 @@ export default function OrderItem({ order, complete }) {
     const { products } = useGetListProductInOrderByOrderId(order?.id)
     const { feedbackList } = useGetFeedbackUser()
 
+    console.log('products', products);
+
     const handleCreateUpdateFeedback = (pro, edit) => {
         let data = {
             ...pro,
@@ -43,42 +45,61 @@ export default function OrderItem({ order, complete }) {
 
 
     const feedbackValid = (feedbackList, pro) => {
+        console.log('feedbackList', feedbackList);
+        console.log('pro', pro);
+
+
         return feedbackList.find((feedbackItem) => feedbackItem.id_product === pro.id_pro && feedbackItem.id_order === order.id)
     }
+    const displayedFeedback = new Set();
     return (
         <div className='orderItem-wrapper'>
-            {products.map(pro => (
-                <div key={pro.id} className="orderItem-content">
-                    <div className="orderItem-content-left">
-                        <img src={`${IMAGE_LINK}/${pro.img}`} alt="" className="img-product" />
-                        <Link to={`/product/${pro.id_pro}`} style={{ textDecoration: 'none' }} className="infor-product">
-                            <div className="name-product">{pro.name}</div>
-                            <div className="filter-product">
-                                Phân loại: {pro.size}, {pro.color}
-                            </div>
-                            <div className="quantity-product">
-                                x{pro.quantity}
-                            </div>
-                        </Link>
-                    </div>
-                    <div className="orderItem-content-right">
-                        <div className="price-product">
-                            {numberWithCommas(pro.price)}
+            {products.map(pro => {
+                // Kiểm tra nếu nút đánh giá cho sản phẩm với id_pro này đã được hiển thị chưa
+                const isFeedbackValid = feedbackValid(feedbackList, pro);
+                const isFeedbackDisplayed = displayedFeedback.has(pro.id_pro);
+
+                // Nếu chưa hiển thị nút đánh giá cho id_pro này, đánh dấu là đã hiển thị
+                if (!isFeedbackDisplayed) {
+                    displayedFeedback.add(pro.id_pro);
+                }
+                return (
+                    <div key={pro.id} className="orderItem-content">
+                        <div className="orderItem-content-left">
+                            <img src={`${pro.img}`} alt="" className="img-product" />
+                            <Link to={`/product/${pro.id_pro}`} style={{ textDecoration: 'none' }} className="infor-product">
+                                <div className="name-product">{pro.name}</div>
+                                <div className="filter-product">
+                                    Phân loại: {pro.size}, {pro.color}
+                                </div>
+                                <div className="quantity-product">
+                                    x{pro.quantity}
+                                </div>
+                            </Link>
                         </div>
-                        {feedbackValid(feedbackList, pro) ? <div style={{ textAlign: 'right', marginTop: 20 }}>
-                            {complete && <Button ghost type="primary" onClick={() => handleCreateUpdateFeedback(pro, true)}>
-                                Sửa đánh giá
-                            </Button>}
-                        </div> : <div style={{ textAlign: 'right', marginTop: 20 }}>
-                            {complete && <Button type="primary" danger onClick={() => handleCreateUpdateFeedback(pro, false)}>
-                                Đánh giá sản phẩm
-                            </Button>}
-                        </div>}
+                        <div className="orderItem-content-right">
+                            <div className="price-product">
+                                {numberWithCommas(pro.price)}
+                            </div>
+                            {!isFeedbackDisplayed && complete && (
+                                <div style={{ textAlign: 'right', marginTop: 20 }}>
+                                    {isFeedbackValid ? (
+                                        <Button ghost type="primary" onClick={() => handleCreateUpdateFeedback(pro, true)}>
+                                            Sửa đánh giá
+                                        </Button>
+                                    ) : (
+                                        <Button type="primary" danger onClick={() => handleCreateUpdateFeedback(pro, false)}>
+                                            Đánh giá sản phẩm
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
 
+                        </div>
                     </div>
-                </div>
 
-            ))}
+                )
+            })}
             <div className="checkout-product">
                 <div className="checkout-product-left">
                     <div className="name-customer">

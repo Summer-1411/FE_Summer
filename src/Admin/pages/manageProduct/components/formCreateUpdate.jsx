@@ -108,11 +108,7 @@ const FormCreateUpdate = () => {
         const { listColor, priceRange, ...rest } = values
         const priceRangeValue = parseInt(String(priceRange).replace(/\./g, ''), 10);
         const { valid, data: productDetail } = convertDataToProductDetail(listColor)
-        console.log('valid', valid);
-
         if (!valid) {
-            console.log('123');
-
             return;
         }
         const dataSubmit = {

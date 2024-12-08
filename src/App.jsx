@@ -65,6 +65,7 @@ import OrderRoot from './Admin/pages/manageOrder';
 import Voucher from './pages/voucher';
 import LayoutNew from './layout/LayoutNew';
 import ListProduct from './components/listProduct/ListProduct';
+import VoucherRoot from './Admin/pages/manageVoucher';
 
 function App() {
   const currentUser = useCurrentUser()
@@ -134,10 +135,10 @@ function App() {
           path: "/cart",
           element: <ProtectedRoute><Cart /></ProtectedRoute>
         },
-        // {
-        //   path: "/order",
-        //   element: <ProtectedRoute><Order /></ProtectedRoute>
-        // },
+        {
+          path: "/order",
+          element: <ProtectedRoute><Order /></ProtectedRoute>
+        },
         {
           path: "/success-order",
           element: <ProtectedRoute><OrderResult /></ProtectedRoute>
@@ -219,6 +220,10 @@ function App() {
           element: <UserRoot />,
         },
         {
+          path: "manage-voucher",
+          element: <VoucherRoot />,
+        },
+        {
           path: "producer",
           element: <ProducerRoot />,
         },
@@ -262,32 +267,32 @@ function App() {
         //     }
         //   ]
         // },
-        {
-          path: "orders",
-          element: <OrderPage />,
-          children: [
-            {
-              path: "",
-              element: <OrderPending />
-            },
-            {
-              path: "confirmed",
-              element: <OrderConfirn />
-            },
-            {
-              path: "success",
-              element: <OrderSuccess />
-            },
-            {
-              path: "refuse",
-              element: <OrderRefuse />
-            },
-            {
-              path: "cancel",
-              element: <OrderCancel />
-            }
-          ]
-        }
+        // {
+        //   path: "orders",
+        //   element: <OrderPage />,
+        //   children: [
+        //     {
+        //       path: "",
+        //       element: <OrderPending />
+        //     },
+        //     {
+        //       path: "confirmed",
+        //       element: <OrderConfirn />
+        //     },
+        //     {
+        //       path: "success",
+        //       element: <OrderSuccess />
+        //     },
+        //     {
+        //       path: "refuse",
+        //       element: <OrderRefuse />
+        //     },
+        //     {
+        //       path: "cancel",
+        //       element: <OrderCancel />
+        //     }
+        //   ]
+        // }
       ]
     },
 

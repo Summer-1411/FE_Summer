@@ -71,8 +71,8 @@ export function useClearCart() {
     const queryClient = useQueryClient()
     return useMutation(
         'CLEAR_CART',
-        () => {
-            return request.delete(`/cart/clear`)
+        (params) => {
+            return request.post(`/cart/remove-product-cart`, params)
         },
         {
             onSuccess: async (data, variables, context) => {

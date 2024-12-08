@@ -33,6 +33,8 @@ export default function NavBar() {
 
     const { listCategory } = useGetCategory()
 
+    console.log('listCategory', listCategory);
+
     useEffect(() => {
         if (!debounced.trim()) {
             setResultSearch([]);
@@ -121,7 +123,7 @@ export default function NavBar() {
                                     size="large"
                                     variant="unstyled"
                                     onChange={handleChangeSelect}
-                                    options={listCategory}
+                                    options={[{ value: '', label: 'Tất cả' }, ...listCategory]}
 
                                 />
 

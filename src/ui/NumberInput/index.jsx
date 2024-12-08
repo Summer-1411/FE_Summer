@@ -44,8 +44,6 @@ export const NumberInput = (props) => {
                 .toString()
         }
 
-        console.log('vlue', value);
-
         return value
     }
 
@@ -64,9 +62,7 @@ export const NumberInput = (props) => {
             }
         } else {
             console.log('2');
-
             let parseValue = event.target.value
-
             parseValue = parseValue.replace(new RegExp(accept, 'g'), '')
             form.setFieldValue(props.name, handleConvertValue(parseValue))
             if (fieldProps && fieldProps.onChange) {

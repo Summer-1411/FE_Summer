@@ -1,0 +1,259 @@
+/* Reset default margin and padding */
+// * {
+//     margin: 0;
+//     padding: 0;
+//     box-sizing: border-box;
+// }
+
+/* Set the font and background */
+// body {
+//     font-family: 'Arial', sans-serif;
+//     background-color: #f4f4f9;
+//     color: #333;
+//     margin: 0;
+//     padding: 0;
+// }
+
+/* Container for the whole page */
+.voucher-ai-container {
+    max-width: 100%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.voucher-ai-title {
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 40px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff6a00, #ff9100, #ffb200);
+    /* Màu cam tông giống Shopee */
+    background-size: 400% 400%;
+    // animation: flame 3s linear infinite;
+    /* Áp dụng animation flame */
+    -webkit-background-clip: text;
+    /* Làm cho màu nền chỉ áp dụng cho chữ */
+    color: transparent;
+    /* Chữ trở nên trong suốt để nền gradient hiển thị */
+    text-shadow:
+        0 0 5px rgba(255, 102, 0, 0.7),
+        0 0 10px rgba(255, 102, 0, 0.7),
+        0 0 15px rgba(255, 102, 0, 0.7),
+        0 0 20px rgba(255, 102, 0, 0.5),
+        0 0 30px rgba(255, 102, 0, 0.4),
+        0 0 40px rgba(255, 102, 0, 0.3);
+    /* Tạo hiệu ứng sáng như lửa với màu cam */
+}
+
+@keyframes flame {
+    0% {
+        background-position: 0% 50%;
+        text-shadow:
+            0 0 5px rgba(255, 102, 0, 0.7),
+            0 0 10px rgba(255, 102, 0, 0.7),
+            0 0 15px rgba(255, 102, 0, 0.7),
+            0 0 20px rgba(255, 102, 0, 0.5),
+            0 0 30px rgba(255, 102, 0, 0.4),
+            0 0 40px rgba(255, 102, 0, 0.3);
+    }
+
+    50% {
+        background-position: 100% 50%;
+        text-shadow:
+            0 0 10px rgba(255, 102, 0, 0.8),
+            0 0 15px rgba(255, 102, 0, 0.8),
+            0 0 20px rgba(255, 102, 0, 0.7),
+            0 0 30px rgba(255, 102, 0, 0.6),
+            0 0 40px rgba(255, 102, 0, 0.5),
+            0 0 50px rgba(255, 102, 0, 0.4);
+    }
+
+    100% {
+        background-position: 200% 50%;
+        text-shadow:
+            0 0 5px rgba(255, 102, 0, 0.7),
+            0 0 10px rgba(255, 102, 0, 0.7),
+            0 0 15px rgba(255, 102, 0, 0.7),
+            0 0 20px rgba(255, 102, 0, 0.5),
+            0 0 30px rgba(255, 102, 0, 0.4),
+            0 0 40px rgba(255, 102, 0, 0.3);
+    }
+}
+
+
+/* Card container - full width layout */
+.voucher-ai-discount-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    padding: 20px;
+}
+
+/* Style for each card */
+.voucher-ai-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.voucher-ai-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card header (Discount code and value) */
+.voucher-ai-card-header {
+    // background: linear-gradient(to bottom, darkblue, #1e3a8a, #1c1c1c);
+    // background: linear-gradient(to bottom, darkblue, #1e90ff, #add8e6, #ffffff);
+    // background: linear-gradient(to bottom, darkblue, cyan, white);
+    // background: radial-gradient(circle, darkblue, lightblue, white);
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
+    // background: linear-gradient(45deg, #ff6a00, #ff9100, #ffb200);
+    background-color: #4096ff;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.voucher-ai-discount-code {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.voucher-ai-discount-value {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* Card body (Details) */
+.voucher-ai-card-body {
+    margin-top: 25px;
+    font-size: 15px;
+    color: #555;
+}
+
+.voucher-ai-card-body strong {
+    font-weight: bold;
+}
+
+/* Thanh progress */
+.voucher-ai-progress-container {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    border-radius: 12px;
+    background: #e0e0e0;
+    appearance: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: width 0.5s ease-in-out, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Định dạng cho thanh progress trong Webkit (Chrome, Safari) */
+progress::-webkit-progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 12px;
+}
+
+/* Định dạng cho thanh progress trong Firefox */
+progress::-moz-progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 12px;
+}
+
+/* Hiệu ứng lửa cháy trên thanh progress */
+progress::-webkit-progress-value {
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00);
+
+    /* Gradient màu lửa */
+    border-radius: 12px;
+    animation: flame 1.5s infinite linear;
+    /* Hiệu ứng lửa cháy */
+}
+
+progress::-moz-progress-bar {
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00);
+    /* Gradient màu lửa */
+    border-radius: 12px;
+    animation: flame 1.5s infinite linear;
+    /* Hiệu ứng lửa cháy */
+}
+
+/* Hiệu ứng lửa cháy (animation) */
+@keyframes flame {
+    0% {
+        background-position: 0% 50%;
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+    }
+
+    100% {
+        background-position: 100% 50%;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+    }
+}
+
+/* Button lưu */
+.voucher-ai-save-btn {
+    margin-top: 15px;
+    padding: 12px 25px;
+    background-color: #4096ff;
+    // background: linear-gradient(to bottom, darkblue, #2a4d85, #4a90e2);
+    // background: linear-gradient(45deg, #ff6a00, #ff9100, #ffb200);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.voucher-ai-save-btn:hover {
+    background: linear-gradient(45deg, #f26907, #f59a24, #f1b324);
+}
+
+/* Các lớp cho voucher hết lượt sử dụng */
+.voucher-ai-expired {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.voucher-ai-expired-overlay {
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 15px; */
+}
+
+.voucher-ai-expired-icon {
+    font-size: 36px;
+    margin-right: 10px;
+}
+
+.voucher-ai-expired-text {
+    font-size: 22px;
+}
