@@ -96,7 +96,7 @@ const CategoryManager = () => {
     }
   ];
   const Header = () => {
-    return <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    return <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <h3>
         Danh sách loại sản phẩm
       </h3>
@@ -111,9 +111,9 @@ const CategoryManager = () => {
   return (
     <div>
 
-      <Search setParams={setInitSearch}/>
+      <Search setParams={setInitSearch} />
       <Table
-        title={() =><Header />}
+        title={() => <Header />}
         rowKey={'id'}
         onRow={(record) => {
           return {
@@ -128,7 +128,7 @@ const CategoryManager = () => {
         dataSource={categoryList}
       />
       <Modal
-        title="Xóa bản ghi"
+        title="Xóa loại sản phẩm"
         open={openModel}
         onOk={handleOk}
         onCancel={handleCancel}
