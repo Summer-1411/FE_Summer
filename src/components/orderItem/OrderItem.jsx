@@ -117,6 +117,15 @@ export default function OrderItem({ order, complete }) {
                     </div>
                 </div>
                 <div className="checkout-product-right">
+                    {order.voucherValue ? <div className="sum-price-checkout">
+
+                        <div className="title-checkout">
+                            Giảm giá :
+                        </div>
+                        <div className="price-order">
+                            <span>   - {numberWithCommas(order.voucherValue)}</span>
+                        </div>
+                    </div> : <></>}
                     <div className="sum-price-checkout">
                         <div className="title-checkout">
                             Thành tiền :
@@ -127,6 +136,11 @@ export default function OrderItem({ order, complete }) {
                     </div>
                 </div>
             </div>
+            {(order.status === -1) && (<div className="purchaseProduct-bottom">
+                <div style={{ color: 'red' }}>
+                    Bạn đã hủy đơn vì lý do : {order.reason} !
+                </div>
+            </div>)}
         </div>
     )
 }

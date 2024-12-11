@@ -170,7 +170,7 @@ const ManageOrder = () => {
             render: (field, record) => {
                 return (
                     <div>
-                        {record?.voucherValue ? <Text type="danger" delete>{numberWithCommas(record?.voucherValue)}</Text> : <></>}
+                        {record?.voucherValue ? <Text type="danger">-{numberWithCommas(record?.voucherValue)}</Text> : <></>}
                         <div>{numberWithCommas(record?.total_amount)}</div>
                     </div>
                 )

@@ -5,10 +5,12 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import { numberWithCommas } from '../../utils/formatMoney';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Link } from 'react-router-dom';
-import { Modal } from 'antd';
+import { Col, Form, Modal, Row } from 'antd';
+import CustomModalForm from '../../ui/ModelForm';
+import { TextArea } from '../../ui/TextArea';
 export default function PurchaseProduct({ bill, cancelOrder }) {
+    const [formCancel] = Form.useForm()
 
-    //console.log("item: ", bill);
     const [opnenCancellation, setOpnenCancellation] = useState(false)
     const [products, setProducts] = useState([])
     useEffect(() => {
@@ -20,9 +22,21 @@ export default function PurchaseProduct({ bill, cancelOrder }) {
         getProductByBill();
     }, [bill.id])
 
-    const handleCalcellation = async () => {
-        await cancelOrder(bill.id)
+
+
+    const handleOpenFormCancel = () => {
+        setOpnenCancellation(true)
+    }
+    const handleCloseFormCancel = () => {
         setOpnenCancellation(false)
+    }
+    const handleRejectOrder = async (values) => {
+        const data = {
+            ...values,
+            id: bill.id
+        }
+        await cancelOrder(data)
+        handleCloseFormCancel()
     }
     const dateString = bill.orderDate;
     const date = new Date(dateString);
@@ -77,15 +91,15 @@ export default function PurchaseProduct({ bill, cancelOrder }) {
                     </div>
                 </div>
                 <div className="checkout-product-right">
-                    <div className="sum-price-checkout">
+                    {bill.voucherValue ? <div className="sum-price-checkout">
 
                         <div className="title-checkout">
                             Giảm giá :
                         </div>
                         <div className="price-order">
-                            {bill.voucherValue ? <span>   - {numberWithCommas(bill.voucherValue)}</span> : ''}
+                            <span>   - {numberWithCommas(bill.voucherValue)}</span>
                         </div>
-                    </div>
+                    </div> : <></>}
                     <div className="sum-price-checkout">
                         <div className="title-checkout">
                             Thành tiền :
@@ -97,7 +111,7 @@ export default function PurchaseProduct({ bill, cancelOrder }) {
                 </div>
             </div>
             {bill.status === 0 && (<div className="purchaseProduct-bottom">
-                <div className="btn-delete" onClick={() => setOpnenCancellation(true)}>
+                <div className="btn-delete" onClick={handleOpenFormCancel}>
                     Huỷ đơn
                 </div>
             </div>)}
@@ -106,31 +120,30 @@ export default function PurchaseProduct({ bill, cancelOrder }) {
                     Đơn hàng của bạn đã bị huỷ vì lý do {bill.reason}, xin vui lòng thử lại !
                 </div>
             </div>)}
-            {/* {opnenCancellation &&
-                <div className="wrapper-cancel" onClick={() => setOpnenCancellation(false)}>
-                    <div className="cancel-container" onClick={(e) => { e.stopPropagation() }} >
-                        <div className="cancel-heading">
-                            Bạn có chắc chắn muốn huỷ đơn hàng này <SentimentVeryDissatisfiedIcon />
-                        </div>
-                        <div className="cancel-content">
-                            <div className="btn btn-agree" onClick={handleCalcellation}>
-                                Đồng ý
-                            </div>
-                            <div className="btn btn-cancel" onClick={}>
-                                Huỷ bỏ
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            } */}
-            <Modal
-                title="Hủy đơn hàng"
+            <CustomModalForm
+                width={1000}
                 open={opnenCancellation}
-                onOk={handleCalcellation}
-                onCancel={() => setOpnenCancellation(false)}
+                title={"Bạn có chắc chắn muốn huỷ đơn hàng này ?"}
+                form={formCancel}
+                onFinish={handleRejectOrder}
+                onReset={handleCloseFormCancel}
+                onCancel={handleCloseFormCancel}
+                resetText={"Hủy"}
+                submitText="Đồng ý"
+            // onCancel={onCancel}
             >
-                <p>Bạn có chắc chắn muốn huỷ đơn hàng này ?</p>
-            </Modal>
+                <Row gutter={16}>
+                    <Col xs={24} sm={24} md={24} xl={24}>
+                        <TextArea
+                            name="reason"
+                            label={"Lý do"}
+                            autoRequired
+                            fieldProps={{ maxLength: 500 }}
+                        />
+                    </Col>
+
+                </Row>
+            </CustomModalForm >
         </div>
     )
 }
