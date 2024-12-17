@@ -57,6 +57,11 @@ export default function Order() {
     ), [selectedProducts])
 
 
+    useEffect(() => {
+        if (selectedProducts.length === 0) {
+            navigate("/")
+        }
+    }, [])
 
 
     let checkCondition = () => {

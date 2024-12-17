@@ -25,11 +25,12 @@ export default function PendingOrder() {
     }, [key])
 
 
-    const cancelOrder = async (id) => {
+    const cancelOrder = async ({ id, reason }) => {
         try {
             const res = await request.put(`/order/cancel_by_user/${currentUser.id}`,
                 {
-                    id: id
+                    id: id,
+                    reason: reason
                 })
             setBill((prev) => prev.filter(order => order.id !== id))
             toast.success(res.data.message, toastOption);

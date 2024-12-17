@@ -22,7 +22,7 @@ export default function ForgotPassword() {
 
 
     const handleOk = async (values) => {
-        
+
         const valueRegister = formForgotPassword.getFieldValue()
         const value = { ...values, ...valueRegister }
         try {
@@ -47,12 +47,9 @@ export default function ForgotPassword() {
         handleSendOTP()
 
     }
-    
+
     const handleSendOTP = async () => {
         const values = formForgotPassword.getFieldValue()
-        console.log('values', values);
-        console.log('!values.username',!values.username);
-        
         if (!values.email || !values.password || !values.password2) {
             toast.error('Vui lòng nhập đủ thông tin !', toastOption);
             return
@@ -141,7 +138,7 @@ export default function ForgotPassword() {
                     </Form.Item>
 
                     <Form.Item
-                        label="Mật khẩu"
+                        label="Mật khẩu mới"
                         name="password"
                         rules={[
                             {
@@ -157,7 +154,7 @@ export default function ForgotPassword() {
                         <Input.Password />
                     </Form.Item>
                     <Form.Item
-                        label="Xác nhận mật khẩu"
+                        label="Xác nhận mật khẩu mới"
                         name="password2"
                         dependencies={['password']}
                         rules={[
