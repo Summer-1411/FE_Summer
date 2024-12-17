@@ -39,20 +39,18 @@ export default function ChangePassword() {
 
     const onFinish = async (values) => {
         handleSendOTP()
-        showModal()
+
     }
 
     const handleSendOTP = async () => {
         const values = formForgotPassword.getFieldValue()
-        console.log('values', values);
-        console.log('!values.username', !values.username);
-
         if (!values.oldPassword || !values.newPassword || !values.newPassword2) {
             toast.error('Vui lòng nhập đủ thông tin !', toastOption);
             return
         }
         try {
             await request.post(`/auth/check-change-password`, values)
+            showModal()
         } catch (error) {
             toast.error(error.message, toastOption);
             console.log("ERROR OTP: ", error);
