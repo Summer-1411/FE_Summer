@@ -4,7 +4,6 @@ import { numberWithCommas } from '../../utils/formatMoney';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Button, Divider, Image, Modal, Space, Table, Tag } from 'antd';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IMAGE_LINK } from '../../requestMethod';
 import { toast } from 'react-toastify';
 import { toastOption } from '../../constants';
 import { useContext, useMemo, useState } from 'react';

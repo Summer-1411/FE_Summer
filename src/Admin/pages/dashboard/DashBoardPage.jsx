@@ -1,6 +1,5 @@
 import { useGetCountStat, useGetTopProduct, useGetTopUser } from '../../../services/stat'
 import { Card, Col, Image, Row, Statistic, Table } from 'antd'
-import { IMAGE_LINK } from '../../../requestMethod'
 import { numberWithCommas } from '../../../utils/formatMoney'
 import { parseDate } from '../../../utils/formatDate'
 
@@ -23,8 +22,6 @@ export default function DashBoardPage() {
                 return <>
                     <Image
                         width={50}
-                        // src={record.avatar}
-                        // src={record.avatar ? `${IMAGE_LINK}/${record.avatar}` : `${IMAGE_DEFAULT}`}
                         src={`${record.img}`}
                     />
                     <span style={{ marginLeft: 10 }}>{record.name}</span>
@@ -51,7 +48,7 @@ export default function DashBoardPage() {
                 return <>
                     <Image
                         width={50}
-                        src={`${IMAGE_LINK}/${record.avatar}`}
+                        src={`${record.avatar}`}
                     />
                     <span style={{ marginLeft: 10 }}>{record.username}</span>
                 </>

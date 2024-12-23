@@ -32,7 +32,7 @@ function Home() {
     return (
         <>
             <div className="home">
-                <div style={{ maxWidth: 1200, margin: 'auto' }} className="home-container">
+                <div className="home-container">
                     <Slider />
                     <MyMenu />
                     <div className="home-heading">

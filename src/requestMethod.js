@@ -8,9 +8,10 @@ import { spinningLoaderRef } from "./pages/Loading/hook"
 
 // const BASE_URL = 'https://api-summer-shop.vercel.app/api'
 const SERVICE = 'http://localhost:6868'
+// const SERVICE = 'https://api-summer-shop.vercel.app'
 const BASE_URL = SERVICE + '/api'
 const IMAGE_LINK = SERVICE + '/images'
-const IMAGE_DEFAULT = IMAGE_LINK + '/default.jpg'
+const IMAGE_DEFAULT = 'https://res.cloudinary.com/drkmrlmla/image/upload/v1734960934/jpnkgqpa0tnp4rcpylns.jpg'
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.accessToken
 export {
     BASE_URL,

@@ -24,7 +24,7 @@ export default function ListProduct() {
                     onChange: (page) => {
                         console.log('page', page);
                     },
-                    pageSize: 12,
+                    pageSize: 10,
                     total: productList?.length ?? 0,
                     position: 'bottom',
                     align: 'center',

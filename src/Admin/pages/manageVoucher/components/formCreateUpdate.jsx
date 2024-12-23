@@ -3,7 +3,7 @@ import { Card, Col, Descriptions, Form, Image, Row, Statistic, Typography } from
 import CustomModalForm from '../../../../ui/ModelForm'
 import { useEffect, useMemo, useState } from 'react';
 import { numberWithCommas } from '../../../../utils/formatMoney';
-import { IMAGE_DEFAULT, IMAGE_LINK, request } from '../../../../requestMethod';
+import { IMAGE_DEFAULT, request } from '../../../../requestMethod';
 import { formatDate } from '../../../../utils/formatDate';
 import { useManageVoucher } from '../hooks/ManageVoucherContext';
 import TextInput from '../../../../ui/TextInput';

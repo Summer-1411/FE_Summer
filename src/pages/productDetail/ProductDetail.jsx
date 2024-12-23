@@ -3,7 +3,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import StarIcon from '@mui/icons-material/Star';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IMAGE_LINK, request } from '../../requestMethod';
+import { request } from '../../requestMethod';
 import { useDispatch, useSelector } from 'react-redux';
 import { numberWithCommas } from '../../utils/formatMoney';
 
