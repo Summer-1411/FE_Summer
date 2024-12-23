@@ -4,7 +4,7 @@ import CustomModalForm from '../../../../ui/ModelForm'
 import { useManageUser } from '../hooks/ManageUserContext';
 import { useEffect, useMemo, useState } from 'react';
 import { numberWithCommas } from '../../../../utils/formatMoney';
-import { IMAGE_DEFAULT, IMAGE_LINK, request } from '../../../../requestMethod';
+import { IMAGE_DEFAULT, request } from '../../../../requestMethod';
 import { formatDate } from '../../../../utils/formatDate';
 
 const { Title } = Typography;
@@ -57,7 +57,7 @@ const FormCreateUpdate = () => {
                     <Image
                         width={100}
                         // src={record.avatar}
-                        src={user?.avatar ? `${IMAGE_LINK}/${user?.avatar}` : `${IMAGE_DEFAULT}`}
+                        src={user?.avatar ? `${user?.avatar}` : `${IMAGE_DEFAULT}`}
                     />
                     <Title level={3} style={{ marginLeft: 10 }}>{user?.username}</Title>
                 </>,

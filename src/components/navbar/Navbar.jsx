@@ -8,7 +8,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { IMAGE_DEFAULT, IMAGE_LINK, request } from "../../requestMethod";
+import { IMAGE_DEFAULT, request } from "../../requestMethod";
 import { toast } from "react-toastify";
 import { toastOption } from "../../constants";
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -104,7 +104,7 @@ export default function NavBar() {
                             <div className="result-searrch" tabIndex="-1" {...attrs}>
                                 {resultSearch.map((pro) => (
                                     <Link to={`/product/${pro.id}`} key={pro.id} className="productSearch-item" onClick={handleClear}>
-                                        <img className="productSearch-item-img" src={`${IMAGE_LINK}/${pro.img}`} alt="" />
+                                        <img className="productSearch-item-img" src={`${pro.img}`} alt="" />
                                         <span className="productSearch-item-name">{pro.name}</span>
                                     </Link>
                                 ))}
@@ -184,7 +184,7 @@ export default function NavBar() {
 
                             className="user"
                         >
-                            <img src={currentUser.avatar ? `${IMAGE_LINK}/${currentUser.avatar}` : `${IMAGE_DEFAULT}`} alt="" />
+                            <img src={currentUser.avatar ? `${currentUser.avatar}` : `${IMAGE_DEFAULT}`} alt="" />
                             <span className="mobile-hide">{currentUser.username}</span>
                         </Popover>) : (
                         <Flex gap="small" align="center" >
@@ -200,12 +200,6 @@ export default function NavBar() {
                             </Button>
                         </Flex>
                     )}
-
-                    {/* {currentUser && <Link to={"/user/profile"} className="user">
-                        <img src={currentUser.avatar ? `${IMAGE_LINK}/${currentUser.avatar}` : `${IMAGE_DEFAULT}`} alt="" />
-                        <span>{currentUser.username}</span>
-                    </Link>} */}
-
 
                 </div>
 

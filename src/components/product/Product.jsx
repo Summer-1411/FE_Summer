@@ -5,7 +5,6 @@ import {
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { Link } from 'react-router-dom';
 import { numberWithCommas } from '../../utils/formatMoney';
-import { IMAGE_LINK } from '../../requestMethod';
 import { Button } from 'antd';
 export default function Product({ product }) {
     //console.log(product.img);

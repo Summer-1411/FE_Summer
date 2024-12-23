@@ -44,7 +44,7 @@ export default function Purchase() {
         <HistoryOrderContext.Provider value={value}>
             <Tabs
                 defaultActiveKey="1"
-                centered
+                tabPosition='top'
                 onChange={onChange}
                 type="card"
                 items={dataOrderStatus}

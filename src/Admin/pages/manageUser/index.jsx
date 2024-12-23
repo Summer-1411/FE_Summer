@@ -13,7 +13,7 @@ import Filter from './components/filter';
 import { useModalConfirm } from '../../../ui/ConfirmModel/ModalContextCustom';
 import { ModalType } from '../../../ui/ConfirmModel/contanst';
 import { useDeleteUser, useGetListUser, useRestoreUser } from '../../../services/user';
-import { IMAGE_DEFAULT, IMAGE_LINK } from '../../../requestMethod';
+import { IMAGE_DEFAULT } from '../../../requestMethod';
 import FormCreateUpdate from './components/formCreateUpdate';
 import { formatDate } from '../../../utils/formatDate';
 
@@ -70,7 +70,7 @@ const ManageUser = () => {
                     <Image
                         width={100}
                         // src={record.avatar}
-                        src={record.avatar ? `${IMAGE_LINK}/${record.avatar}` : `${IMAGE_DEFAULT}`}
+                        src={record.avatar ? `${record.avatar}` : `${IMAGE_DEFAULT}`}
                     />
                     <span style={{ marginLeft: 10 }}>{record.username}</span>
                 </>

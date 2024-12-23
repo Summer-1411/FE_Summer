@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './purchaseProduct.scss'
-import { IMAGE_LINK, request } from '../../requestMethod';
+import { request } from '../../requestMethod';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { numberWithCommas } from '../../utils/formatMoney';
 import RemoveIcon from '@mui/icons-material/Remove';
