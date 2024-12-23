@@ -2,7 +2,7 @@ import './navbar.scss'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { useSelector } from 'react-redux';
-import { IMAGE_DEFAULT, IMAGE_LINK, request } from '../../../requestMethod';
+import { IMAGE_DEFAULT, request } from '../../../requestMethod';
 import { useEffect, useRef, useState } from 'react';
 import useDebounce from '../../../hooks/useDebounce';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -62,13 +62,13 @@ export default function Navbar() {
                     <div className="result-searrch" tabIndex="-1" {...attrs}>
                         {resultSearchProduct.map((pro) => (
                             <Link to={`/2020606605/admin/products/detail-product/${pro.id}`} key={pro.id} className="productSearch-item" onClick={handleClear}>
-                                <img className="productSearch-item-img" src={`${IMAGE_LINK}/${pro.img}`} alt="" />
+                                <img className="productSearch-item-img" src={`${pro.img}`} alt="" />
                                 <span className="productSearch-item-name">{pro.name}</span>
                             </Link>
                         ))}
                         {resultSearchUser.map((user) => (
                             <Link to={`/2020606605/admin/users/detail-user/${user.id}`} key={user.id} className="productSearch-item" onClick={handleClear}>
-                                <img className="productSearch-item-img" src={user.avatar ? `${IMAGE_LINK}/${user.avatar}` : `${IMAGE_DEFAULT}`} alt="" />
+                                <img className="productSearch-item-img" src={user.avatar ? `${user.avatar}` : `${IMAGE_DEFAULT}`} alt="" />
                                 <span className="productSearch-item-name">{user.username}</span>
                             </Link>
                         ))}
@@ -97,7 +97,7 @@ export default function Navbar() {
                         {currentUser.username}
                     </div>
                     <div className="wrapper-avatar">
-                        <img src={currentUser.avatar ? `${IMAGE_LINK}/${currentUser.avatar}` : `${IMAGE_DEFAULT}`} alt="" className="avatar-admin" />
+                        <img src={currentUser.avatar ? `${currentUser.avatar}` : `${IMAGE_DEFAULT}`} alt="" className="avatar-admin" />
 
                     </div>
                 </div>

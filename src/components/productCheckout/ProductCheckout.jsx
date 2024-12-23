@@ -1,4 +1,3 @@
-import { IMAGE_LINK } from '../../requestMethod'
 import { numberWithCommas } from '../../utils/formatMoney'
 import './productCheckout.scss'
 

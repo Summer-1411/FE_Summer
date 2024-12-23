@@ -230,11 +230,12 @@ const FormCreateUpdate = () => {
                         autoRequired
                     />
 
-                    <TextInput
+                    <TextArea
                         name="qualityGrade"
                         autoRequired
                         label={"Tình trạng sản phẩm"}
                         key="qualityGrade"
+                        fieldProps={{ maxLength: 255 }}
                     />
                     <SelectInput
                         autoRequired

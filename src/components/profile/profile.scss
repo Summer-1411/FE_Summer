@@ -1,45 +1,338 @@
+// @import "../../style.scss";
+
+// .ai_css_profile-wrapper {
+//     @include themify($themes) {
+//         padding: 20px;
+
+//         .ai_css_profile-heading {
+//             border-bottom: 1px solid themed("border");
+//             padding-bottom: 20px;
+//             margin-bottom: 30px;
+
+//             .ai_css_profile-title {
+//                 font-size: 24px;
+//                 font-weight: bold;
+//                 color: themed("textBold");
+//                 margin-bottom: 8px;
+//             }
+
+//             .ai_css_profile-infor {
+//                 font-size: 16px;
+//                 color: themed("textColorSoft");
+//                 line-height: 1.5;
+//             }
+//         }
+
+//         .ai_css_profile-content {
+//             display: flex;
+//             flex-wrap: wrap;
+//             gap: 20px;
+//             justify-content: space-between;
+
+//             /* Left side - Form section */
+//             .ai_css_profile-content-left {
+//                 flex: 1;
+//                 min-width: 300px;
+//                 border-right: 1px solid themed("border");
+//                 padding-right: 30px;
+
+//                 .ai_css_profile-content-left-item {
+//                     display: flex;
+//                     align-items: center;
+//                     margin-bottom: 25px;
+
+//                     .ai_css_profile-title {
+//                         flex: 2;
+//                         font-size: 16px;
+//                         font-weight: 500;
+//                         color: themed("textColorSoft");
+//                     }
+
+//                     .ai_css_profile-item-value {
+//                         flex: 3;
+//                         padding-left: 20px;
+
+//                         .ai_css_profile-input-name {
+//                             width: 100%;
+//                             padding: 10px;
+//                             outline: none;
+//                             font-size: 14px;
+//                             border: 1px solid themed("border");
+//                             border-radius: 4px;
+//                             transition: border-color 0.3s ease;
+
+//                             &:focus {
+//                                 border-color: themed("colorPink");
+//                             }
+//                         }
+
+//                         .ai_css_profile-gender {
+//                             display: flex;
+//                             gap: 20px;
+
+//                             .ai_css_profile-gender-item {
+//                                 display: flex;
+//                                 align-items: center;
+//                                 gap: 8px;
+//                                 cursor: pointer;
+
+//                                 .ai_css_profile-check-radio {
+//                                     color: themed("textColorSoft");
+
+//                                     &.selected {
+//                                         color: themed("colorPink");
+//                                     }
+//                                 }
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+
+
+//             /* Right side - Avatar section */
+//             .ai_css_profile-content-right {
+//                 flex: 1;
+//                 min-width: 250px;
+//                 display: flex;
+//                 justify-content: center;
+//                 align-items: center;
+//                 flex-direction: column;
+//                 /* Stack avatar and button vertically */
+//                 order: 2;
+//                 /* Default order in larger screen size */
+
+//                 .ai_css_profile-avatar-wrapper {
+//                     display: flex;
+//                     flex-direction: column;
+//                     /* Stack avatar image and button vertically */
+//                     justify-content: center;
+//                     align-items: center;
+//                     gap: 10px;
+//                     /* Space between image and button */
+
+//                     .ai_css_profile-avatar-container {
+//                         position: relative;
+//                         display: flex;
+//                         justify-content: center;
+//                         align-items: center;
+//                         width: 150px;
+//                         height: 150px;
+//                         border-radius: 50%;
+//                         overflow: hidden;
+//                         border: 4px solid #f2f2f2;
+//                         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+//                         transition: all 0.3s ease;
+
+//                         &:hover {
+//                             border-color: themed("colorPink");
+//                             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+//                         }
+
+//                         .ai_css_profile-avatar-user {
+//                             width: 100%;
+//                             height: 100%;
+//                             object-fit: cover;
+//                             border-radius: 50%;
+//                             transition: transform 0.3s ease;
+//                         }
+//                     }
+
+//                     /* Button for selecting the image */
+//                     .ai_css_profile-btn-select-img {
+//                         display: inline-block;
+//                         padding: 10px 20px;
+//                         background-color: themed("colorPink");
+//                         color: #fff;
+//                         border-radius: 5px;
+//                         font-size: 14px;
+//                         text-align: center;
+//                         cursor: pointer;
+//                         transition: background-color 0.3s ease;
+
+//                         &:hover {
+//                             background-color: themed("colorPinkDark");
+//                             /* Darker shade on hover */
+//                         }
+
+//                         input {
+//                             display: none;
+//                         }
+//                     }
+//                 }
+//             }
+
+//             /* Responsive Media Query */
+//             @media (max-width: 768px) {
+//                 .ai_css_profile-content-right {
+//                     order: 2;
+//                     /* Change order to make it appear at the top */
+//                     width: 100%;
+//                     /* Make sure it occupies the full width */
+//                     padding-bottom: 20px;
+//                     /* Add some spacing below the profile picture and upload button */
+//                 }
+
+//                 .ai_css_profile-content-left {
+//                     flex: 1;
+//                     padding-right: 0;
+//                     border-right: none;
+//                 }
+//             }
+//         }
+
+
+//         .ai_css_profile-bottom {
+//             display: flex;
+//             justify-content: center;
+//             padding-top: 30px;
+
+//             .ai_css_profile-btn-save {
+//                 padding: 12px 30px;
+//                 font-size: 16px;
+//                 background-color: themed("colorPink");
+//                 color: white;
+//                 border-radius: 4px;
+//                 cursor: pointer;
+//                 transition: background-color 0.3s ease;
+//                 border: none;
+
+//                 &:hover {
+//                     background-color: darken(themed("colorPink"), 10%);
+//                 }
+//             }
+//         }
+
+//         /* Responsive Design */
+//         @media (max-width: 1200px) {
+//             .ai_css_profile-content {
+//                 flex-direction: column;
+//                 gap: 15px;
+//             }
+
+//             .ai_css_profile-content-left {
+//                 padding-right: 0;
+//                 border-right: none;
+//             }
+
+//             .ai_css_profile-content-right {
+//                 text-align: center;
+//             }
+//         }
+
+//         @media (max-width: 768px) {
+//             .ai_css_profile-heading {
+//                 text-align: center;
+//             }
+
+//             .ai_css_profile-content {
+//                 flex-direction: column;
+//             }
+
+//             .ai_css_profile-content-left {
+//                 min-width: 100%;
+//                 padding-right: 0;
+//                 border-right: none;
+//             }
+
+//             .ai_css_profile-content-right {
+//                 min-width: 100%;
+//             }
+
+//             .ai_css_profile-avatar-user {
+//                 width: 100px;
+//                 height: 100px;
+//             }
+
+//             .ai_css_profile-btn-save {
+//                 width: 100%;
+//                 font-size: 14px;
+//                 padding: 10px;
+//             }
+//         }
+
+//         @media (max-width: 480px) {
+//             .ai_css_profile-title {
+//                 font-size: 18px;
+//             }
+
+//             .ai_css_profile-infor {
+//                 font-size: 14px;
+//             }
+
+//             .ai_css_profile-content-left-item {
+//                 flex-direction: column;
+//             }
+
+//             .ai_css_profile-content-left-item .ai_css_profile-title {
+//                 font-size: 14px;
+//                 margin-bottom: 10px;
+//             }
+
+//             .ai_css_profile-btn-select-img {
+//                 padding: 6px 15px;
+//                 font-size: 12px;
+//             }
+
+//             .ai_css_profile-btn-save {
+//                 font-size: 12px;
+//                 padding: 8px 20px;
+//             }
+//         }
+//     }
+// }
+
 @import "../../style.scss";
 
-.profile-wrapper {
+.ai_css_profile-wrapper {
     @include themify($themes) {
-        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center;
 
-        .profile-heading {
+        .ai_css_profile-heading {
             border-bottom: 1px solid themed("border");
             padding-bottom: 15px;
+            margin-bottom: 20px;
 
-            .profile-title {
+            .ai_css_profile-title {
                 font-size: 20px;
                 font-weight: bold;
                 color: themed("textBold");
             }
 
-            .profile-infor {
+            .ai_css_profile-infor {
                 font-size: 16px;
                 color: themed("textColorSoft");
             }
         }
 
-        .profile-content {
-            padding-top: 15px;
+        .ai_css_profile-content {
             display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
 
-            .profile-content-left {
-                flex: 7;
+            /* Left side - Profile details */
+            .ai_css_profile-content-left {
+                flex: 1;
+                min-width: 250px;
                 padding-right: 50px;
                 border-right: 1px solid themed("border");
-                .profile-content-left-item {
+
+                .ai_css_profile-content-left-item {
                     display: flex;
                     padding-bottom: 30px;
                     align-items: center;
 
-                    .title {
+                    .ai_css_profile-title {
                         flex: 3;
                         text-align: right;
                         color: themed("textColorSoft");
                     }
 
-                    .item-value {
+                    .ai_css_profile-item-value {
                         padding-left: 20px;
                         flex: 7;
 
@@ -51,17 +344,20 @@
                             border: 1px solid themed("border");
                         }
 
-                        .gender {
+                        .ai_css_profile-gender {
                             display: flex;
                             align-items: center;
-                            gap: 30px;
-                            .gender-item {
+
+
+                            .ai_css_profile-gender-item {
                                 display: flex;
                                 align-items: center;
                                 margin-right: 20px;
-                                .check-radio {
+
+                                .ai_css_profile-check-radio {
                                     color: themed("textColorSoft");
                                     margin-right: 10px;
+
                                     &.selected {
                                         color: themed("colorPink");
                                     }
@@ -72,43 +368,173 @@
                 }
             }
 
-            .profile-content-right {
-                flex: 3;
+            /* Right side - Avatar section */
+            .ai_css_profile-content-right {
+                flex: 1;
+                min-width: 250px;
                 display: flex;
-                flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                flex-direction: column;
+                /* Stack avatar and button vertically */
 
-                .avatar-user {
-                    width: 100px;
-                    height: 100px;
-                    object-fit: cover;
-                    border-radius: 50%;
-                    margin-bottom: 20px;
-                } 
-                input {
-                    display: none;
+                .ai_css_profile-avatar-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    /* Stack avatar image and button vertically */
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                    /* Space between image and button */
+
+                    .ai_css_profile-avatar-container {
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        border: 4px solid #f2f2f2;
+                        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            border-color: themed("colorPink");
+                            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .ai_css_profile-avatar-user {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 50%;
+                            transition: transform 0.3s ease;
+                        }
+                    }
+
+                    /* Button for selecting the image */
+                    .ai_css_profile-btn-select-img {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: themed("colorPink");
+                        color: #fff;
+                        border-radius: 5px;
+                        font-size: 14px;
+                        text-align: center;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+
+                        &:hover {
+                            background-color: themed("colorPinkDark");
+                            /* Darker shade on hover */
+                        }
+
+                        input {
+                            display: none;
+                        }
+                    }
                 }
-                .btn-select-img {
-                    cursor: pointer;
-                    padding: 10px 15px;
-                    border: 1px solid themed("border");
+            }
+
+            .ai_css_profile-content-left-item {
+                .ai_css_profile-title {
+                    display: flex;
+                    align-items: center;
+
+                    .required {
+                        color: red;
+                        font-size: 14px;
+                        margin-left: 5px;
+                    }
+                }
+
+                .ai_css_profile-item-value {
+                    position: relative;
+
+                    .error-message {
+                        color: red;
+                        font-size: 12px;
+                        margin-top: 5px;
+                    }
+
+                    input {
+                        border: 1px solid themed("border");
+
+                        &:focus {
+                            border-color: themed("colorPink");
+                            outline: none;
+                        }
+
+                        &.error {
+                            border-color: red;
+                        }
+                    }
                 }
             }
         }
-        .profile-bottom{
+
+        /* Save button */
+        .ai_css_profile-bottom {
             display: flex;
             justify-content: center;
-            .btn-save {
+
+            .ai_css_profile-btn-save {
                 color: white;
                 background-color: themed("colorPink");
                 padding: 10px 30px;
                 border-radius: 5px;
                 cursor: pointer;
                 border: 1px solid themed("border");
+
                 &:hover {
                     opacity: 0.9;
                 }
+            }
+        }
+
+        /* Responsive Media Query for mobile screens */
+        @media (max-width: 768px) {
+            .ai_css_profile-wrapper {
+                padding: 20px;
+            }
+
+            .ai_css_profile-content {
+                flex-direction: column-reverse;
+                /* Stack everything vertically */
+                align-items: center;
+                /* Center everything on small screens */
+            }
+
+            .ai_css_profile-content-left {
+                width: 100%;
+                padding-right: 0;
+                border-right: none;
+                margin-bottom: 20px;
+                border-right: 0px !important;
+                /* Add some space between the left content and the avatar */
+            }
+
+            .ai_css_profile-content-right {
+                width: 100%;
+                /* Full width on small screens */
+                padding-bottom: 20px;
+                /* Add spacing below */
+                flex-direction: column;
+                /* Stack the avatar and the button vertically */
+            }
+
+            .ai_css_profile-btn-select-img {
+                padding: 8px 15px;
+                /* Smaller button size on mobile */
+                font-size: 14px;
+            }
+
+            .ai_css_profile-avatar-container {
+                width: 120px;
+                /* Smaller avatar size on mobile */
+                height: 120px;
             }
         }
     }

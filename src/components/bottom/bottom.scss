@@ -1,91 +1,59 @@
 @import "../../style.scss";
 
-// .bottom {
-//     @include themify($themes) {
-//         background-color: themed("bg");
-//         border-top: 1px solid themed("border");
-//         width: 100%;
+/* CSS cho section mới với prefix ai_css_style */
+.ai_css_style-section {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
 
-//         .bottom-bottom {
-//             
-//         }
-//     }
-// }
-.bottom {
-    @include themify($themes) {
-        background-color: themed("bg");
-        border-top: 1px solid themed("border");
+/* CSS cho container mới với prefix ai_css_style */
+.ai_css_style-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ai_css_style-content {
+    width: 80%;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .ai_css_style-container {
         width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-
-        .bottom-top {
-            max-width: 1200px;
-
-            width: 100%;
-
-            padding: 25px;
-            gap: 30px;
-
-            .item {
-                .heading {
-                    font-size: 20px;
-                    color: themed("textBold");
-                    font-weight: 900;
-                    margin-bottom: 10px;
-                    display: flex;
-                    align-items: center;
-
-                    .heading-red {
-                        color: themed("colorPink");
-                        margin-left: 8px;
-                    }
-                }
-
-                .item-content {
-                    font-size: 14px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-
-                    .item-content-row {
-                        display: flex;
-
-                        .row-title {
-
-                            color: themed("colorPink");
-                            font-weight: 700;
-                            min-width: 100px;
-
-                            &.row-title-center {
-                                min-width: 180px;
-                            }
-                        }
-
-                        .row-content {
-                            cursor: pointer;
-                            color: themed("textColorSoft");
-
-                            &:hover {
-                                opacity: 0.9;
-                            }
-                        }
-
-                        .row-content a {
-                            color: themed("colorPink");
-                            text-decoration: none;
-
-                            &:hover {
-                                text-decoration: underline;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
+        margin: 0 auto;
+        padding: 20px;
     }
+
+    .ai_css_style-content {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+.ai_css_style-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: darkblue;
+}
+
+.ai_css_style-section h4 {
+    font-size: 1.2rem;
+    color: darkblue;
+    margin-bottom: 10px;
+}
+
+.ai_css_style-section p {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.ai_css_style-section a {
+    color: darkblue;
+    text-decoration: none;
+}
+
+.ai_css_style-section a:hover {
+    text-decoration: underline;
 }

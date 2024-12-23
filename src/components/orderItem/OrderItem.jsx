@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import './orderItem.scss'
-import { IMAGE_LINK, request } from '../../requestMethod';
 import { numberWithCommas } from '../../utils/formatMoney';
 import { formatDate } from '../../utils/formatDate';
 import { Button, Typography } from 'antd';
@@ -14,7 +12,6 @@ export default function OrderItem({ order, complete }) {
     const { products } = useGetListProductInOrderByOrderId(order?.id)
     const { feedbackList } = useGetFeedbackUser()
 
-    console.log('products', products);
 
     const handleCreateUpdateFeedback = (pro, edit) => {
         let data = {
