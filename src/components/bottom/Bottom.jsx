@@ -6,8 +6,8 @@ import { Col, Row } from 'antd'
 export default function Bottom() {
     return (
         <>
-            <section id="contact" class="ai_css_style-section">
-                <div class="ai_css_style-container">
+            <section id="contact" className="ai_css_style-section">
+                <div className="ai_css_style-container">
                     <h3>Liên hệ</h3>
 
                     <h4>Cửa hàng: Summer Shop</h4>

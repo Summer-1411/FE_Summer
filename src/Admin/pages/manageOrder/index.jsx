@@ -194,7 +194,7 @@ const ManageOrder = () => {
                 return (
                     <>
                         <div><Tag style={{ fontSize: 14, fontWeight: 500 }} icon={getStyleStatusOrder(record.status).icon} color={getStyleStatusOrder(record.status).color}>
-                            {STATUS_ORDER.find((i) => i.value == record.status)?.label ?? ''}
+                            {STATUS_ORDER.find((i) => Number(i.value) === Number(record.status))?.label ?? ''}
                         </Tag></div>
                         {record.status < 0 && <div><Text strong type="danger">Lý do: {record?.reason ?? ''}</Text></div>}
                     </>
@@ -234,6 +234,13 @@ const ManageOrder = () => {
                     >
                         Hoàn hủy
                     </Button>}
+                    {record.status === 10 && <Button
+                        block
+                        style={{ backgroundColor: '#ffc107' }}
+                        onClick={() => handleConfirmIsOrderPaid(record)}
+                    >
+                        Đã thanh toán
+                    </Button>}
                     <Button
                         block
                         style={{ backgroundColor: '#6c757d' }}
@@ -253,6 +260,17 @@ const ManageOrder = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const handleConfirmIsOrderPaid = async (order) => {
+        showConfirm({
+            title: "Xác nhận đơn",
+            message: "Xin hãy kiểm tra giao dịch. Bạn có chắc chắn đơn hàng này đã được thanh toán ?",
+            type: ModalType.WARNING,
+            onOk: () => {
+                handleUpdate('?orderPaid=true', order)
+            },
+        })
     }
 
     const handleRejectOrder = async (values) => {

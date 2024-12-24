@@ -361,6 +361,10 @@ const STATUS_ORDER = [
     {
         label: 'Khách hủy đơn',
         value: -1
+    },
+    {
+        label: 'Chờ thanh toán',
+        value: 10
     }
 ]
 

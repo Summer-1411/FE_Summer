@@ -286,7 +286,7 @@ export default function Order() {
                             <div className="title-checkout">
                                 Giảm (voucher) :
                             </div>
-                            <div style={{ marginLeft: 10, textDecoration: 'line-through' }} className="price-order">
+                            <div style={{ marginLeft: 10 }} className="price-order">
                                 - {numberWithCommas(valueVoucher.discount)}
                             </div>
                         </div> : <></>}

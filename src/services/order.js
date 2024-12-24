@@ -28,12 +28,11 @@ export function useUpdateStatusOrder() {
         },
         {
             onSuccess: async (data) => {
-                console.log('123', data);
                 await queryClient.invalidateQueries('list-order-admin')
                 toast.success(data.data.message, toastOption);
             },
             onError: async (error) => {
-                toast.error("Lưu dữ liệu thất bại !", toastOption);
+                toast.error(error.message, toastOption);
             }
         }
     )
