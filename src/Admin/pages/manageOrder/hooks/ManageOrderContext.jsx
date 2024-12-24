@@ -14,7 +14,7 @@ export const ManageOrderProvider = ({
 
   const [filter, setFilter] = useState({
     sample: {
-
+      status: 0,
     },
     pagination: {
       page: 1,

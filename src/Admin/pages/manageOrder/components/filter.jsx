@@ -83,6 +83,9 @@ const Filter = () => {
                     form={form}
                     name="status"
                     options={STATUS_ORDER}
+                    fieldProps={{
+                        defaultValue: 0,
+                    }}
                     label={"Trạng thái đơn hàng"}
                 />
                 <SelectInput
