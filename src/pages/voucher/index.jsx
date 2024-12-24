@@ -7,9 +7,9 @@ const Voucher = () => {
     console.log('listVoucher', listVoucher);
 
     return (
-        <div class="voucher-ai-container">
-            <h1 class="voucher-ai-title">Danh Sách Mã Giảm Giá</h1>
-            <div class="voucher-ai-discount-cards">
+        <div className="voucher-ai-container">
+            <h1 className="voucher-ai-title">Danh Sách Mã Giảm Giá</h1>
+            <div className="voucher-ai-discount-cards">
                 {listVoucher.map((item) => <VoucherItem voucher={item} key={item.id} />)}
             </div>
         </div>

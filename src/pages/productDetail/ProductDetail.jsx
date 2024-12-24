@@ -52,7 +52,6 @@ export default function ProductDetail() {
     }, [currentProduct])
 
     const renderQuantity = useMemo(() => {
-        console.log('detailProduct', detailProduct);
         if (!detailProduct) {
             return ''
         }
@@ -85,6 +84,18 @@ export default function ProductDetail() {
         return feedbackListProduct.length > 0 ? total / feedbackListProduct.length : 5
     }, [feedbackListProduct])
 
+
+    const handleChangeQuantity = (e) => {
+        const value = e.target.value;
+        if (value) {
+            if (/^\d*$/.test(value)) {
+                setQuantity(Number(value));
+            }
+        } else {
+            setQuantity(0)
+        }
+    }
+    console.log('quantitty', quantity);
 
 
     const handleOk = () => {
@@ -315,7 +326,7 @@ export default function ProductDetail() {
                                                     type="text"
                                                     className='input-number'
                                                     value={quantity}
-                                                    onChange={(e) => setQuantity(Number(e.target.value))}
+                                                    onChange={handleChangeQuantity}
                                                 />
                                                 <div className="btn-icon" onClick={() => handleChangeQuantityOrder("increase")}>
                                                     +

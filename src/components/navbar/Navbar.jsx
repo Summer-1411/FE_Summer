@@ -83,6 +83,10 @@ export default function NavBar() {
         toast.success("Bạn đã đăng nhập với vai trò Admin", toastOption)
     }
 
+    const showDevelopmentNotice = () => {
+        toast.warning("Chức năng đang trong quá trình phát triển", toastOption)
+    }
+
     const dispatch = useDispatch()
     const logout = () => {
         handleLogout(dispatch)
@@ -158,8 +162,8 @@ export default function NavBar() {
 
                     </Link>
 
-                    <EmailOutlinedIcon />
-                    <NotificationsOutlinedIcon />
+                    <EmailOutlinedIcon onClick={showDevelopmentNotice} className="pointer" />
+                    <NotificationsOutlinedIcon onClick={showDevelopmentNotice} className="pointer" />
                     {currentUser ? (
                         <Popover placement="rightTop" content={(
                             <div style={{ zIndex: 100000, display: 'flex', flexDirection: 'column', gap: 10 }}>
